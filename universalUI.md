@@ -17,6 +17,8 @@ the following code launches a window with the title "hello github!", and a red b
   
   [...]
   
+  uWindow window(800, 600, "hello guthib!");
+  window.backgroundColour = uColour(1.0, 0.0, 0.0, 1.0)
   
   [...]
   
