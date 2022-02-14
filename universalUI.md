@@ -1,6 +1,6 @@
 <h1>universalUI</h1>
 
-A lightweight, highly customisable immediate-mode grahics library.
+A lightweight, powerful, flexible and highly customisable immediate-mode grahics library.
 
 <h2>Core Features</h2>
 
