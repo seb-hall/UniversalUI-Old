@@ -7,13 +7,13 @@ A lightweight, highly customisable immediate-mode grahics library.
 - self-contained (no external dependancies)
 - cross-platform
 - M-V-C architecture
-- very fast implementation speed
+- very fast implementation
 
-the following code launches a window with the title "hello github!", and a red background:
+**Example:** the following code launches a window with the title "hello github!", and a red background:
 
 ~~~
   #include "uui.h"
-  using namespace uuui
+  using namespace uui;
   
   [...]
   
