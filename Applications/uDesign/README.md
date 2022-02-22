@@ -1,5 +1,5 @@
 <h1>uDesign</h1>
 
-Create beautiful interfaces using universalUI. Available for MacOS, Linux, Windows and iPadOS.
+Create beautiful interfaces using universalUI. Available for MacOS, Linux, Windows, iPadOS and Android.
 
 uDesign is designed to function independantly of uDeploy and uCode, allowing designers and programmers to work at different paces, and with different focuses.
