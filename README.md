@@ -2,7 +2,7 @@
   <img src="uui-logo-wide.png" width="300" title="uUI Logo">
 </p>
 
-A lightweight, powerful, flexible and highly customisable immediate-mode grahics library.
+A lightweight, powerful, flexible and highly customisable immediate-mode grahics framework.
 
 <h2>Core Features</h2>
 
