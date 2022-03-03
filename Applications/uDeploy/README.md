@@ -18,7 +18,7 @@ Supports building for:
   - Windows ARM32
   - Windows UXE (Proprietary Universal Build)
   - Android ARM64
-  - iOS/iPadOS xcode projects
+  - iOS/iPadOS xCode projects
   
 <h3>License</h3>
 
