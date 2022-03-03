@@ -1,4 +1,6 @@
-<h1>universalUI</h1>
+<p align="left">
+  <img src="uui-logo-black.png" width="250" title="uUI Logo">
+</p>
 
 A lightweight, powerful, flexible and highly customisable immediate-mode grahics library.
 
