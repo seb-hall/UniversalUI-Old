@@ -11,7 +11,7 @@ A lightweight, powerful, flexible and highly customisable immediate-mode grahics
 - M-V-C architecture
 - highly flexible layout engine
 
-**Example:** the following code launches a window with the title "hello github!", and a red background:
+**Example:** the following C++ code launches a window with the title "hello github!", and a red background:
 
 ~~~
   #include "uUI.h"
