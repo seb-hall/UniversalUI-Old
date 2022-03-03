@@ -9,7 +9,7 @@ A lightweight, powerful, flexible and highly customisable immediate-mode grahics
 - self-contained (no external dependancies)
 - cross-platform
 - M-V-C architecture
-- powerful layout engine
+- highly flexible layout engine
 
 **Example:** the following code launches a window with the title "hello github!", and a red background:
 
@@ -28,7 +28,7 @@ A lightweight, powerful, flexible and highly customisable immediate-mode grahics
 
 <h2>Other Features</h2>
 
-- asynchronous rendering system for better performance
+- asynchronous rendering system for high performance
 - modern UI element library included as standard
 - support for VR and AR applications
 - custom font support
