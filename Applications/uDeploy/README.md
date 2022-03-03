@@ -24,4 +24,4 @@ Supports building for:
 
 Only available for Commercial users.
 
-For other users please refer to our 'Building with GCC' page for instructions on building with GCC using Terminal/Command prompt.
+For other users please refer to our 'Building with GCC' page for instructions on building with GCC using Terminal tools.
