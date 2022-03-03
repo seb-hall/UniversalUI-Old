@@ -9,11 +9,11 @@ Available for MacOS, Linux and Windows.
 Supports building for:
 
   - MacOS Universal (ARM64, x86)
-  - Linux x86
+  - Linux x86, x64
   - Linux ARM64
   - Linux ARM32
   - Linux UXE (Proprietary Universal Build)
-  - Windows x86
+  - Windows x86, x64
   - Windows ARM64
   - Windows ARM32
   - Windows UXE (Proprietary Universal Build)
