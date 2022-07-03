@@ -2,14 +2,25 @@
   <img src="uui-logo-wide.png" width="300" title="uUI Logo">
 </p>
 
-A lightweight, powerful, flexible and highly customisable immediate-mode grahics framework.
+A high performance graphics framework for cross-platform applications.
 
 <h2>Core Features</h2>
 
 - self-contained (no external dependancies)
-- cross-platform
+- native performance
 - M-V-C architecture
-- highly flexible layout engine
+- modular design
+- rapid & low code development support
+
+<br> <br>
+
+<h2>Main Components</h2>
+
+- UniversalUICore <br> A lightweight UI library
+- UniversalSandbox <br> A platform-independant rutime environment
+- UniversalConnect <br> Native interfaces for multiple different platforms 
+- Angelo Geometry Engine <br> A parametric, highly configurable geometry engine
+- UniversalCompositor <br> A cross-platform compositor powered by OpenGL
 
 **Example:** the following C++ code launches a window with the title "hello github!", and a red background:
 
