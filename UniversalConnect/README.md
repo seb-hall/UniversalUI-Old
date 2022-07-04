@@ -8,3 +8,4 @@ UniversalConnect is a set of native interfaces for UniversalSandbox applications
   - DroidConnect (Android)
   - WinConnect (Windows)
   - TuxConnect (Linux)
+  - WebConnect (Web Browsers)
