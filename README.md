@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="uui-logo-wide.png" width="300" title="uUI Logo">
+  <img src="Media/UUI-Logo-Wide.png" width="300" title="uUI Logo">
 </p>
 
 A high performance, modular framework for cross-platform app development.
