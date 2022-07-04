@@ -57,6 +57,8 @@ A high performance, modular framework for cross-platform app development.
 
 - Linux, see compatability notes for more details
 
+- Modern Web Browsers, see compatability notes for more details
+
 <br>
 
 <h2>Intended Use Cases</h2>
