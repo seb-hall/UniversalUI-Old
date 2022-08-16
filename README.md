@@ -66,7 +66,7 @@ A high performance, modular framework for cross-platform app development.
 Many, including:
 
 - Cross-platform and native mobile apps
-- Lightweight 3D applications
+- Lightweight 3D applications, for low to high-end devices.
 - Porting existing C++ frameworks to other platforms
 - Creative and production software
 - Manufacturing software
