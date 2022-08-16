@@ -19,9 +19,9 @@ A high performance, modular framework for cross-platform app development.
 - UniversalUICore - <i> a lightweight UI library</i>
 - UniversalSandbox - <i> a platform-independant rutime environment</i>
 - UniversalConnect - <i> native interface modules for all major platforms </i>
-- Angelo Geometry Engine - <i> a parametric, highly configurable geometry engine</i>
+- Angelo Geometry Engine - <i> a parametric, highly configurable geometry engine, see external repository</i>
 - UniversalCompositor - <i> a cross-platform compositor powered by OpenGL</i>
-- Universal3D - <i> a lightweight 3D engine designed for on-demand rendering and auxiliary 3D implementations (e.g CAD and modelling)</i>
+- Universal3D - <i> a lightweight 3D engine designed for on-demand rendering and auxiliary 3D implementations (e.g CAD and modelling), designed to interface well with Angelo Geometry Engine</i>
 
 <br>
 
@@ -30,14 +30,14 @@ A high performance, modular framework for cross-platform app development.
 **Example:** the following C++ code launches a window with the title "hello github!", and a red background:
 
 ~~~
-  #include "UUICore.h"
-  using namespace UUI;
+  #include "uui.h"
+  using namespace uui;
   
   [...]
   
-  uWindow window(800, 600, "hello githib!");
+  uWindow window(800, 600, "hello github!");
   window.backgroundColour = uColour(1.0, 0.0, 0.0, 1.0);
-  PresentNewWindow(&window);
+  presentNewWindow(&window);
   
   [...]
   
