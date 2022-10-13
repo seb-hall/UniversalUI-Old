@@ -2,62 +2,26 @@
   <img src="Media/UUI-Logo-Wide.png" width="300" title="uUI Logo">
 </p>
 
-A high performance, modular framework for cross-platform app development.
+A high performance framework for cross-platform app development.
 
-<h2>Main Features</h2>
+<h2>Features</h2>
 
-- native performance
-- suitable for rapid & low code development
-- fully modular architecture
+- a completely platform-independant framework - develop one codebase for all platforms
+- native performance and integration (file managers etc) on all platforms
 - multiple UI design methods
 - self-contained (no external dependancies)
+- implemented as a standard to allow third party and hosts for other platforms
 
 <br>
 
-<h2>Core Modules</h2>
+<h2>Current Supported Platforms</h2>
 
-- UniversalUICore - <i> a lightweight UI library</i>
-- UniversalSandbox - <i> a platform-independant rutime environment</i>
-- UniversalConnect - <i> native interface modules for all major platforms </i>
-- Angelo Geometry Engine - <i> a parametric, highly configurable geometry engine, see external repository</i>
-- UniversalCompositor - <i> a cross-platform compositor powered by OpenGL</i>
-- Universal3D - <i> a lightweight 3D engine designed for on-demand rendering and auxiliary 3D implementations (e.g CAD and modelling), designed to interface well with Angelo Geometry Engine</i>
-
-<br>
-
-<h2>Example Code</h2>
-
-**Example:** the following C++ code launches a window with the title "hello github!", and a red background:
-
-~~~
-  #include "uui.h"
-  using namespace uui;
-  
-  [...]
-  
-  uWindow window(800, 600, "hello github!");
-  window.backgroundColour = uColour(1.0, 0.0, 0.0, 1.0);
-  presentNewWindow(&window);
-  
-  [...]
-  
-~~~
-
-<br>
-
-<h2>Supported Platforms</h2>
-
-- Windows 7 onwards
-
-- MacOS 10.12 onwards
-
-- iOS & iPadOS 12 onwards
-
-- Android 9 onwards
-
-- Linux, see compatability notes for more details
-
-- Modern Web Browsers, see compatability notes for more details
+- Linux (using GTK 3.0)
+- Windows
+- MacOS
+- iOS & iPadOS
+- Android
+- Web (using WebAssembly)
 
 <br>
 
