@@ -24,13 +24,13 @@ They have been designed for extremely fast parsing, forward/backwards compatabil
 Most of the methods and types defined in this folder aren't designed to be used by app developers so please 
 see the documentation for the best ways to use this part of the framework.
 
-<h3>Protocol</h3>
+<h3>Core/Protocol</h3>
 
 This folder contains protocols to which modules of the host implementation conform. These types make inheritance and
 includes much easier and cleaner, and they are designed to have no includes apart from standard C++ library components
 such as std::string and std::vector. 
 
-<h3>Graphics3D</h3>
+<h3>Core/Graphics3D</h3>
 
 This folder contains methods and types for 3D applications to use. They are not required for UniversalUI but some
 may be used for core features in future versions.
