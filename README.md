@@ -2,7 +2,7 @@
   <img src="Media/UUI-Logo-Wide.png" width="300" title="uUI Logo">
 </p>
 
-The portable application development framework.
+the ultimate cross-platform framework.
 
 <h2>Features</h2>
 
