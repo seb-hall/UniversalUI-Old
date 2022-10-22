@@ -1,4 +1,4 @@
-// uApplication.h (cross-platform)
+// uApplication.h
 // first written in early 2022 by Seb Hall, this version first written on 13/10/2022 also by Seb Hall
 //
 // UniversalUI files are intended for use with UniversalUI programs only. I accept no responsibility for performance or stability, use at your own risk
@@ -13,8 +13,8 @@
 #include <vector>
 #include <stdio.h>
 
-#include "../Protocol/UniversalUI-Protocols.h"
-#include "../Interface/uWindow.h"
+#include "../Protocol/UniversalUI-Protocol.h"
+#include "../Interface/UniversalUI-Interface.h"
 
 class uApplication {
 
@@ -22,8 +22,8 @@ public:
 
     std::vector<uWindow*> windows = { };
     
-    uApplicationProtocol* ApplicationManager;
-    uInterfaceProtocol* InterfaceManager;
+    uApplicationManagerProtocol* ApplicationManager;
+    uInterfaceManagerProtocol* InterfaceManager;
 
     // methods to be overridden:
 
