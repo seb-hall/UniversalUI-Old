@@ -2,25 +2,23 @@
   <img src="Media/UUI-Logo-Wide.png" width="300" title="uUI Logo">
 </p>
 
-A high performance framework for cross-platform app development.
+The portable application development framework.
 
 <h2>Features</h2>
 
-- a completely platform-independant framework - develop one codebase for all platforms
-- native performance and integration (file managers etc) on all platforms
-- multiple UI design methods
-- self-contained (no external dependancies)
-- implemented as a standard to allow third party and hosts for other platforms
+- completely platform-independant core framework
+- native performance and integration on all supported platforms
+- highly consistent and flexible interface design
 
 <br>
 
 <h2>Current Supported Platforms</h2>
 
 - Linux (using GTK 3.0)
-- Windows
-- MacOS
-- iOS & iPadOS
-- Android
+- Windows (min. 10)
+- MacOS (min. 10.12)
+- iOS & iPadOS (min. 13.0)
+- Android (min. 8.0 Oreo)
 - Web (using WebAssembly)
 
 <br>
@@ -29,11 +27,10 @@ A high performance framework for cross-platform app development.
 
 Many, including:
 
-- Cross-platform and native mobile apps
+- Cross-platform tools
 - Lightweight 3D applications, for low to high-end devices.
 - Porting existing C++ frameworks to other platforms
 - Creative and production software
-- Manufacturing software
 
 <br>
 
