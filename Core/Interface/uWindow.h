@@ -11,7 +11,7 @@
 #define UWINDOW_H
 
 #include <string>
-#include "UniversalUI-Geometry.h"
+#include "../Maths/UniversalUI-Geometry.h"
 
 class uWindow {
 
