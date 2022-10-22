@@ -34,6 +34,18 @@ Many, including:
 
 <br>
 
+
+<h2>Why use UniversalUI?</h2>
+
+Of course, UniversalUI won't be perfect for every project but here are some reasons to consider it for yours:
+
+- quick setup for rapid prototyping
+- easy to use framework
+- native support for all major platforms
+- develop for one and support all the others with ease!
+
+<br>
+
 <h2>Licence</h2>
 
 This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
