@@ -8,6 +8,10 @@ to which parts of the platform-specific modules conform.
 It is advised to follow our examples and guides for which classes to implement and which to ignore.
 They have been specifically designed to get you and your app up and running as soon as possible.
 
+<h3>Core/Maths</h3>
+
+This folder contains basic UniversalUI types and methods for mathematical operations and structures.
+
 <h3>Core/Interface</h3>
 
 This folder contains classes specifally for interface design such as windows, buttons and text boxes.
