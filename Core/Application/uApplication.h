@@ -28,15 +28,15 @@ public:
     // methods to be overridden:
 
     virtual void ApplicationLaunched() {
-        
+        // called by application manager when the application has launched successfully
     }
 
     virtual void ApplicationWillSuspend() {
-
+        // called when the computer will sleep/suspend
     }
 
     virtual bool ApplicationShouldTerminate() {
-
+        // called when the application has been asked to quit
         return true;
     }
 
