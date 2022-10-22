@@ -13,8 +13,8 @@
 #include <vector>
 #include <stdio.h>
 
-#include "../Host/UniversalHost-Protocols.h"
-#include "uWindow.h"
+#include "../Protocol/UniversalUI-Protocols.h"
+#include "../Interface/uWindow.h"
 
 class uApplication {
 
