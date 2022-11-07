@@ -8,7 +8,8 @@ the ultimate cross-platform framework.
 
 - completely platform-independant core framework
 - native performance and integration on all supported platforms
-- highly consistent and flexible interface design
+- highly consistent and flexible design
+- hardware acceleration for high performance on all systems
 
 <br>
 
@@ -27,17 +28,18 @@ the ultimate cross-platform framework.
 
 Many, including:
 
+- Embedded systems and portable devices
+- Enterprise and industrial software
 - Cross-platform tools
-- Lightweight 3D applications, for low to high-end devices.
-- Porting existing C++ frameworks to other platforms
+- 3D applications, for low to high-end devices.
 - Creative and production software
+- Porting existing C++ frameworks to other platforms
 
 <br>
 
-
 <h2>Why use UniversalUI?</h2>
 
-Of course, UniversalUI won't be perfect for every project but here are some reasons to consider it for yours:
+UniversalUI won't be perfect for every project but here are some reasons to consider it for yours:
 
 - quick setup for rapid prototyping
 - easy to use framework
