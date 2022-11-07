@@ -12,6 +12,10 @@ They have been specifically designed to get you and your app up and running as s
 
 This folder contains application base classes.
 
+<h3>Core/Debug</h3>
+
+This folder contains classes used for debugging tools.
+
 <h3>Core/Maths</h3>
 
 This folder contains basic UniversalUI types and methods for mathematical operations and structures.
@@ -38,7 +42,3 @@ This folder contains protocols to which modules of the host implementation confo
 includes much easier and cleaner, and they are designed to have no includes apart from standard C++ library components
 such as std::string and std::vector. 
 
-<h3>Core/Graphics3D</h3>
-
-This folder contains methods and types for 3D applications to use. They are not required for UniversalUI but some
-may be used for core features in future versions.
