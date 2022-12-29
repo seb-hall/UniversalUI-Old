@@ -2,20 +2,22 @@
   <img src="Media/UUI-Logo-Wide.png" width="300" title="uUI Logo">
 </p>
 
-the ultimate cross-platform framework.
+the ultimate cross-platform framework
 
-<h2>Features</h2>
+<h2>Aims</h2>
 
-- completely platform-independant core framework
-- native performance and integration on all supported platforms
-- highly consistent and flexible design
-- hardware acceleration for high performance on all systems
+to produce applications that:
+
+- are easy to use
+- are efficient by design
+- are highly customisable
+- support all major platforms
 
 <br>
 
-<h2>Current Supported Platforms</h2>
+<h2>Target Platforms</h2>
 
-- Linux (using GTK 3.0)
+- Linux (using X11)
 - Windows (min. 10)
 - MacOS (min. 10.12)
 - iOS & iPadOS (min. 13.0)
