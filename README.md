@@ -8,10 +8,10 @@ the ultimate cross-platform framework
 
 to produce applications that:
 
-- are easy to use
-- are efficient by design
+- are perfectly cross-platform
+- are extremely efficient
 - are highly customisable
-- support all major platforms
+- are very intuitive
 
 <br>
 
@@ -30,11 +30,11 @@ to produce applications that:
 
 Many, including:
 
+- 3D applications
+- Creative and production software
+- Cross-platform tools
 - Embedded systems and portable devices
 - Enterprise and industrial software
-- Cross-platform tools
-- 3D applications, for low to high-end devices.
-- Creative and production software
 - Porting existing C++ frameworks to other platforms
 
 <br>
