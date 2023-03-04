@@ -2,27 +2,27 @@
   <img src="Media/UUI-Logo-Wide.png" width="300" title="uUI Logo">
 </p>
 
-the ultimate cross-platform framework
+the ultimate application framework
 
-<h2>Aims</h2>
+<h2>Brief</h2>
 
 to produce applications that:
 
 - are perfectly cross-platform
 - are extremely efficient
 - are highly customisable
-- are very intuitive
+- are beatifully designed
 
 <br>
 
 <h2>Target Platforms</h2>
 
-- Linux (using X11)
+- Linux (using GTK)
 - Windows (min. 10)
 - MacOS (min. 10.12)
 - iOS & iPadOS (min. 13.0)
 - Android (min. 8.0 Oreo)
-- Web (using WebAssembly)
+- Web (using WebAssembly & WebGL)
 
 <br>
 
@@ -43,7 +43,8 @@ Many, including:
 
 UniversalUI won't be perfect for every project but here are some reasons to consider it for yours:
 
-- quick setup for rapid prototyping
+- all the aspects of the brief mentioned above
+- quick design for rapid prototyping
 - easy to use framework
 - native support for all major platforms
 - develop for one and support all the others with ease!
@@ -52,6 +53,22 @@ UniversalUI won't be perfect for every project but here are some reasons to cons
 
 <h2>Licence</h2>
 
-This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+Copyright (c) 2023 Seb Hall
 
-In short, persons are permitted to share or use UniversalUI in any way they chose, provided they give appropriate credit, and use it for non-commercial projects. If you would like to build a commercial application with UniversalUI, please contact us directly.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
