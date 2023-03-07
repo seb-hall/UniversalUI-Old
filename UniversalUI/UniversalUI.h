@@ -32,10 +32,8 @@
 
 #include <UniversalUI/Core/uApplication.h>
 
-#include <stdio.h>
-#include <string>
-
 bool UUI UniversalUI(uApplication* userApp);
 int UUI uuiMain(int argc, char * argv[]);
+
 
 #endif
