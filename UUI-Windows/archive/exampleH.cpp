@@ -7,6 +7,13 @@ void framebufferCallback(GLFWwindow* window, int width, int height) {
     glClearColor(50.0f/255.0f, 204.0f/255.0f, 204.0f/255.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glfwSwapBuffers(window);
+    printf("SIZE %d %d \n", width, height);
+}
+
+void damageCallback(GLFWwindow* window) {
+    glClearColor(50.0f/255.0f, 204.0f/255.0f, 204.0f/255.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers(window);
 }
 
 int exampleH()
@@ -29,7 +36,8 @@ int exampleH()
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebufferCallback);
+    glfwSetWindowSizeCallback(window, framebufferCallback);
+    glfwSetWindowRefreshCallback(window, damageCallback);
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
