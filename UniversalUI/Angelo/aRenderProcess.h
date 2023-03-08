@@ -25,8 +25,17 @@
 
 class UUI aRenderProcess {
     public:
-    std::vector<unsigned short int> codes;
-    std::vector<float> parameters;
+
+    // GPU BUFFER: continuous array of command codes - first is always the index of the final command code
+    std::vector<unsigned short int> codes = { 0 };
+     
+    // GPU BUFFER: continuous array of parameters - first is always the 4 clear colour components
+    std::vector<float> parameters = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+    // GPU BUFFER: continuous arrray of first parameter indices for each command code - first is always 0 for clear colour
+    std::vector<unsigned int> indices = { 0 };
+
+    // continuous array of pixelBuffer indices - not sent to GPU but used to assign the 8 POSSIBLE INPUT TEXTURES!
     std::vector<unsigned long long> pixelBuffers;
 };
 

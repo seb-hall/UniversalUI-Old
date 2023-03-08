@@ -21,6 +21,7 @@
 
 struct UUI aPixelBuffer {
     uSize size;
+    unsigned long long int id;
 };
 
 #endif
