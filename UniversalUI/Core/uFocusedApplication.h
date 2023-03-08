@@ -25,7 +25,7 @@ class UUI uFocusedApplication: public uApplication {
 public:
     uWindow* window;
     uFocusedApplication(const char* initName = "UniversalUI Application", int initMajorVersion = 1, int initMinorVersion = 0);
-    void FinishedLaunching() override;
+    void FinishedLaunching(int argc, char* argv[]) override;
 };
 
 #endif
