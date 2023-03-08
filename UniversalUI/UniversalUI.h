@@ -8,10 +8,10 @@
 //  For documentation, sample code and more information please
 //  see our website.
 //
-//  UniversalUI is released under the Unlicence Software
-//  Licence, allowing you to use the framework for any project,
+//  UniversalUI is released under the MIT Software Licence,
+//  allowing you to use the framework for any project,
 //  including commercial and proprietary software, all without
-//  referring to the UniversalUI framework directly.
+//  crediting the UniversalUI framework directly if not desired.
 
 //  UniversalUI.h contains the main interface with the framework
 //  and should be included in your main.cpp file. All files in
@@ -32,7 +32,23 @@
 
 #include <UniversalUI/Core/uApplication.h>
 
+
+//  Initialise UniversalUI - checking for installation and user
+//  aplication compatibility. If all is well, the function will
+//  return true, and uuiMain should be called to start your app.
+//  If the function returns false, there are errors in the host
+//  platform i.e no OpenGL support or missing resources. The
+//  int main() function should return at this point as UniversalUI
+//  will not run correctly.
+
 bool UUI UniversalUI(uApplication* userApp);
+
+//  Run UniversalUI. This function will only return after all
+//  the other parts of the framework are terminated. You shouldn't
+//  assume the function is returned and so the standard
+//  implementation is to add 'return uuiMain(argc, argv);' as the
+//  last line of your int main() function in main.cpp.
+
 int UUI uuiMain(int argc, char * argv[]);
 
 

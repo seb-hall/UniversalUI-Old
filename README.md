@@ -51,7 +51,7 @@ UniversalUI won't be perfect for every project but here are some reasons to cons
 
 <br>
 
-<h2>Licence</h2>
+<h2>Licence - MIT License</h2>
 
 Copyright (c) 2023 Seb Hall
 
