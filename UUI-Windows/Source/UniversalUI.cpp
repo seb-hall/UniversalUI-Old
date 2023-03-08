@@ -4,6 +4,8 @@
 //  are the initialisation and event loop functions respectively.
 
 #include <UniversalUI/UniversalUI.h>
+#include <UniversalUI/Core/uSimpleApplication.h>
+#include <UniversalUI/Core/uDesktopApplication.h>
 
 //  include standard C++ libraries
 
@@ -57,10 +59,20 @@ bool UniversalUI(uApplication* userApp) {
     }
     
 
-    //  all checks succeeded so destroy test window and return true
+    //  all window checks succeeded so destroy test window
 
     glfwDestroyWindow(testWindow);
     glfwWindowHint(GLFW_VISIBLE, true);
+
+    if (dynamic_cast<uSimpleApplication*>(userApp)) {
+        printf("UUI-INFO: Simple Application Created\n");
+    } else if (dynamic_cast<uDesktopApplication*>(userApp)) {
+        printf("UUI-INFO: Desktop Application Created\n");
+    } else {
+        printf("UUI-CRITICAL: Invalid Application Created! Please use subclass either uSimpleApplication or uDesktopApplication.\n");
+        glfwTerminate();
+        return false;
+    }
 
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     

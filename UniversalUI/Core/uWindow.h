@@ -23,8 +23,7 @@ class uWindowController;
 class UUI uWindow {
 public:
     uSize size;
-    uView* view;
-    uWindowController* controller;
+    uView* rootView;
     uWindow();
     virtual void Loaded(uSize withSize);
     virtual void Resized(uSize toSize);

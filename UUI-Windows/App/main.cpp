@@ -1,11 +1,11 @@
 #include <UniversalUI/UniversalUI.h>
-#include <UniversalUI/Core/uApplication.h>
+#include <UniversalUI/Core/uSimpleApplication.h>
 
 #include <stdio.h>
 
-class App: public uApplication {
+class App: public uSimpleApplication {
     public:
-    App() : uApplication("MYAPP", 1, 0) {
+    App() : uSimpleApplication("MYAPP", 1, 0) {
 
     }
 
