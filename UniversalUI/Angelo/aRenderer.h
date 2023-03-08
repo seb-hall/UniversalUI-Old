@@ -1,6 +1,7 @@
 //  aRenderer.h   first written by Seb H in March 2023
 //
-//  aRenderer is a generic renderer object, 
+//  aRenderer is a generic renderer object, designed to
+//  perform aRenderProcess render processes.
 
 // HOST-DEFINED
 
@@ -16,8 +17,6 @@
 #else
     #define UUI
 #endif
-
-#include <UniversalUI/Core/uWindow.h>
 
 class UUI aRenderer {
     public:
