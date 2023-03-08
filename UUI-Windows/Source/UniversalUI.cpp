@@ -4,6 +4,8 @@
 //  are the initialisation and event loop functions respectively.
 
 #include <UniversalUI/UniversalUI.h>
+#include <UniversalUI/Core/uSimpleApplication.h>
+#include <UniversalUI/Core/uDesktopApplication.h>
 
 //  include standard C++ libraries
 
@@ -27,6 +29,9 @@
 
 uApplication* app;
 
+void ResizeCallback(GLFWwindow* window, int width, int height);
+void CursorCallback(GLFWwindow* window, double x, double y);
+
 bool UniversalUI(uApplication* userApp) {
 
     //  initialise GLFW check for OpenGL 3.3 context availability
@@ -38,6 +43,9 @@ bool UniversalUI(uApplication* userApp) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_VISIBLE, false);
+    glfwWindowHint(GLFW_DOUBLEBUFFER, true);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
+    //glfwWindowHint(GLFW_DECORATED, false);
 
     GLFWwindow* testWindow = glfwCreateWindow(800, 600, "UUI-TESTWINDOW", NULL, NULL);
 
@@ -57,10 +65,20 @@ bool UniversalUI(uApplication* userApp) {
     }
     
 
-    //  all checks succeeded so destroy test window and return true
+    //  all window checks succeeded so destroy test window
 
     glfwDestroyWindow(testWindow);
     glfwWindowHint(GLFW_VISIBLE, true);
+
+    if (dynamic_cast<uSimpleApplication*>(userApp)) {
+        printf("UUI-INFO: Simple Application Created\n");
+    } else if (dynamic_cast<uDesktopApplication*>(userApp)) {
+        printf("UUI-INFO: Desktop Application Created\n");
+    } else {
+        printf("UUI-CRITICAL: Invalid Application Created! Please use subclass either uSimpleApplication or uDesktopApplication.\n");
+        glfwTerminate();
+        return false;
+    }
 
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     
@@ -79,6 +97,11 @@ int uuiMain(int argc, char* argv[]) {
     app->FinishedLaunching(argc, argv);
 
     GLFWwindow* testWindow = glfwCreateWindow(800, 600, "UUI-TESTWINDOW", NULL, NULL);
+    glfwSetCursorPosCallback(testWindow, CursorCallback);
+
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glfwSwapBuffers(testWindow);
 
     while (true) {
 
@@ -88,4 +111,8 @@ int uuiMain(int argc, char* argv[]) {
 
     glfwTerminate();
     return 0;
+}
+
+void CursorCallback(GLFWwindow* window, double x, double y) {
+    printf("CURSOR: %f %f\n", x, y);
 }

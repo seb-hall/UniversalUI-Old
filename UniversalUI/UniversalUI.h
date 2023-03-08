@@ -17,6 +17,8 @@
 //  and should be included in your main.cpp file. All files in
 //  this directory - "UniversalUI" are completely cross-platform.
 
+// HOST-DEFINED
+
 #ifndef UNIVERSALUI_H
 #define UNIVERSALUI_H
 

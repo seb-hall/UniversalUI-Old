@@ -1,6 +1,8 @@
 //  uWindow.h   first written by Seb H in Early 2022
 //
-//  uWindow is the base class for any UUI window.
+//  uWindow is the base class for all UUI windows.
+
+// CROSS-PLATFORM
 
 #ifndef UWINDOW_H
 #define UWINDOW_H
@@ -18,13 +20,10 @@
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/uView.h>
 
-class uWindowController;
-
 class UUI uWindow {
 public:
     uSize size;
-    uView* view;
-    uWindowController* controller;
+    uView* rootView;
     uWindow();
     virtual void Loaded(uSize withSize);
     virtual void Resized(uSize toSize);
