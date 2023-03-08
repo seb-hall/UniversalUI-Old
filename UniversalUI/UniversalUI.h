@@ -49,7 +49,7 @@ bool UUI UniversalUI(uApplication* userApp);
 //  implementation is to add 'return uuiMain(argc, argv);' as the
 //  last line of your int main() function in main.cpp.
 
-int UUI uuiMain(int argc, char * argv[]);
+int UUI uuiMain(int argc, char* argv[]);
 
 
 #endif
