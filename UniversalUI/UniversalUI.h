@@ -53,5 +53,4 @@ bool UUI UniversalUI(uApplication* userApp);
 
 int UUI uuiMain(int argc, char* argv[]);
 
-
 #endif

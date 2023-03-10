@@ -20,7 +20,19 @@
     #define UUI
 #endif
 
+class uApplication;
+class aRenderer;
+class uInterfaceManager;
+class uFileManager;
 
+class UUI uHost {
+public:
+
+    uApplication* app;
+    aRenderer* renderer;
+    uInterfaceManager* interfaceManager;
+    uFileManager* fileManager;
+};
 
 
 

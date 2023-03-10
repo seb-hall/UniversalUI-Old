@@ -20,18 +20,16 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/uWindow.h>
 
-enum UUI uWindowCreationOptions {
-    standard,
-    fixedSize
-};
+#include <UniversalUI/Angelo/aPixelBuffer.h>
 
 class UUI uWindowManager {
 public:
-    std::vector<uWindow*> windows;
-    uWindow* CreateWindow(std::string title, uSize size, uWindowCreationOptions options = standard);
+    std::map<uWindow*, aPixelBuffer*> windows;
+    uWindow* CreateWindow(std::string title, uSize size, int options = 0);
     uWindow* CreateWindowFromFile(std::string filePath);
     virtual void WindowMoved(uWindow* window, uPoint toLocation);
     virtual void WindowResized(uWindow* window, uSize toSize);

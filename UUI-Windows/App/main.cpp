@@ -1,16 +1,19 @@
 #include <UniversalUI/UniversalUI.h>
-#include <UniversalUI/Core/uSimpleApplication.h>
+#include <UniversalUI/Core/uDesktopApplication.h>
+#include <UniversalUI/Core/uWindowManager.h>
 
 #include <stdio.h>
 
-class App: public uSimpleApplication {
+
+class App: public uDesktopApplication {
     public:
-    App() : uSimpleApplication("MYAPP", 1, 0) {
+    App() : uDesktopApplication("MYAPP", 1, 0) {
 
     }
 
     void FinishedLaunching(int argc, char* argv[]) override {
         printf("MyApp finished launching!\n");
+        windowManager->CreateWindow("YO", {500, 500});
     }
 
 };
@@ -23,4 +26,5 @@ int main(int argc, char* argv[]) {
     }
 
     return uuiMain(argc, argv);
+    return 0;
 }
