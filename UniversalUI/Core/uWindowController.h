@@ -21,7 +21,7 @@
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/uWindow.h>
 
-enum uWindowCreationOptions {
+enum UUI uWindowCreationOptions {
     standard,
     fixedSize
 };
