@@ -6,11 +6,11 @@ $MODE=$args[0]
 
 if ($MODE -eq "-STATIC") {
     Write-Output "STATIC Building UniversalUI program..."
-   g++ -DUUI_BUILD .\App\main.cpp .\Source\UniversalUI.cpp .\Source\aRenderer.cpp .\Source\glad.c .\Source\uWindowManager.cpp .\..\UniversalUI-Source\uSimpleApplication.cpp .\..\UniversalUI-Source\uDesktopApplication.cpp .\..\UniversalUI-Source\uApplication.cpp -o .\Build\main.exe -Wall -g -mconsole  -lglfw3 -lgdi32 -lopengl32  -I.\Include -I.\..\ -L.\Lib --static -static-libgcc -static-libstdc++
+   g++ -DUUI_BUILD .\App\main.cpp .\Source\UniversalUI.cpp .\Source\aRenderer.cpp .\Source\glad.c .\Source\uWindowManager.cpp .\..\UniversalUI-Source\uWindow.cpp .\..\UniversalUI-Source\uSimpleApplication.cpp .\..\UniversalUI-Source\uDesktopApplication.cpp .\..\UniversalUI-Source\uApplication.cpp -o .\Build\main.exe -Wall -g -mconsole  -lglfw3 -lgdi32 -lopengl32  -I.\Include -I.\..\ -L.\Lib --static -static-libgcc -static-libstdc++
     Write-Output "DONE!"
 } elseif ($MODE -eq "-DLL") {
     Write-Output "DLL Building UniversalUI library..."
-    g++ -DUUI_BUILD .\Source\UniversalUI.cpp .\Source\aRenderer.cpp .\Source\glad.c .\Source\uWindowManager.cpp .\..\UniversalUI-Source\uSimpleApplication.cpp .\..\UniversalUI-Source\uDesktopApplication.cpp .\..\UniversalUI-Source\uApplication.cpp -shared -mconsole -o .\Build\UniversalUI.dll -Wall -lgcc -lstdc++ -lglfw3 -lgdi32 -lopengl32  -I.\Include -I.\..\ -L.\Lib --static -static-libgcc -static-libstdc++  
+    g++ -DUUI_BUILD .\Source\UniversalUI.cpp .\Source\aRenderer.cpp .\Source\glad.c .\Source\uWindowManager.cpp .\..\UniversalUI-Source\uSimpleApplication.cpp .\..\UniversalUI-Source\uWindow.cpp .\..\UniversalUI-Source\uDesktopApplication.cpp .\..\UniversalUI-Source\uApplication.cpp -shared -mconsole -o .\Build\UniversalUI.dll -Wall -lgcc -lstdc++ -lglfw3 -lgdi32 -lopengl32  -I.\Include -I.\..\ -L.\Lib --static -static-libgcc -static-libstdc++  
     Write-Output "DONE!"
 } elseif ($MODE -eq "-DEBUG") {
     Write-Output "DEBUG Building UniversalUI application..."

@@ -20,9 +20,12 @@
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/uView.h>
 
+#include <string>
+
 class UUI uWindow {
 public:
     uSize size;
+    std::string title;
     uView* rootView;
     uWindow();
     virtual void Loaded(uSize withSize);

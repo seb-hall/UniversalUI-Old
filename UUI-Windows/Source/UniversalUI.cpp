@@ -8,6 +8,7 @@
 #include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uDesktopApplication.h>
 #include <UniversalUI/Core/uWindowManager.h>
+#include <UniversalUI/Angelo/aRenderer.h>
 
 //  include standard C++ libraries
 
@@ -31,8 +32,6 @@
 
 uHost host;
 
-void ResizeCallback(GLFWwindow* window, int width, int height);
-void CursorCallback(GLFWwindow* window, double x, double y);
 
 bool UniversalUI(uApplication* userApp) {
 
@@ -77,7 +76,11 @@ bool UniversalUI(uApplication* userApp) {
     } else if (dynamic_cast<uDesktopApplication*>(userApp)) {
         printf("UUI-INFO: Desktop Application Created\n");
         uDesktopApplication* app = static_cast<uDesktopApplication*>(userApp);
+        if (!app->windowManager) {
+            printf("UUI-INFO: Generating default window manager...\n");
+        }
         app->windowManager = new uWindowManager;
+        app->windowManager->host = &host;
     } else {
         printf("UUI-CRITICAL: Invalid Application Created! Please use subclass either uSimpleApplication or uDesktopApplication.\n");
         glfwTerminate();
@@ -87,6 +90,7 @@ bool UniversalUI(uApplication* userApp) {
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     
     host.app = userApp;
+    host.renderer = new aRenderer;
     return true;
 }
 
@@ -100,25 +104,19 @@ int uuiMain(int argc, char* argv[]) {
 
     host.app->FinishedLaunching(argc, argv);
 
-    if (dynamic_cast<uDesktopApplication*>(host.app)) {
-        printf("UUI-INFO: Desktop Application Created\n");
-        uDesktopApplication* app = static_cast<uDesktopApplication*>(host.app);
-        app->windowManager->CreateWindow("hello world", {500, 500}, 0);
-    }
-
-    GLFWwindow* testWindow = glfwCreateWindow(800, 600, "UUI-TESTWINDOW", NULL, NULL);
+    /*GLFWwindow* testWindow = glfwCreateWindow(800, 600, "UUI-TESTWINDOW", NULL, NULL);
      glfwMakeContextCurrent(testWindow);
     glfwSetCursorPosCallback(testWindow, CursorCallback);
     glfwSetFramebufferSizeCallback(testWindow, ResizeCallback);
 
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    glfwSwapBuffers(testWindow);
+    glfwSwapBuffers(testWindow);*/
 
     while (true) {
 
-
         glfwWaitEvents();
+
     }
 
     glfwTerminate();
@@ -127,17 +125,3 @@ int uuiMain(int argc, char* argv[]) {
     return 0;
 }
 
-void CursorCallback(GLFWwindow* window, double x, double y) {
-    //printf("CURSOR: %f %f\n", x, y);
-}
-
-void ResizeCallback(GLFWwindow* window, int width, int height) {
-    if (width < 500) {
-        glClearColor(1.0, 0.0, 0.0, 1.0);
-    } else {
-        glClearColor(1.0, 1.0, 0.0, 1.0);
-    }
-    
-    glClear(GL_COLOR_BUFFER_BIT);
-    glfwSwapBuffers(window);
-}

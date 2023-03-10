@@ -14,6 +14,7 @@ class App: public uDesktopApplication {
     void FinishedLaunching(int argc, char* argv[]) override {
         printf("MyApp finished launching!\n");
         windowManager->CreateWindow("YO", {500, 500});
+         windowManager->CreateWindow("YO 2", {500, 500});
     }
 
 };

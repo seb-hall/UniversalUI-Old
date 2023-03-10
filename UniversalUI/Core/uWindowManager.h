@@ -26,9 +26,13 @@
 
 #include <UniversalUI/Angelo/aPixelBuffer.h>
 
+class uHost;
+
 class UUI uWindowManager {
 public:
-    std::map<uWindow*, aPixelBuffer*> windows;
+    uHost* host;
+    std::map<uWindow*, aPixelBuffer*> windowBuffers;
+    std::map<void*, uWindow*> ptrWindows;
     uWindow* CreateWindow(std::string title, uSize size, int options = 0);
     uWindow* CreateWindowFromFile(std::string filePath);
     virtual void WindowMoved(uWindow* window, uPoint toLocation);
