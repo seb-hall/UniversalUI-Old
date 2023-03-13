@@ -1,0 +1,6 @@
+
+class AngeloWindowProvider {
+    public:
+
+    
+}
