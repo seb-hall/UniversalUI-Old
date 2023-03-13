@@ -1,4 +1,4 @@
-# this is a script to build Universal UI on PowerShell with GCC
+# this is a script to build UniversalUI on PowerShell with GCC
 
 # Write-Output "TODO: CHANGE SUBSYSTEM TO WINDOWS NOT CONSOLE FOR RELEASE BUT LEAVE DEBUG??"
 

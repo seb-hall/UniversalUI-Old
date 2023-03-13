@@ -26,11 +26,11 @@
 
 #include <UniversalUI/Angelo/aPixelBuffer.h>
 
-class uHost;
+class CoreHost;
 
 class UUI uWindowManager {
 public:
-    uHost* host;
+    CoreHost* host;
     std::map<uWindow*, aPixelBuffer*> windowBuffers;
     std::map<void*, uWindow*> ptrWindows;
     uWindow* CreateWindow(std::string title, uSize size, int options = 0);
