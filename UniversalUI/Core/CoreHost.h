@@ -1,14 +1,15 @@
-//  uHost.h   first written by Seb H in March 2023
+//  CoreHost.h   first written by Seb H in March 2023
 //
-//  uHost is a container class designed to provide
-//  communication between UniversalUI modules, and
-//  to ensure correct initialisation of more complex
-//  parts such as Angelo rendering.
+//  CoreHost is a container class designed to provide
+//  control and initialisation of the UniversalUI
+//  environment, and to provide communication between 
+//  UniversalUI modules and system services such as
+//  graphics APIs and file management.
 
 // HOST-DEFINED
 
-#ifndef UHOST_H
-#define UHOST_H
+#ifndef COREHOST_H
+#define COREHOST_H
 
 #ifdef _WIN32
     #ifdef UUI_BUILD
@@ -25,7 +26,7 @@ class aRenderer;
 class uInterfaceManager;
 class uFileManager;
 
-class UUI uHost {
+class UUI CoreHost {
 public:
 
     uApplication* app;
