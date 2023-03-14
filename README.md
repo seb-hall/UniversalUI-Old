@@ -53,7 +53,7 @@ UniversalUI won't be perfect for every project but here are some reasons to cons
 
 <h2>Licence - MIT License</h2>
 
-Copyright (c) 2023 Seb Hall
+Copyright (c) 2023 Sebastian Hall
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
