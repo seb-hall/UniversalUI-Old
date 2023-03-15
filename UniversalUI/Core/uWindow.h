@@ -18,6 +18,7 @@
 #endif
 
 #include <UniversalUI/Core/CoreGeometry.h>
+#include <UniversalUI/Core/CoreColour.h>
 #include <UniversalUI/Core/uView.h>
 
 #include <string>
@@ -26,8 +27,9 @@ class UUI uWindow {
 public:
     uSize size;
     std::string title;
+    uColour background;
     uView* rootView;
-    uWindow();
+    uWindow(uSize initSize = {800.0, 600.0}, std::string initTitle = "uWindow");
 };
 
 #endif

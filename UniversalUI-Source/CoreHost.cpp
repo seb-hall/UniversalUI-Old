@@ -7,3 +7,7 @@ bool CoreHost::TestEnvironment() {
 int CoreHost::main() {
     return 0;
 }
+
+void CoreHost::ShowWindow(uWindow* window) {
+    
+}

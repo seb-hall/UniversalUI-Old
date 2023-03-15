@@ -8,6 +8,7 @@
 
 #define UUI
 
+#include <UniversalUI/Core/uWindow.h>
 #include <UniversalUI/Core/CoreHost.h>
 
 class UUI LinuxGTKHost: public CoreHost {
@@ -15,7 +16,7 @@ class UUI LinuxGTKHost: public CoreHost {
 public:
     bool TestEnvironment() override;
     int main() override;
-
+    void ShowWindow(uWindow* window);
 };
 
 

@@ -8,7 +8,7 @@ declare -a XP_SRC=(
     uDesktopApplication.cpp
     uSimpleApplication.cpp
     CoreHost.cpp
-    #uWindow.cpp
+    uWindow.cpp
 );
 
 XP_SRC_PATH="./../UniversalUI-Source/";
@@ -33,7 +33,7 @@ APP_ARGS="${APP_SRC[@]/#/$APP_PATH}";
 
 declare -a LINK=(
     #-lfreetype
-    #-lexpoxy
+    -lepoxy
 );
 
 LINK_ARGS="${LINK[@]%,}";

@@ -75,7 +75,9 @@ int uuiMain(int argc, char* argv[]) {
     //gtk_init(&argc, &argv);
 
     /* APPLICATION LAUNCHED */
+
     
-    return 0;
+
+    return host->main();
 }
 

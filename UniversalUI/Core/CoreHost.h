@@ -22,6 +22,7 @@
 
 class uApplication;
 class uWindowController;
+class uWindow;
 class aRenderer;
 class uInterfaceManager;
 class uFileManager;
@@ -40,7 +41,10 @@ public:
 
     // main loop function
     virtual int main();
-    
+
+    // Show uWindow
+    virtual void ShowWindow(uWindow* window);
+
 };
 
 
