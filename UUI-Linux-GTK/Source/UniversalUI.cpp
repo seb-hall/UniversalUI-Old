@@ -11,17 +11,17 @@
 //#include <UniversalUI/Core/uWindowManager.h>
 //#include <UniversalUI/Angelo/aRenderer.h>
 
-
-
 //  include standard C++ libraries
 
 #include <stdio.h>
 #include <map>
 #include <string>
 
-//  include GLAD and GLFW libraries used for OpenGL API management and 
-//  interfacing with the Win32 API respectively.
+//  include GTK and EPOXY libraries for building GTK+ 3.0 OpenGL
+//  enabled applications.
 
+#include <gtk/gtk.h>
+#include <epoxy/gl.h>
 
 //  Initialise UniversalUI - checking for installation and user
 //  aplication compatibility. If all is well, the function will
@@ -34,14 +34,20 @@
 
 CoreHost host;
 
+struct chWindowPack {
+    uWindow* window;
+    GtkWidget* systemWindow;
+    GtkWidget* canvas;
+    GtkWidget* contextProvider;
+    GdkGLContext* glContext;
+    GError* glError;
+    cairo_surface_t* cairoSurface;
+    unsigned int VAO, VBO, pixelbuffer, framebuffer;
 
-bool UniversalUI(uApplication* userApp) {
+};
 
-    //  initialise GLFW check for OpenGL 3.3 context availability
-    //  by creating a test window and checking if it was created
-    //  successfully.
 
-    
+bool UniversalUI(uApplication* userApp) { 
 
     if (dynamic_cast<uSimpleApplication*>(userApp)) {
         printf("UUI-INFO: Simple Application Created\n");
@@ -57,6 +63,36 @@ bool UniversalUI(uApplication* userApp) {
         printf("UUI-CRITICAL: Invalid Application Created! Please use subclass either uSimpleApplication or uDesktopApplication.\n");
         return false;
     }
+
+    printf("GOT TO HERE!\n");
+
+    gtk_init(nullptr, nullptr);
+
+    chWindowPack* pack = new chWindowPack;
+
+    // create placeholder window for GL context
+    pack->contextProvider = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_widget_realize(pack->contextProvider);
+    pack->glContext = gdk_window_create_gl_context(gtk_widget_get_window(pack->contextProvider), &pack->glError);
+    //gdk_gl_context_set_required_version(pack->glContext, 1, 0);
+
+    if (pack->glContext == nullptr) {
+        printf("COREHOST: OpenGL context creation error!\n");
+        return false;
+    }
+
+    /*if (gdk_gl_context_get_use_es(pack->glContext)) {
+        printf("INFO: using OpenGL ES\n");
+    } else {
+        printf("INFO: using OpenGL desktop\n");
+    }*/
+
+    int major, minor;
+    gdk_gl_context_get_version(pack->glContext, &major, &minor);
+    printf("INFO: OpenGL initialised with version %u.%u\n", major, minor);
+
+    gtk_main_quit();
+
 
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     
@@ -75,16 +111,11 @@ bool UniversalUI(uApplication* userApp) {
 
 int uuiMain(int argc, char* argv[]) {
 
-    //host.app->FinishedLaunching(argc, argv);
+    gtk_init(&argc, &argv);
 
-    /*GLFWwindow* testWindow = glfwCreateWindow(800, 600, "UUI-TESTWINDOW", NULL, NULL);
-     glfwMakeContextCurrent(testWindow);
-    glfwSetCursorPosCallback(testWindow, CursorCallback);
-    glfwSetFramebufferSizeCallback(testWindow, ResizeCallback);
+    /* APPLICATION LAUNCHED */
 
-    glClearColor(1.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glfwSwapBuffers(testWindow);*/
+    gtk_main();
 
     printf("SUCCESS!");
     return 0;

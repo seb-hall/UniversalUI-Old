@@ -57,7 +57,7 @@ echo "${LIBS[@]}";
 if [ "$1" == "-STATIC" ]; then
     echo "Building UniversalUI static test...";
     #g++ main.cpp CoreHost.cpp AngeloText.cpp Angelo.cpp -o main $(pkg-config --cflags gtk+-3.0 --libs) -lepoxy -lfreetype -I./include
-    g++ $XP_ARGS $DP_ARGS $APP_ARGS -o $EXE_ARGS  $LINK_ARGS $H_ARGS -static
+    g++ -frtti $XP_SRC_ARGS $DP_ARGS $APP_ARGS -o $EXE_ARGS $C_FLAGS $LINK_ARGS $H_ARGS
     echo "DONE!";
 elif [ "$1" == "-LIB" ]; then
     echo "Building UniversalUI library...";

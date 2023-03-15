@@ -39,11 +39,11 @@ public:
     //  called when the application has finished launching - i.e only
     //  once the UniversalUI environment has been initialised and the 
     //  app can actually start doing stuff like making windows!
-    virtual void FinishedLaunching(int argc, char* argv[]) override { }
+    virtual void FinishedLaunching(int argc, char* argv[]) override;
 
     //  called when the application has been requested to quit by the operating
     //  system. use only for last-second mandatory operations.
-    virtual void WillQuit() override { }
+    virtual void WillQuit() override;
 };
 
 #endif
