@@ -1,10 +1,9 @@
 //  CoreHost.h   first written by Seb H in March 2023
 //
-//  CoreHost is a container class designed to provide
-//  control and initialisation of the UniversalUI
-//  environment, and to provide communication between 
-//  UniversalUI modules and system services such as
-//  graphics APIs and file management.
+//  CoreHost is a an abstraction of the various platform
+//  -specific hosts for UniversalUI. They must all conform
+//  to it and this allows UniversalUI modules to access
+//  the same information across all platforms.
 
 // HOST-DEFINED
 
@@ -22,6 +21,7 @@
 #endif
 
 class uApplication;
+class uWindowController;
 class aRenderer;
 class uInterfaceManager;
 class uFileManager;
@@ -30,9 +30,17 @@ class UUI CoreHost {
 public:
 
     uApplication* app;
+    uWindowController* windowController;
     aRenderer* renderer;
     uInterfaceManager* interfaceManager;
     uFileManager* fileManager;
+
+    // return true if environment passes all checks
+    virtual bool TestEnvironment();
+
+    // main loop function
+    virtual int main();
+    
 };
 
 

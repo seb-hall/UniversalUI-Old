@@ -22,7 +22,7 @@
 #endif
 
 #include <UniversalUI/Core/uApplication.h>
-#include <UniversalUI/Core/uWindowManager.h>
+#include <UniversalUI/Core/uWindowController.h>
 #include <string>
 
 class UUI uDesktopApplication: public uApplication {
@@ -31,7 +31,7 @@ public:
     //  uDesktopApplication provides a single pointer
     //  for an instance of uWindowController. This should be insantiated
     //  before uuiMain() is called, otherwise the application will quit.
-    uWindowManager* windowManager;
+    uWindowController* windowController;
 
     //  init application, taking name and version number as parameters.
     uDesktopApplication(const char* initName, int initMajorVersion, int initMinorVersion);

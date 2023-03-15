@@ -7,6 +7,7 @@ declare -a XP_SRC=(
     uApplication.cpp
     uDesktopApplication.cpp
     uSimpleApplication.cpp
+    CoreHost.cpp
     #uWindow.cpp
 );
 
@@ -15,6 +16,7 @@ XP_SRC_ARGS="${XP_SRC[@]/#/$XP_SRC_PATH}";
 
 declare -a DP_SRC=(
     UniversalUI.cpp
+    LinuxGTKHost.cpp
     #second.cpp
 );
 

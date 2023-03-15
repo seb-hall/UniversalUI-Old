@@ -1,7 +1,9 @@
-//  uWindowController.h   first written by Seb H in 2022
+//  uWindowManager.h   first written by Seb H in 2022
 //
-//  uWindowController controls window operation for instances
+//  uWindowManager controls window operation for instances
 //  of uDesktopApplication.
+
+// CROSS-PLATFORM
 
 #ifndef UWINDOWCONTROLLER_H
 #define UWINDOWCONTROLLER_H
@@ -18,20 +20,24 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/uWindow.h>
 
-enum UUI uWindowCreationOptions {
-    standard,
-    fixedSize
-};
+#include <UniversalUI/Angelo/aPixelBuffer.h>
+
+class CoreHost;
 
 class UUI uWindowController {
 public:
-    std::vector<uWindow*> windows;
-    uWindow* CreateWindow(std::string title, uSize size, uWindowCreationOptions options = standard);
+    CoreHost* host;
+    std::map<uWindow*, aPixelBuffer*> windowBuffers;
+    std::map<void*, uWindow*> ptrWindows;
+    uWindow* CreateWindow(std::string title, uSize size, int options = 0);
     uWindow* CreateWindowFromFile(std::string filePath);
+    virtual void WindowMoved(uWindow* window, uPoint toLocation);
+    virtual void WindowResized(uWindow* window, uSize toSize);
 };
 
 
-#endif /* uWindowController_h */
+#endif /* uWindowManager_h */

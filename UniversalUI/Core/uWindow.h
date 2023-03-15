@@ -28,8 +28,6 @@ public:
     std::string title;
     uView* rootView;
     uWindow();
-    virtual void Loaded(uSize withSize);
-    virtual void Resized(uSize toSize);
 };
 
 #endif
