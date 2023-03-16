@@ -27,7 +27,7 @@
 class uApplication;
 class uWindow;
 
-enum UUI uApplicationType {
+enum uApplicationType {
     invalid,
     simple,
     desktop
