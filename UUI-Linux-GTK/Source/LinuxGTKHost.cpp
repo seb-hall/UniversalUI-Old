@@ -12,6 +12,7 @@ extern LinuxGTKHost* host;
 struct SystemWindowPack {
     uWindow* window;
     GtkWidget* gtkWindow;
+    GtkWidget* contextProvider;
     GtkWidget* canvas;
     GdkGLContext* glContext;
     cairo_surface_t* cairoSurface;
@@ -33,24 +34,27 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
 
     // Create a new GTK drawing area
     *drawing_area = gtk_drawing_area_new();
-    gtk_widget_set_size_request(*drawing_area, 800, 600);
+    //gtk_widget_set_size_request(*drawing_area, 800, 600);
+    gtk_widget_set_redraw_on_allocate(*drawing_area, true);
 
-    //gtk_widget_set_hexpand(*drawing_area, TRUE);
-    //gtk_widget_set_vexpand(*drawing_area, TRUE);
+    gtk_widget_set_hexpand(*drawing_area, TRUE);
+    gtk_widget_set_vexpand(*drawing_area, TRUE);
 
     // Add the drawing area to the window
     gtk_container_add(GTK_CONTAINER(*window), *drawing_area);
 
     // Realize the drawing area to create a GdkWindow and an OpenGL context
     gtk_widget_realize(*drawing_area);
-
+    
+    pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
+    gtk_widget_realize(pack->contextProvider);
     // Get the GdkWindow of the drawing area
-    GdkWindow *gdk_window = gtk_widget_get_window(*drawing_area);
+    GdkWindow *gdk_window = gtk_widget_get_window(pack->contextProvider);
 
     // Create an OpenGL context with version 3.3 and core profile
     *gl_context = gdk_window_create_gl_context(gdk_window, NULL);
     gdk_gl_context_set_required_version(*gl_context, 3, 3);
-
+    
     // Make the OpenGL context current
     gdk_gl_context_make_current(*gl_context);
 
@@ -100,6 +104,7 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
     glClear(GL_COLOR_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
+
 
     // Set up the draw signal handler for the drawing area
     g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);
@@ -151,8 +156,8 @@ int LinuxGTKHost::main() {
     window3->background = {0.0, 0.0, 1.0, 1.0};
 
     ShowWindow(window1);
-    //ShowWindow(window2);
-    //ShowWindow(window3);
+    ShowWindow(window2);
+    ShowWindow(window3);
 
     gtk_main();
     return 0;
@@ -161,86 +166,56 @@ int LinuxGTKHost::main() {
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
     printf("INFO: draw window\n");
 
-    cairo_set_source_surface (cairoContext, pack->cairoSurface, 0, 0);
-    
-    if (pack->glContext == NULL) {
-        printf("OOPS!\n");
-    }
+    guint width, height;
+  GdkRGBA color;
+  GtkStyleContext *styleContext;
 
-    int width = gtk_widget_get_allocated_width(pack->gtkWindow);
-    int height = gtk_widget_get_allocated_height(pack->gtkWindow);
+  styleContext = gtk_widget_get_style_context (widget);
 
-    /*printf("%d, %d\n", width, height);
+  width = gtk_widget_get_allocated_width (widget);
+  height = gtk_widget_get_allocated_height (widget);
 
-    pack->window->size = {(float) width, (float) height};
+  gtk_render_background (styleContext, cairoContext, 0, 0, width, height);
 
-    printf("%f, %f\n", pack->window->size.width, pack->window->size.height);
+  /*cairo_arc (cairoContext,
+             width / 2.0, height / 2.0,
+             MIN (width, height) / 2.0,
+             0, 2 * G_PI);*/
 
-    gdk_gl_context_make_current(pack->glContext);
-    glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
+  gtk_style_context_get_color (styleContext,
+                               gtk_style_context_get_state (styleContext),
+                               &color);
+  gdk_cairo_set_source_rgba (cairoContext, &color);
+
+  cairo_fill (cairoContext);
+
+  gdk_gl_context_make_current(pack->glContext);
+
+   glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
     glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    glViewport(0, 0, width, height);
-    glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    // RENDER HERE
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, width, height);
-    
-    //cairo_set_source_surface(cairoContext, pack->cairoSurface, 0, 0);
-    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->gtkWindow), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, width, height);
-    //cairo_surface_flush(pack->cairoSurface);*/
-
-    GLuint FramebufferName = 0;
-    glGenFramebuffers(1, &FramebufferName);
-    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-    // The texture we're going to render to
-    GLuint renderedTexture;
-    glGenTextures(1, &renderedTexture);
-
-    // "Bind" the newly created texture : all future texture functions will modify this texture
-    glBindTexture(GL_TEXTURE_2D, renderedTexture);
-
-    // Give an empty image to OpenGL ( the last "0" )
-    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
-
-    // Poor filtering. Needed !
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pack->pixelbuffer, 0);
 
-    // Set "renderedTexture" as our colour attachement #0
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
-
-    // Set the list of draw buffers.
-    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
-
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-    printf("FRAMEBUFFER NOT GOOD\n");
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        printf("FRAMEBUFFER NOT GOOD\n");
     } else {
-    printf("FRAMEBUFFER OK!\n");
+        printf("FRAMEBUFFER OK!\n");
     }
 
-    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-    glViewport(0,0,width,height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-
-
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    // fill buffer with black
+    glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+    glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
     glClear(GL_COLOR_BUFFER_BIT);
-
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0,0,width,height); 
+    glBindTexture(GL_TEXTURE_2D, 0);
 
-    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->gtkWindow), renderedTexture, GL_TEXTURE, 1.0, 0, 0, width, height);
 
-    GdkGLDrawable *gl_drawable = gdk_gl_drawable_get_current ();
+    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, width, height);
+  //gdk_gl_context_make_current(pack->glContext);
 
-    // Swap buffers
-    gdk_gl_drawable_swap_buffers (gl_drawable);
-
-    return false;
+ return FALSE;
 } 
 
 /*bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
@@ -292,7 +267,6 @@ bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindow
 
     pack->window->size = {(float) width, (float) height};
     //cairo_surface_mark_dirty(pack->cairoSurface);
-
     printf("all done!\n");
 
     return true;
