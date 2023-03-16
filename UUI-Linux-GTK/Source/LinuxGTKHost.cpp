@@ -1,65 +1,81 @@
+//  LinuxGTKHost.cpp    first written by sebhall
+
+
+//  include UniversalUI header files
 #include <LinuxGTKHost.h>
+#include <UniversalUI/Core/uApplication.h>
+#include <UniversalUI/Core/uDesktopApplication.h>
+#include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uWindow.h>
 
+//  include standard C++ libraries
+#include <stdio.h>
+#include <string>
+#include <map>
+
+//  include platform-specific libraries
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <epoxy/gl.h>
 
-#include <stdio.h>
-
+//  reference to global host pointer
 extern LinuxGTKHost* host;
 
+//  structure for GTK/Cairo/OpenGL/UniversalUI windows
 struct SystemWindowPack {
     uWindow* window;
     GtkWidget* gtkWindow;
     GtkWidget* contextProvider;
     GtkWidget* canvas;
     GdkGLContext* glContext;
-    cairo_surface_t* cairoSurface;
+    cairo_surface_t* cairoSurface = nullptr;
     unsigned int VAO, VBO, pixelbuffer, framebuffer;
 };
 
+std::map<uWindow*, SystemWindowPack*> windowMap = { };
+
+//  forward definition of callbacks
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack);
 void DestroyCallback(SystemWindowPack* pack);
 bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack);
 
-void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** gl_context, SystemWindowPack* pack) {
-
-    pack->cairoSurface = NULL;
+//  takes a pointer to a windowPack and creates new GTK & OpenGL resources
+void DeployWindowPack(SystemWindowPack* pack) {
 
     // Create a new GTK window
-    *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(*window), pack->window->title.c_str());
-    gtk_window_set_default_size(GTK_WINDOW(*window), 800, 600);
+    pack->gtkWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(pack->gtkWindow), pack->window->title.c_str());
+    gtk_window_set_default_size(GTK_WINDOW(pack->gtkWindow), (int) pack->window->size.width, (int) pack->window->size.height);
 
     // Create a new GTK drawing area
-    *drawing_area = gtk_drawing_area_new();
-    gtk_widget_set_size_request(*drawing_area, 800, 600);
+    pack->canvas = gtk_drawing_area_new();
 
-    //gtk_widget_set_hexpand(*drawing_area, TRUE);
-    //gtk_widget_set_vexpand(*drawing_area, TRUE);
+    gtk_widget_set_hexpand(pack->canvas, TRUE);
+    gtk_widget_set_vexpand(pack->canvas, TRUE);
 
     // Add the drawing area to the window
-    gtk_container_add(GTK_CONTAINER(*window), *drawing_area);
+    gtk_container_add(GTK_CONTAINER(pack->gtkWindow), pack->canvas);
 
-
+    //  generate a new context provider so that the real GTKwindow is happy and
+    //  behaves as expected
     pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
-    // Realize the drawing area to create a GdkWindow and an OpenGL context
+
+    // Realize the context provider to create a GdkWindow and an OpenGL context
     gtk_widget_realize(pack->contextProvider);
     
     // Get the GdkWindow of the drawing area
     GdkWindow *gdk_window = gtk_widget_get_window(pack->contextProvider);
 
     // Create an OpenGL context with version 3.3 and core profile
-    *gl_context = gdk_window_create_gl_context(gdk_window, NULL);
-    gdk_gl_context_set_required_version(*gl_context, 3, 3);
+    pack->glContext = gdk_window_create_gl_context(gdk_window, NULL);
+    gdk_gl_context_set_required_version(pack->glContext, 3, 3);
     
     // Make the OpenGL context current
-    gdk_gl_context_make_current(*gl_context);
+    gdk_gl_context_make_current(pack->glContext);
 
     int major, minor;
-    gdk_gl_context_get_version(*gl_context, &major, &minor);
-    printf("INFO: OpenGL initialised with version %d.%d\n", major, minor);
+    gdk_gl_context_get_version(pack->glContext, &major, &minor);
+    printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
 
     // Enable alpha blending
 
@@ -92,9 +108,8 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
     glDrawBuffers(1, drawBuffers);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        printf("FRAMEBUFFER NOT GOOD\n");
-    } else {
-        printf("FRAMEBUFFER OK!\n");
+        printf("UUI-ERROR: OpenGL framebuffer error\n");
+        return;
     }
 
     // fill buffer with black
@@ -110,21 +125,25 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
     g_signal_connect(pack->canvas,"configure-event", G_CALLBACK(ConfigureCallback), pack);
 
     // Show the window and all its widgets
-    gtk_widget_show_all(*window);  
+    gtk_widget_show_all(pack->gtkWindow);  
 
 }
 
 void LinuxGTKHost::ShowWindow(uWindow* window) {
-    printf("show window\n");
-    SystemWindowPack* pack = new SystemWindowPack;
-    pack->window = window;
-    NewGTKWindow(&pack->gtkWindow, &pack->canvas, &pack->glContext, pack);
 
+    //  instantiate a new windowPack and show on screen
+    SystemWindowPack* pack = new SystemWindowPack;
+    windowMap[window] = pack;
+    pack->window = window;
+    DeployWindowPack(pack);
 }
 
 bool LinuxGTKHost::TestEnvironment() {
+
+    // initialise GTK with no arguments (arguments are for user app not windowing framework)
     gtk_init(nullptr, nullptr);
 
+    //  create test window and check for valid context creation
     GtkWidget* testWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_widget_realize(testWindow);
     
@@ -132,10 +151,11 @@ bool LinuxGTKHost::TestEnvironment() {
     gdk_gl_context_set_required_version(testContext, 3, 3);
 
     if (testContext == nullptr) {
-        printf("ANGELO: OpenGL init failed\n");
+        printf("UUI-ERROR: OpenGL init failed\n");
         return false;
     }
 
+    //  assuming OpenGL is all set up ok, check version and destroy test resources
     gdk_gl_context_make_current(testContext);
     int major, minor;
     gdk_gl_context_get_version(testContext, &major, &minor);
@@ -147,50 +167,39 @@ bool LinuxGTKHost::TestEnvironment() {
 }
 
 int LinuxGTKHost::main() {
-    //uWindow* window1 = new uWindow;
-    //window1->background = {1.0, 0.0, 0.0, 1.0};
-    //uWindow* window2 = new uWindow;
-    //window2->background = {0.0, 1.0, 0.0, 1.0};
-    //uWindow* window3 = new uWindow;
-    //window3->background = {0.0, 0.0, 1.0, 1.0};
 
-    //ShowWindow(window1);
-    //ShowWindow(window2);
-    //ShowWindow(window3);
-
+    // run GTK main function. Will never return but feels wrong to have a void main function
     gtk_main();
     return 0;
 }
 
+void LinuxGTKHost::SetTitle(uWindow* window, std::string title) {
+    //printf("SET TITLE\n");
+    gtk_window_set_title(GTK_WINDOW(windowMap[window]->gtkWindow), title.c_str());
+    window->title = title;
+}
+
+//  GTK draw callback
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
-    printf("INFO: draw window\n");
 
-    guint width, height;
-  GdkRGBA color;
-  GtkStyleContext *styleContext;
+    //printf("INFO: draw window\n");
 
-  styleContext = gtk_widget_get_style_context (widget);
+    int width, height;
+    GdkRGBA color;
+    GtkStyleContext* styleContext = gtk_widget_get_style_context (widget);
 
-  width = gtk_widget_get_allocated_width (widget);
-  height = gtk_widget_get_allocated_height (widget);
+    width = gtk_widget_get_allocated_width(widget);
+    height = gtk_widget_get_allocated_height(widget);
 
-  gtk_render_background (styleContext, cairoContext, 0, 0, width, height);
+    gtk_render_background (styleContext, cairoContext, 0, 0, width, height);
+    gtk_style_context_get_color(styleContext, gtk_style_context_get_state (styleContext), &color);
+    gdk_cairo_set_source_rgba (cairoContext, &color);
 
-  /*cairo_arc (cairoContext,
-             width / 2.0, height / 2.0,
-             MIN (width, height) / 2.0,
-             0, 2 * G_PI);*/
+    cairo_fill (cairoContext);
 
-  gtk_style_context_get_color (styleContext,
-                               gtk_style_context_get_state (styleContext),
-                               &color);
-  gdk_cairo_set_source_rgba (cairoContext, &color);
+    gdk_gl_context_make_current(pack->glContext);
 
-  cairo_fill (cairoContext);
-
-  gdk_gl_context_make_current(pack->glContext);
-
-   glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
+    glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
     glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -198,9 +207,8 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pack->pixelbuffer, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        printf("FRAMEBUFFER NOT GOOD\n");
-    } else {
-        printf("FRAMEBUFFER OK!\n");
+        printf("UUI-ERROR: OpenGL framebuffer error\n");
+        return false;
     }
 
     // fill buffer with black
@@ -210,44 +218,21 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, width, height);
-  //gdk_gl_context_make_current(pack->glContext);
-
- return FALSE;
-} 
-
-/*bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
-    printf("INFO: draw window\n");
-
-    cairo_set_source_surface (cairoContext, pack->cairoSurface, 0, 0);
-    //cairo_paint (cr);
-    printf("draw!\n");
-    
-    if (pack->glContext == NULL) {
-        printf("OOPS!\n");
-    }
-
-    cairo_set_source_rgb (cairoContext, 1, 1, 1);
-    cairo_paint (cairoContext);
 
     return false;
-}*/
+} 
 
 void DestroyCallback(SystemWindowPack* pack) {
-    printf("INFO: destroyed window\n");
-    
+    printf("UUI-INFO: destroyed window\n");
 }
 
 bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack) { 
 
-     if (pack->cairoSurface)
+    if (pack->cairoSurface)
         cairo_surface_destroy (pack->cairoSurface);
 
-    pack->cairoSurface = gdk_window_create_similar_surface (gtk_widget_get_window (widget),
-                                               CAIRO_CONTENT_COLOR,
-                                               gtk_widget_get_allocated_width (widget),
-                                               gtk_widget_get_allocated_height (widget));
+    pack->cairoSurface = gdk_window_create_similar_surface(gtk_widget_get_window(widget), CAIRO_CONTENT_COLOR, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
 
     cairo_t *cr;
 
@@ -258,15 +243,21 @@ bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindow
 
     cairo_destroy(cr);
 
-    printf("INFO: configured window\n");
-
-    
     int width = gtk_widget_get_allocated_width(pack->gtkWindow);
     int height = gtk_widget_get_allocated_height(pack->gtkWindow);
 
-    pack->window->size = {(float) width, (float) height};
-    //cairo_surface_mark_dirty(pack->cairoSurface);
-    printf("all done!\n");
+    uSize newSize = {(float) width, (float) height};
 
+    if (pack->window->size.width != newSize.width || pack->window->size.height != newSize.height) {
+        pack->window->size = newSize;
+        if (host->appType == desktop) {
+            uDesktopApplication* app = static_cast<uDesktopApplication*>(host->app);
+            app->WindowResized(pack->window, newSize);
+        } else if (host->appType == simple) {
+            uSimpleApplication* app = static_cast<uSimpleApplication*>(host->app);
+            app->Resized(newSize);
+        }
+    }
+    
     return true;
 }

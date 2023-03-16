@@ -1,11 +1,9 @@
-//  CoreHost.h   first written by Seb H in March 2023
+//  CoreHost.h   first written by sebhall in late 2022
 //
 //  CoreHost is a an abstraction of the various platform
 //  -specific hosts for UniversalUI. They must all conform
 //  to it and this allows UniversalUI modules to access
 //  the same information across all platforms.
-
-// HOST-DEFINED
 
 #ifndef COREHOST_H
 #define COREHOST_H
@@ -20,21 +18,27 @@
     #define UUI
 #endif
 
+#include <string>
+
+//  forward class definitions. Some of these use
+//  pointers to CoreHost so these are to avoid
+//  include loops.
+
 class uApplication;
-class uWindowController;
 class uWindow;
-class aRenderer;
-class uInterfaceManager;
-class uFileManager;
+
+enum UUI uApplicationType {
+    invalid,
+    simple,
+    desktop
+};
 
 class UUI CoreHost {
 public:
 
+    //  pointers to single-instance modules
     uApplication* app;
-    uWindowController* windowController;
-    aRenderer* renderer;
-    uInterfaceManager* interfaceManager;
-    uFileManager* fileManager;
+    uApplicationType appType;
 
     // return true if environment passes all checks
     virtual bool TestEnvironment();
@@ -44,6 +48,9 @@ public:
 
     // Show uWindow
     virtual void ShowWindow(uWindow* window);
+
+    // Set uWindow title
+    virtual void SetTitle(uWindow* window, std::string title);
 
 };
 

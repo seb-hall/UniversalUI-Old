@@ -1,8 +1,8 @@
-//  uApplication.h   first written by Seb H in February 2023
+//  uApplication.h   first written by sebhall in February 2023
 //
 //  uApplication is the base class for all UUI applications.
 //  It shouldn't be subclassed directly, instead you should
-//  use either uDesktopApplication for dekstop-class apps
+//  use either uDesktopApplication for desktop-class apps
 //  on operating systems such as Windows, macOS and Linux, or
 //  uSimpleAppliction for single-view apps on platforms such
 //  as iOS and Web.

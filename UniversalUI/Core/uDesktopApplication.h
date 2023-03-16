@@ -1,12 +1,10 @@
-//  uDesktopApplication.h   first written by Seb H in February 2023
+//  uDesktopApplication.h   first written by sebhall in February 2023
 //
 //  uDesktopApplication is a subclass of uApplication, using a
 //  window manager to provide multi-window and background
 //  processing functionality. It is supported on desktop platforms
 //  such as Windows, macOS and Linux-GTK, but NOT on platforms such
 //  as iOS, Android or Web.
-
-// CROSS-PLATFORM
 
 #ifndef UDESKTOPAPPLICATION_H
 #define UDESKTOPAPPLICATION_H
@@ -53,8 +51,11 @@ public:
     //  called when a window is resized. Override for custom behaviour.
     virtual void WindowResized(uWindow* window, uSize toSize);
 
-    //  show a uWindow object.
+    //  show a uWindow object
     bool ShowWindow(uWindow* window);
+
+    //  set a window title
+    void SetWindowTitle(uWindow* window, std::string title);
 
 };
 

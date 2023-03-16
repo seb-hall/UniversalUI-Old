@@ -1,4 +1,4 @@
-//  UniversalUI.h   first written by Seb H in February 2023
+//  UniversalUI.h   first written by sebhall in February 2023
 //
 //  Welcome to the UniversalUI framework! UUI has been designed
 //  to be a lightweight, efficient and user-friendly SDK. Use

@@ -1,4 +1,4 @@
-//  CoreGeometry.h   first written by Seb H in 2022
+//  CoreGeometry.h   first written by sebhall in 2022
 //
 //  CoreGeometry.h defines geometry-related structs and
 //  utilities.
@@ -16,14 +16,24 @@
     #define UUI
 #endif
 
+//  uSize definition
 struct UUI uSize {
     float width;
     float height;
 };
 
+//  uPoint definition
 struct UUI uPoint {
     float x;
     float y;
+};
+
+//  uFrame definition
+struct UUI uFrame {
+    float x;
+    float y;
+    float width;
+    float height;
 };
 
 #endif /* CoreGeometry_h */

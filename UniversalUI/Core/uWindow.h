@@ -1,6 +1,6 @@
-//  uWindow.h   first written by Seb H in Early 2022
+//  uWindow.h   first written by sebhall in Early 2022
 //
-//  uWindow is the base class for all UUI windows.
+//  uWindow is the base class for all UUI windows. 
 
 // CROSS-PLATFORM
 
@@ -25,10 +25,20 @@
 
 class UUI uWindow {
 public:
+
+    //  current size of window, updated constantly by host
     uSize size;
+
+    //  title of window
     std::string title;
+
+    //  background colour
     uColour background;
+
+    //  root view
     uView* rootView;
+
+    //  constructor
     uWindow(uSize initSize = {800.0, 600.0}, std::string initTitle = "uWindow");
 };
 

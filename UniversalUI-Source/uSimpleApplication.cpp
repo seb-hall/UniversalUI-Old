@@ -1,3 +1,9 @@
+//  uSimpleApplication.cpp   first written by sebhall in February 2023
+//  
+//  uSimpleApplication is designed partially as a base class and partially
+//  with full functionality. Virtual functions that are expected to be
+//  overriden are have only placeholder implementations to keep the compiler
+//  happy.
 
 #include <UniversalUI/Core/uSimpleApplication.h>
 
@@ -8,20 +14,16 @@ uSimpleApplication::uSimpleApplication(const char* initName, int initMajorVersio
     minorVersion = initMinorVersion;
 }
 
+//  *** PLACEHOLDER FUNCTIONS ***
+
 //  called when the application has finished launching - i.e only
 //  once the UniversalUI environment has been initialised and the 
 //  app can actually start doing stuff like making windows!
-void uSimpleApplication::FinishedLaunching(int argc, char* argv[]) {
-
-}
+void uSimpleApplication::FinishedLaunching(int argc, char* argv[]) { }
 
 //  called when the application has been requested to quit by the operating
 //  system. use only for last-second mandatory operations.
-void uSimpleApplication::WillQuit() {
-
-}
+void uSimpleApplication::WillQuit() { }
 
 //  called when the application window is resized. Override for custom behaviour.
-void uSimpleApplication::WindowResized(uSize toSize) {
-    
-}
+void uSimpleApplication::Resized(uSize toSize) { }

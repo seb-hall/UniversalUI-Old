@@ -1,11 +1,9 @@
-//  uSimpleApplication.h   first written by Seb H in February 2023
+//  uSimpleApplication.h   first written by sebhall in February 2023
 //
 //  uSimpleApplication is a subclass of uApplication, using a
 //  single window and intended for use on platforms such as iOS, 
 //  Android and Web. It is supported on all platforms but only
 //  recommended on desktop platforms for very basic use-cases.
-
-// CROSS-PLATFORM
 
 #ifndef USIMPLEAPPLICATION_H
 #define USIMPLEAPPLICATION_H
@@ -46,7 +44,7 @@ public:
     virtual void WillQuit() override;
 
     //  called when the application window is resized. Override for custom behaviour.
-    virtual void WindowResized(uSize toSize);
+    virtual void Resized(uSize toSize);
     
 };
 

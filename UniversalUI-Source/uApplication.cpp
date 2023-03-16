@@ -1,3 +1,8 @@
+//  uApplication.cpp   first written by sebhall in February 2023
+//  
+//  uApplication is designed purely as a base class and is never
+//  used directly. As such, this file contains only basic
+//  implementations of functions to keep the compiler happy.
 
 #include <UniversalUI/Core/uApplication.h>
 

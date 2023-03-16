@@ -1,7 +1,11 @@
-//  CoreColour.h   first written by Seb H in 2022
+//  CoreColour.h   first written by sebhall in 2022
 //
 //  CoreColour.h defines colour-related structs and
 //  utilities.
+//
+//  N.B CoreColour uses the English (traditional) spelling
+//  convention. An English (simplified) version using
+//  CoreColor is planned at some point in the future.
 
 #ifndef CORECOLOUR_H
 #define CORECOLOUR_H
@@ -16,6 +20,8 @@
     #define UUI
 #endif
 
+//  uColour struct definition - the basis of all
+//  colours in UniversalUI in an RGBA layout.
 struct UUI uColour {
     float r;
     float g;
@@ -23,6 +29,11 @@ struct UUI uColour {
     float a;
 };
 
-#define UUI_RED { 1.0, 0.2, 0.2, 1.0 }
+//  standard uColour implementations for easy colouring
+
+#define CORE_RED    { 0.9, 0.2, 0.2, 1.0 }
+#define CORE_GREEN  { 0.2, 0.9, 0.2, 1.0 }
+#define CORE_BLUE   { 0.2, 0.2, 0.9, 1.0 }
+#define CORE_ALMOST_BLACK   { 0.05, 0.05, 0.05, 1.0 }
 
 #endif /* CoreColour_h */

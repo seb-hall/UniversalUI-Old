@@ -1,4 +1,4 @@
-//  uView.h   first written by Seb H in February 2023
+//  uView.h   first written by sebhall in February 2022
 //
 //  uView is the base class for UUI views. All visible
 //  elements will inherit from it.
