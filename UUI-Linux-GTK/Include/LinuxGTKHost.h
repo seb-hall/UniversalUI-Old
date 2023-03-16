@@ -16,7 +16,7 @@ class UUI LinuxGTKHost: public CoreHost {
 public:
     bool TestEnvironment() override;
     int main() override;
-    void ShowWindow(uWindow* window);
+    void ShowWindow(uWindow* window) override;
 };
 
 

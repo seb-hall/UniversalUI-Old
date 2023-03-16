@@ -44,6 +44,10 @@ public:
     //  called when the application has been requested to quit by the operating
     //  system. use only for last-second mandatory operations.
     virtual void WillQuit() override;
+
+    //  called when the application window is resized. Override for custom behaviour.
+    virtual void WindowResized(uSize toSize);
+    
 };
 
 #endif

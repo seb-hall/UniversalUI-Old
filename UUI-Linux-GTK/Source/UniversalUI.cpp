@@ -1,8 +1,7 @@
-//  UniversalUI.cpp for UUI-Windows, first written by Seb H in February 2023
+//  UniversalUI.cpp for UUI-LinuxGTK, first written by Seb H in February 2023
 //  this file is the Windows specific implementation of the UniversalUI root
 //  interface. There are two functions - UniversalUI() and uuiMain() - which
-//  are the initialisation and event loop functions respectively.
-
+//  are the initialisation and main loop functions respectively.
 
 #include <UniversalUI/UniversalUI.h>
 #include <UniversalUI/Core/CoreHost.h>
@@ -54,11 +53,13 @@ bool UniversalUI(uApplication* userApp) {
         return false;
     }
 
+
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     
 
-    //host.app = userApp;
-    //host.renderer = new aRenderer;
+    host->app = userApp;
+    userApp->host = host; 
+    
     return true;
 }
 
@@ -75,7 +76,7 @@ int uuiMain(int argc, char* argv[]) {
     //gtk_init(&argc, &argv);
 
     /* APPLICATION LAUNCHED */
-
+    host->app->FinishedLaunching(argc, argv);
     
 
     return host->main();

@@ -22,16 +22,11 @@
 #endif
 
 #include <UniversalUI/Core/uApplication.h>
-#include <UniversalUI/Core/uWindowController.h>
+#include <UniversalUI/Core/uWindow.h>
 #include <string>
 
 class UUI uDesktopApplication: public uApplication {
 public:
-
-    //  uDesktopApplication provides a single pointer
-    //  for an instance of uWindowController. This should be insantiated
-    //  before uuiMain() is called, otherwise the application will quit.
-    uWindowController* windowController;
 
     //  init application, taking name and version number as parameters.
     uDesktopApplication(const char* initName, int initMajorVersion, int initMinorVersion);
@@ -51,6 +46,16 @@ public:
     //  is unsaved work, there should be some kind of visual feedback to the user 
     //  that this is the case.
     virtual bool ShouldQuit();
+
+    //  called when a window is moved. Override for custom behaviour.
+    virtual void WindowMoved(uWindow* window, uPoint toLocation);
+
+    //  called when a window is resized. Override for custom behaviour.
+    virtual void WindowResized(uWindow* window, uSize toSize);
+
+    //  show a uWindow object.
+    bool ShowWindow(uWindow* window);
+
 };
 
 #endif

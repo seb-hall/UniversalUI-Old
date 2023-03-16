@@ -20,3 +20,8 @@ void uSimpleApplication::FinishedLaunching(int argc, char* argv[]) {
 void uSimpleApplication::WillQuit() {
 
 }
+
+//  called when the application window is resized. Override for custom behaviour.
+void uSimpleApplication::WindowResized(uSize toSize) {
+    
+}

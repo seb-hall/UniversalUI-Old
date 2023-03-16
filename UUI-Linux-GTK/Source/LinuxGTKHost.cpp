@@ -12,6 +12,7 @@ extern LinuxGTKHost* host;
 struct SystemWindowPack {
     uWindow* window;
     GtkWidget* gtkWindow;
+    GtkWidget* contextProvider;
     GtkWidget* canvas;
     GdkGLContext* glContext;
     cairo_surface_t* cairoSurface;
@@ -41,11 +42,13 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
     // Add the drawing area to the window
     gtk_container_add(GTK_CONTAINER(*window), *drawing_area);
 
+
+    pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
     // Realize the drawing area to create a GdkWindow and an OpenGL context
-    gtk_widget_realize(*drawing_area);
+    gtk_widget_realize(pack->contextProvider);
     
     // Get the GdkWindow of the drawing area
-    GdkWindow *gdk_window = gtk_widget_get_window(*drawing_area);
+    GdkWindow *gdk_window = gtk_widget_get_window(pack->contextProvider);
 
     // Create an OpenGL context with version 3.3 and core profile
     *gl_context = gdk_window_create_gl_context(gdk_window, NULL);
@@ -112,6 +115,7 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
 }
 
 void LinuxGTKHost::ShowWindow(uWindow* window) {
+    printf("show window\n");
     SystemWindowPack* pack = new SystemWindowPack;
     pack->window = window;
     NewGTKWindow(&pack->gtkWindow, &pack->canvas, &pack->glContext, pack);
@@ -143,16 +147,16 @@ bool LinuxGTKHost::TestEnvironment() {
 }
 
 int LinuxGTKHost::main() {
-    uWindow* window1 = new uWindow;
-    window1->background = {1.0, 0.0, 0.0, 1.0};
-    uWindow* window2 = new uWindow;
-    window2->background = {0.0, 1.0, 0.0, 1.0};
-    uWindow* window3 = new uWindow;
-    window3->background = {0.0, 0.0, 1.0, 1.0};
+    //uWindow* window1 = new uWindow;
+    //window1->background = {1.0, 0.0, 0.0, 1.0};
+    //uWindow* window2 = new uWindow;
+    //window2->background = {0.0, 1.0, 0.0, 1.0};
+    //uWindow* window3 = new uWindow;
+    //window3->background = {0.0, 0.0, 1.0, 1.0};
 
-    ShowWindow(window1);
-    ShowWindow(window2);
-    ShowWindow(window3);
+    //ShowWindow(window1);
+    //ShowWindow(window2);
+    //ShowWindow(window3);
 
     gtk_main();
     return 0;

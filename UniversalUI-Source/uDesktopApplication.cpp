@@ -1,5 +1,6 @@
 
 #include <UniversalUI/Core/uDesktopApplication.h>
+#include <UniversalUI/Core/CoreHost.h>
 
 //  init application, taking name and version number as parameters.
 uDesktopApplication::uDesktopApplication(const char* initName, int initMajorVersion, int initMinorVersion) {
@@ -27,5 +28,21 @@ void uDesktopApplication::WillQuit() {
 //  is unsaved work, there should be some kind of visual feedback to the user 
 //  that this is the case.
 bool uDesktopApplication::ShouldQuit() {
+    return true;
+}
+
+//  called when a window is moved. Override for custom behaviour.
+void uDesktopApplication::WindowMoved(uWindow* window, uPoint toLocation) {
+
+}
+
+//  called when a window is resized. Override for custom behaviour.
+void uDesktopApplication::WindowResized(uWindow* window, uSize toSize) {
+
+}
+
+//  show a uWindow object.
+bool uDesktopApplication::ShowWindow(uWindow* window) {
+    host->ShowWindow(window);
     return true;
 }

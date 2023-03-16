@@ -22,16 +22,21 @@
 
 #include <string>
 
+class CoreHost;
+
 class UUI uApplication {
 public:
 
-    // user application name
+    //  forward-defined pointer for host access.
+    CoreHost* host;
+
+    //  user application name
     std::string name;
 
-    // major version number i.e v1.x
+    //  major version number i.e v1.x
     int majorVersion;
 
-    // minor version number i.e vx.1
+    //  minor version number i.e vx.1
     int minorVersion;
 
     //  called when the application has finished launching - i.e only

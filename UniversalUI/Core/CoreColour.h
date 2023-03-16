@@ -23,4 +23,6 @@ struct UUI uColour {
     float a;
 };
 
+#define UUI_RED { 1.0, 0.2, 0.2, 1.0 }
+
 #endif /* CoreColour_h */
