@@ -12,7 +12,6 @@ extern LinuxGTKHost* host;
 struct SystemWindowPack {
     uWindow* window;
     GtkWidget* gtkWindow;
-    GtkWidget* contextProvider;
     GtkWidget* canvas;
     GdkGLContext* glContext;
     cairo_surface_t* cairoSurface;
@@ -34,11 +33,10 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
 
     // Create a new GTK drawing area
     *drawing_area = gtk_drawing_area_new();
-    //gtk_widget_set_size_request(*drawing_area, 800, 600);
-    gtk_widget_set_redraw_on_allocate(*drawing_area, true);
+    gtk_widget_set_size_request(*drawing_area, 800, 600);
 
-    gtk_widget_set_hexpand(*drawing_area, TRUE);
-    gtk_widget_set_vexpand(*drawing_area, TRUE);
+    //gtk_widget_set_hexpand(*drawing_area, TRUE);
+    //gtk_widget_set_vexpand(*drawing_area, TRUE);
 
     // Add the drawing area to the window
     gtk_container_add(GTK_CONTAINER(*window), *drawing_area);
@@ -46,10 +44,8 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
     // Realize the drawing area to create a GdkWindow and an OpenGL context
     gtk_widget_realize(*drawing_area);
     
-    pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
-    gtk_widget_realize(pack->contextProvider);
     // Get the GdkWindow of the drawing area
-    GdkWindow *gdk_window = gtk_widget_get_window(pack->contextProvider);
+    GdkWindow *gdk_window = gtk_widget_get_window(*drawing_area);
 
     // Create an OpenGL context with version 3.3 and core profile
     *gl_context = gdk_window_create_gl_context(gdk_window, NULL);
@@ -104,7 +100,6 @@ void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** g
     glClear(GL_COLOR_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
-
 
     // Set up the draw signal handler for the drawing area
     g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);
