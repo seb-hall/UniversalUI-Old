@@ -9,52 +9,58 @@
 
 extern LinuxGTKHost* host;
 
-struct chWindowPack {
+struct SystemWindowPack {
     uWindow* window;
-    GtkWidget* systemWindow;
+    GtkWidget* gtkWindow;
     GtkWidget* canvas;
-    GtkWidget* contextProvider;
     GdkGLContext* glContext;
-    GError* glError;
     cairo_surface_t* cairoSurface;
     unsigned int VAO, VBO, pixelbuffer, framebuffer;
-
 };
 
-bool Draw(GtkWidget* widget, cairo_t* cairoContext, chWindowPack* pack);
-void Destroy(chWindowPack* pack);
-bool Configure(GtkWidget* widget, GdkEventConfigure *event, chWindowPack* pack);
+bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack);
+void DestroyCallback(SystemWindowPack* pack);
+bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack);
 
-void LinuxGTKHost::ShowWindow(uWindow* window) {
+void NewGTKWindow(GtkWidget** window, GtkWidget** drawing_area, GdkGLContext** gl_context, SystemWindowPack* pack) {
 
-   // initialise new window pack
-    chWindowPack* pack = new chWindowPack;
+    pack->cairoSurface = NULL;
 
-    // create placeholder window for GL context
-    pack->contextProvider = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_widget_realize(pack->contextProvider);
-    pack->glContext = gdk_window_create_gl_context(gtk_widget_get_window(pack->contextProvider), &pack->glError);
-    //gdk_gl_context_set_required_version(pack->glContext, 3, 3);
+    // Create a new GTK window
+    *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(*window), pack->window->title.c_str());
+    gtk_window_set_default_size(GTK_WINDOW(*window), 800, 600);
 
-    if (pack->glContext == nullptr) {
-        printf("COREHOST: OpenGL context creation error!\n");
-        return;
-    }
+    // Create a new GTK drawing area
+    *drawing_area = gtk_drawing_area_new();
+    gtk_widget_set_size_request(*drawing_area, 800, 600);
 
-    //gdk_gl_context_realize(pack->glContext, &pack->glError);
-    gdk_gl_context_make_current(pack->glContext);
+    //gtk_widget_set_hexpand(*drawing_area, TRUE);
+    //gtk_widget_set_vexpand(*drawing_area, TRUE);
+
+    // Add the drawing area to the window
+    gtk_container_add(GTK_CONTAINER(*window), *drawing_area);
+
+    // Realize the drawing area to create a GdkWindow and an OpenGL context
+    gtk_widget_realize(*drawing_area);
+
+    // Get the GdkWindow of the drawing area
+    GdkWindow *gdk_window = gtk_widget_get_window(*drawing_area);
+
+    // Create an OpenGL context with version 3.3 and core profile
+    *gl_context = gdk_window_create_gl_context(gdk_window, NULL);
+    gdk_gl_context_set_required_version(*gl_context, 3, 3);
+
+    // Make the OpenGL context current
+    gdk_gl_context_make_current(*gl_context);
 
     int major, minor;
-    gdk_gl_context_get_version(pack->glContext, &major, &minor);
+    gdk_gl_context_get_version(*gl_context, &major, &minor);
     printf("INFO: OpenGL initialised with version %d.%d\n", major, minor);
 
-    
-    /*if (gdk_gl_context_get_use_es(pack->glContext)) {
-        printf("INFO: using OpenGL ES\n");
-    } else {
-        printf("INFO: using OpenGL desktop\n");
-    }*/
-    glEnable(GL_CULL_FACE);
+    // Enable alpha blending
+
+     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -75,7 +81,7 @@ void LinuxGTKHost::ShowWindow(uWindow* window) {
     glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
     glGenTextures(1, &pack->pixelbuffer);
     glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) window->size.width, (int) window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pack->pixelbuffer, 0);
@@ -88,24 +94,28 @@ void LinuxGTKHost::ShowWindow(uWindow* window) {
         printf("FRAMEBUFFER OK!\n");
     }
 
-    glViewport(0, 0, (int) window->size.width, (int) window->size.height);
+    // fill buffer with black
+    glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    // Set up the draw signal handler for the drawing area
+    g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);
+    g_signal_connect(pack->gtkWindow, "destroy", G_CALLBACK(DestroyCallback), pack);
+    g_signal_connect(pack->canvas,"configure-event", G_CALLBACK(ConfigureCallback), pack);
+
+    // Show the window and all its widgets
+    gtk_widget_show_all(*window);  
+
+}
+
+void LinuxGTKHost::ShowWindow(uWindow* window) {
+    SystemWindowPack* pack = new SystemWindowPack;
     pack->window = window;
-    pack->systemWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    pack->canvas = gtk_drawing_area_new();
-    gtk_container_add(GTK_CONTAINER(pack->systemWindow), pack->canvas);
+    NewGTKWindow(&pack->gtkWindow, &pack->canvas, &pack->glContext, pack);
 
-    g_signal_connect(pack->canvas, "draw", G_CALLBACK(Draw), pack);
-    g_signal_connect(pack->systemWindow, "destroy", G_CALLBACK(Destroy), pack);
-    g_signal_connect(pack->canvas,"configure-event", G_CALLBACK(Configure), pack);
-
-    gtk_window_set_title(GTK_WINDOW(pack->systemWindow), window->title.c_str());
-
-    gtk_widget_show_all(pack->systemWindow);
 }
 
 bool LinuxGTKHost::TestEnvironment() {
@@ -137,44 +147,153 @@ int LinuxGTKHost::main() {
     window1->background = {1.0, 0.0, 0.0, 1.0};
     uWindow* window2 = new uWindow;
     window2->background = {0.0, 1.0, 0.0, 1.0};
+    uWindow* window3 = new uWindow;
+    window3->background = {0.0, 0.0, 1.0, 1.0};
+
     ShowWindow(window1);
-    ShowWindow(window2);
+    //ShowWindow(window2);
+    //ShowWindow(window3);
+
     gtk_main();
     return 0;
 }
 
-bool Draw(GtkWidget* widget, cairo_t* cairoContext, chWindowPack* pack) { 
-    //printf("INFO: draw window\n");
+bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
+    printf("INFO: draw window\n");
+
+    cairo_set_source_surface (cairoContext, pack->cairoSurface, 0, 0);
+    
+    if (pack->glContext == NULL) {
+        printf("OOPS!\n");
+    }
+
+    int width = gtk_widget_get_allocated_width(pack->gtkWindow);
+    int height = gtk_widget_get_allocated_height(pack->gtkWindow);
+
+    /*printf("%d, %d\n", width, height);
+
+    pack->window->size = {(float) width, (float) height};
+
+    printf("%f, %f\n", pack->window->size.width, pack->window->size.height);
 
     gdk_gl_context_make_current(pack->glContext);
     glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
     glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glViewport(0, 0, width, height);
     glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    cairo_set_source_surface(cairoContext, pack->cairoSurface, 0, 0);
-    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window(pack->contextProvider), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, (int) pack->window->size.width, (int) pack->window->size.height);
-}
 
-void Destroy(chWindowPack* pack) {
+    // RENDER HERE
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0, 0, width, height);
+    
+    //cairo_set_source_surface(cairoContext, pack->cairoSurface, 0, 0);
+    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->gtkWindow), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, width, height);
+    //cairo_surface_flush(pack->cairoSurface);*/
+
+    GLuint FramebufferName = 0;
+    glGenFramebuffers(1, &FramebufferName);
+    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+    // The texture we're going to render to
+    GLuint renderedTexture;
+    glGenTextures(1, &renderedTexture);
+
+    // "Bind" the newly created texture : all future texture functions will modify this texture
+    glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+    // Give an empty image to OpenGL ( the last "0" )
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0,GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+    // Poor filtering. Needed !
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    // Set "renderedTexture" as our colour attachement #0
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, renderedTexture, 0);
+
+    // Set the list of draw buffers.
+    GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
+    glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+    printf("FRAMEBUFFER NOT GOOD\n");
+    } else {
+    printf("FRAMEBUFFER OK!\n");
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+    glViewport(0,0,width,height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+
+
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glViewport(0,0,width,height); 
+
+    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->gtkWindow), renderedTexture, GL_TEXTURE, 1.0, 0, 0, width, height);
+
+    GdkGLDrawable *gl_drawable = gdk_gl_drawable_get_current ();
+
+    // Swap buffers
+    gdk_gl_drawable_swap_buffers (gl_drawable);
+
+    return false;
+} 
+
+/*bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
+    printf("INFO: draw window\n");
+
+    cairo_set_source_surface (cairoContext, pack->cairoSurface, 0, 0);
+    //cairo_paint (cr);
+    printf("draw!\n");
+    
+    if (pack->glContext == NULL) {
+        printf("OOPS!\n");
+    }
+
+    cairo_set_source_rgb (cairoContext, 1, 1, 1);
+    cairo_paint (cairoContext);
+
+    return false;
+}*/
+
+void DestroyCallback(SystemWindowPack* pack) {
     printf("INFO: destroyed window\n");
     
 }
 
-bool Configure(GtkWidget* widget, GdkEventConfigure *event, chWindowPack* pack) { 
-    gdk_gl_context_make_current(pack->glContext);
-    //printf("INFO: configured window\n");
-    int width = gtk_widget_get_allocated_width(widget);
-    int height = gtk_widget_get_allocated_height(widget);
+bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack) { 
 
-    /// reset cairo surface
-    if (pack->cairoSurface) {
-        cairo_surface_destroy(pack->cairoSurface);
-    }
+     if (pack->cairoSurface)
+        cairo_surface_destroy (pack->cairoSurface);
 
-    pack->cairoSurface = gdk_window_create_similar_surface(gtk_widget_get_window(widget), CAIRO_CONTENT_COLOR, width, height);
+    pack->cairoSurface = gdk_window_create_similar_surface (gtk_widget_get_window (widget),
+                                               CAIRO_CONTENT_COLOR,
+                                               gtk_widget_get_allocated_width (widget),
+                                               gtk_widget_get_allocated_height (widget));
+
+    cairo_t *cr;
+
+    cr = cairo_create(pack->cairoSurface);
+
+    cairo_set_source_rgb(cr, 0.125, 0.125, 0.125);
+    cairo_paint(cr);
+
+    cairo_destroy(cr);
+
+    printf("INFO: configured window\n");
+
+    
+    int width = gtk_widget_get_allocated_width(pack->gtkWindow);
+    int height = gtk_widget_get_allocated_height(pack->gtkWindow);
 
     pack->window->size = {(float) width, (float) height};
+    //cairo_surface_mark_dirty(pack->cairoSurface);
+
+    printf("all done!\n");
+
+    return true;
 }
