@@ -6,7 +6,7 @@ $MODE=$args[0]
 
 if ($MODE -eq "-STATIC") {
     Write-Output "STATIC Building UniversalUI program..."
-   g++ -DUUI_BUILD .\App\main.cpp .\Source\UniversalUI.cpp .\Source\WinHost.cpp .\Source\glad.c .\..\UniversalUI-Source\uWindow.cpp .\..\UniversalUI-Source\uSimpleApplication.cpp .\..\UniversalUI-Source\uDesktopApplication.cpp .\..\UniversalUI-Source\uApplication.cpp .\..\UniversalUI-Source\CoreHost.cpp -o .\Build\main.exe -Wall -g -mconsole  -lglfw3 -lgdi32 -lopengl32  -I.\Include -I.\..\ -L.\Lib --static -static-libgcc -static-libstdc++
+   g++ -DUUI_BUILD .\App\main.cpp .\Source\UniversalUI.cpp .\Source\WinHost.cpp .\Source\glad.c .\Source\glad_wgl.c .\..\UniversalUI-Source\uWindow.cpp .\..\UniversalUI-Source\uSimpleApplication.cpp .\..\UniversalUI-Source\uDesktopApplication.cpp .\..\UniversalUI-Source\uApplication.cpp .\..\UniversalUI-Source\CoreHost.cpp -o .\Build\main.exe -Wall -g -mconsole -lglu32 -lgdi32 -lopengl32  -I.\Include -I.\..\ --static -static-libgcc -static-libstdc++
     Write-Output "DONE!"
 } elseif ($MODE -eq "-DLL") {
     Write-Output "DLL Building UniversalUI library..."
