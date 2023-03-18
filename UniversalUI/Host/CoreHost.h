@@ -26,7 +26,7 @@
 
 class uApplication;
 class uWindow;
-class aRenderer;
+class CoreRenderer;
 
 enum uApplicationType {
     invalid,
@@ -40,7 +40,7 @@ public:
     //  pointers to single-instance modules
     uApplication* app;
     uApplicationType appType;
-    aRenderer* renderer;
+    CoreRenderer* renderer;
 
     // return true if environment passes all checks
     virtual bool TestEnvironment();

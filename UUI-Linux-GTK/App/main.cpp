@@ -13,7 +13,7 @@ class view1: public uView {
 
     std::vector<aRenderOperation> Draw() override {
         printf("I  AM VIEW!\n");
-        return {
+        return std::vector<aRenderOperation> {
             AngeloColour(CORE_GREEN),
             AngeloWeight(1.0),
             AngeloLine({5.0, 5.0}, {10.0, 5.0}),
@@ -44,7 +44,7 @@ class App: public uDesktopApplication {
         window1->background = CORE_RED;
 
         ShowWindow(window1);
-        ShowWindow(window2);
+        //ShowWindow(window2);
         
     }
 

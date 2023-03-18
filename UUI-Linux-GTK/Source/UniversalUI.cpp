@@ -11,6 +11,7 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 
 #include <LinuxGTKHost.h>
+#include <LinuxGTKRenderer.h>
 
 //  include standard C++ libraries
 
@@ -45,6 +46,8 @@ bool UniversalUI(uApplication* userApp) {
         return false;
     }
 
+    host->renderer = new LinuxGTKRenderer;
+
     if (!host->TestEnvironment()) {
         return false;
     }
@@ -52,6 +55,7 @@ bool UniversalUI(uApplication* userApp) {
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     
     host->app = userApp;
+    
     userApp->host = host; 
 
     return true;

@@ -18,12 +18,13 @@
 
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/CoreColour.h>
+#include <UniversalUI/Angelo/aRenderOperation.h>
 #include <vector>
-
-struct aRenderOperation;
 
 class UUI uView {
 public:
+
+    bool needsRedraw;
 
     //  current frame of view, updated by parents
     uFrame frame;

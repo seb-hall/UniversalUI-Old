@@ -7,6 +7,8 @@
 #include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uWindow.h>
 
+#include <UniversalUI/Angelo/CoreRenderer.h>
+
 //  include standard C++ libraries
 #include <stdio.h>
 #include <string>
@@ -111,7 +113,6 @@ void DeployWindowPack(SystemWindowPack* pack) {
         return;
     }
 
-    // fill buffer with black
     glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -135,6 +136,7 @@ void LinuxGTKHost::ShowWindow(uWindow* window) {
     windowMap[window] = pack;
     pack->window = window;
     DeployWindowPack(pack);
+    host->renderer->SetupWindowForRendering(window);
 }
 
 bool LinuxGTKHost::TestEnvironment() {
@@ -159,6 +161,10 @@ bool LinuxGTKHost::TestEnvironment() {
     int major, minor;
     gdk_gl_context_get_version(testContext, &major, &minor);
     printf("UUI-INFO: OpenGL init with version %u.%u\n", major, minor);
+
+    if (!host->renderer->InitialiseRenderer()) {
+        printf("UUI-ERROR: shader compilation failed\n");
+    }
 
     gtk_widget_destroy(testWindow);
 
@@ -204,7 +210,6 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pack->pixelbuffer, 0);
-
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("UUI-ERROR: OpenGL framebuffer error\n");
         return false;
@@ -215,7 +220,7 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    
+    host->renderer->RenderWindow(pack->window);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -252,6 +257,7 @@ bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindow
 
     if (pack->window->size.width != newSize.width || pack->window->size.height != newSize.height) {
         pack->window->size = newSize;
+        pack->window->rootView->frame = {(float) 0, (float) 0, (float) width, (float) height};
         if (host->appType == desktop) {
             uDesktopApplication* app = static_cast<uDesktopApplication*>(host->app);
             app->WindowResized(pack->window, newSize);

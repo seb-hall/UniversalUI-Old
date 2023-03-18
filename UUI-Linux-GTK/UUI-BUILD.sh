@@ -11,6 +11,7 @@ declare -a XP_SRC=(
     uWindow.cpp
     CoreRenderer.cpp
     uView.cpp
+    AngeloOperations.cpp
 );
 
 XP_SRC_PATH="./../UniversalUI-Source/";
@@ -19,6 +20,7 @@ XP_SRC_ARGS="${XP_SRC[@]/#/$XP_SRC_PATH}";
 declare -a DP_SRC=(
     UniversalUI.cpp
     LinuxGTKHost.cpp
+    LinuxGTKRenderer.cpp
     #second.cpp
 );
 

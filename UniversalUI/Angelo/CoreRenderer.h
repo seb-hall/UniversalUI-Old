@@ -28,26 +28,37 @@
 #include <map>
 
 class uWindow;
+class uView;
 
 class UUI CoreRenderer {
     public:
 
     std::map<uWindow*, aRenderCommand*> commands;
+    std::map<uView*, aPixelBuffer> buffers;
+
+    //  compiler shaders and prepare for rendering
+    virtual bool InitialiseRenderer();
 
     //  render a window, override by platform for OpenGL/Metal functionality
     virtual void RenderWindow(uWindow* window);
     
+    //  render a view, override by platform for OpenGL/Metal functionality
+    virtual void RenderView(uView* view);
+
     //  generate a new pixel buffer in GPU memory with a given size
-    virtual aPixelBuffer* NewPixelBuffer(uSize size);
+    virtual aPixelBuffer NewPixelBuffer(uSize size);
 
     //  resize an existing pixel buffer
-    virtual void ResizePixelBuffer(aPixelBuffer* buffer, uSize size);
+    virtual void ResizePixelBuffer(aPixelBuffer buffer, uSize size);
 
     //  fill a buffer with a given colour - use mainly for testing purposes
-    virtual void ClearBuffer(aPixelBuffer* buffer, uColour colour);
+    virtual void ClearBuffer(aPixelBuffer buffer, uColour colour);
 
     //  initialise window resources and fetch render commands
     void SetupWindowForRendering(uWindow* window);
+
+    // setup view resources
+    void SetupViewForRendering(uView* view);
 
 };
 

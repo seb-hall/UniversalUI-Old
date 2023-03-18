@@ -6,6 +6,7 @@
 
 uView::uView(uFrame initFrame) {
     frame = initFrame;
+    needsRedraw = false;
 }
 
 std::vector<aRenderOperation> uView::Draw() {
