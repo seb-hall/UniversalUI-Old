@@ -9,6 +9,8 @@ declare -a XP_SRC=(
     uSimpleApplication.cpp
     CoreHost.cpp
     uWindow.cpp
+    CoreRenderer.cpp
+    uView.cpp
 );
 
 XP_SRC_PATH="./../UniversalUI-Source/";

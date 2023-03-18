@@ -4,7 +4,7 @@
 //  used directly. As such, this file contains only basic
 //  implementations of functions to keep the compiler happy.
 
-#include <UniversalUI/Core/CoreHost.h>
+#include <UniversalUI/Host/CoreHost.h>
 
 bool CoreHost::TestEnvironment() { return true; }
 

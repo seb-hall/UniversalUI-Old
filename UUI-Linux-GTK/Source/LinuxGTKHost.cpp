@@ -1,5 +1,4 @@
-//  LinuxGTKHost.cpp    first written by sebhall
-
+//  LinuxGTKHost.cpp    first written by sebhall in March 2023
 
 //  include UniversalUI header files
 #include <LinuxGTKHost.h>
@@ -79,7 +78,7 @@ void DeployWindowPack(SystemWindowPack* pack) {
 
     // Enable alpha blending
 
-     glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -215,6 +214,9 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 

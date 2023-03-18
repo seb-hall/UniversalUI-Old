@@ -6,7 +6,7 @@
 // include required UniversalUI header files
 
 #include <UniversalUI/UniversalUI.h>
-#include <UniversalUI/Core/CoreHost.h>
+#include <UniversalUI/Host/CoreHost.h>
 #include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uDesktopApplication.h>
 

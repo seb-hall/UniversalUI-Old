@@ -20,17 +20,27 @@
 #include <UniversalUI/Core/CoreColour.h>
 #include <vector>
 
+struct aRenderOperation;
+
 class UUI uView {
 public:
-    uSize size;
-    uPoint origin;
+
+    //  current frame of view, updated by parents
+    uFrame frame;
+
+    //  vector of subviews
     std::vector<uView*> subviews;
-    virtual void Draw();
-    virtual void ClickUp();
-    virtual void ClickDown();
-    virtual void PointerEnter();
-    virtual void PointerExit();
-    virtual void PointerMoved(uPoint toPoint);
+
+    uView(uFrame initFrame = {0.0, 0.0, 100.0, 100.0});
+
+    //  overridable draw command
+    virtual std::vector<aRenderOperation> Draw();
+    
+    //virtual void ClickUp();
+    //virtual void ClickDown();
+    //virtual void PointerEnter();
+    //virtual void PointerExit();
+    //virtual void PointerMoved(uPoint toPoint);
 };
 
 #endif /* uView_h */

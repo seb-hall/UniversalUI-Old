@@ -6,7 +6,7 @@
 //  happy.
 
 #include <UniversalUI/Core/uDesktopApplication.h>
-#include <UniversalUI/Core/CoreHost.h>
+#include <UniversalUI/Host/CoreHost.h>
 
 //  init application, taking name and version number as parameters.
 uDesktopApplication::uDesktopApplication(const char* initName, int initMajorVersion, int initMinorVersion) {

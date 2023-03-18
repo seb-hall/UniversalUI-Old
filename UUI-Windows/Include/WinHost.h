@@ -17,7 +17,7 @@
 #endif
 
 #include <UniversalUI/Core/uWindow.h>
-#include <UniversalUI/Core/CoreHost.h>
+#include <UniversalUI/Host/CoreHost.h>
 #include <string>
 
 class UUI WinHost: public CoreHost {
