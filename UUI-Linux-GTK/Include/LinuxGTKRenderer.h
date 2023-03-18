@@ -12,9 +12,13 @@
 
 class LinuxGTKRenderer: public CoreRenderer {
 
-    unsigned int FBO;
-
     public:
+
+
+    unsigned int genericShader;
+    unsigned int textureShader;
+    unsigned int genericVertexArray;
+    unsigned int FBO;
 
     //  compiler shaders and prepare for rendering
     bool InitialiseRenderer() override;

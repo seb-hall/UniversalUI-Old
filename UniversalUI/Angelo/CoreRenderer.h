@@ -33,8 +33,8 @@ class uView;
 class UUI CoreRenderer {
     public:
 
-    std::map<uWindow*, aRenderCommand*> commands;
     std::map<uView*, aPixelBuffer> buffers;
+    std::map<uView*, aRenderCommand> commands;
 
     //  compiler shaders and prepare for rendering
     virtual bool InitialiseRenderer();

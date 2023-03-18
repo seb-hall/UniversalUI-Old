@@ -24,7 +24,13 @@
 class UUI uView {
 public:
 
+    //  will redraw if frame size changes. set needsRedraw
+    //  to true if a redraw is desired at another time
     bool needsRedraw;
+
+    //  if set to true, the view will retain it's own 
+    //  dedicated pixel buffer
+    bool persistent;
 
     //  current frame of view, updated by parents
     uFrame frame;
@@ -32,7 +38,7 @@ public:
     //  vector of subviews
     std::vector<uView*> subviews;
 
-    uView(uFrame initFrame = {0.0, 0.0, 100.0, 100.0});
+    uView(uFrame initFrame = {0.0, 0.0, 100.0, 100.0}, bool initPersistent = false);
 
     //  overridable draw command
     virtual std::vector<aRenderOperation> Draw();

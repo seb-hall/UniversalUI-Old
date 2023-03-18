@@ -7,7 +7,19 @@ const char* AngeloCoreFragment = R"(
 
 #version 330 core
 
-out vec4 FragColor; // bind to location 0
+layout (std140) uniform RenderOperations {
+  	uint ops [];
+};
+
+layout (std140) uniform RenderIndices {
+  	uint indices [];
+};
+
+layout (std140) uniform RenderParameters {
+  	float params [];
+};
+
+out vec4 FragColor; 
 
 void main()
 {

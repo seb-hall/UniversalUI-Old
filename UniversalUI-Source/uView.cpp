@@ -4,9 +4,10 @@
 
 #include <stdio.h>
 
-uView::uView(uFrame initFrame) {
+uView::uView(uFrame initFrame, bool initPersistent) {
     frame = initFrame;
-    needsRedraw = false;
+    needsRedraw = true;
+    persistent = initPersistent;
 }
 
 std::vector<aRenderOperation> uView::Draw() {

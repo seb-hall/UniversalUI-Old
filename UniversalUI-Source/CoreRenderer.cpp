@@ -20,20 +20,49 @@ const std::map<unsigned short, unsigned short> paramNumberMap = {
     {14, 5}		// aligned, rounded rectangle
 };
 
-// register view
+// update drawing commands for view
 void CoreRenderer::SetupViewForRendering(uView* view) {
 
+    // run function for each child view
     for (uView* subview : view->subviews) {
         SetupViewForRendering(subview);
     }
 
-    if (!buffers.count(view)) {
+    // if there is no pixelbuffer associated with the view and there should be: make a new one
+    if (!buffers.count(view) && view->persistent) {
         buffers[view] = NewPixelBuffer({view->frame.width, view->frame.height});
     }
+
+    // if there is no rendercommand associated withthe view, it has requested a redraw 
+    // or it's command was generated for a different size, regenerate new command
+    if (!commands.count(view) || view->needsRedraw || (view->frame.width != commands[view].size.width || view->frame.height != commands[view].size.height)) {
+
+        aRenderCommand renderCommand;
+        renderCommand.size = {view->frame.width, view->frame.height};
+
+        std::vector<aRenderOperation> viewOps = view->Draw();
+
+        for (aRenderOperation op : viewOps) {
+            
+            renderCommand.codes.push_back(op.code);
+            renderCommand.indices.push_back(renderCommand.parameters.size());
+            renderCommand.parameters.insert(renderCommand.parameters.end(), op.data.begin(), op.data.end());
+        }
+
+	    renderCommand.codes[0] = renderCommand.codes.size();
+	    renderCommand.codes[0] -= 1;
+
+        commands[view] = renderCommand;
+
+        if (!view->persistent) {
+            view->needsRedraw = false;
+        }
+    }
+    
 }
 
 // return a combined vector of all render operations for all subviews within a specified view (inclusive)
-std::vector<aRenderOperation> OpsForView(uView* view) {
+/*std::vector<aRenderOperation> OpsForView(uView* view) {
     std::vector<aRenderOperation> renderOps;
 
     for (uView* subview : view->subviews) {
@@ -44,7 +73,7 @@ std::vector<aRenderOperation> OpsForView(uView* view) {
     std::vector<aRenderOperation> viewOps = view->Draw();
     renderOps.insert(renderOps.end(), viewOps.begin(), viewOps.end());
     return renderOps;
-} 
+} */
 
 //  initialise window resources and fetch render commands
 void CoreRenderer::SetupWindowForRendering(uWindow* window) {
@@ -57,7 +86,7 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
 
     SetupViewForRendering(window->rootView);
 
-    aRenderCommand* renderCommand = new aRenderCommand;
+    /*aRenderCommand* renderCommand = new aRenderCommand;
     commands[window] = renderCommand;
 
     std::vector<aRenderOperation> ops = OpsForView(window->rootView);
@@ -73,7 +102,7 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
         }
 
         printf("\n");
-        */
+        
 
         renderCommand->codes.push_back(op.code);
 		renderCommand->indices.push_back(renderCommand->parameters.size());
@@ -81,7 +110,7 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
     }
 
 	renderCommand->codes[0] = renderCommand->codes.size();
-	renderCommand->codes[0] -= 1;
+	renderCommand->codes[0] -= 1;*/
 
     /*
     printf("\nBegin RCOM-DUMP\n");

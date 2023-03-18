@@ -204,6 +204,8 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
 
     gdk_gl_context_make_current(pack->glContext);
 
+    glBlendFunc(GL_BLEND, GL_ONE_MINUS_SRC_ALPHA);
+
     glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
     glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);

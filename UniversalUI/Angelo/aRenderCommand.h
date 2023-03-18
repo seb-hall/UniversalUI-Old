@@ -25,6 +25,9 @@
 
 struct UUI aRenderCommand {
 
+    // size of view for which the command was generated. If this is different to the curent size, regenerate command.
+    uSize size = {100.0f, 100.0f};
+
     // GPU BUFFER: continuous array of command codes - first is always the index of the final command code
     std::vector<unsigned short int> codes = { 0, 0 };
      

@@ -21,15 +21,12 @@
 #include <iostream>
 #include <stdio.h>
 
-unsigned int shaderProgram;
-
-//  compiler shaders and prepare for rendering
-bool LinuxGTKRenderer::InitialiseRenderer() {
+bool CompilerShader(const char* vertex, const char* fragment, unsigned int &shaderProgram) {
     // build and compile our shader program
     // ------------------------------------
     // vertex shader
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &AngeloCoreVertex, NULL);
+    glShaderSource(vertexShader, 1, &vertex, NULL);
     glCompileShader(vertexShader);
     // check for shader compile errors
     int success;
@@ -43,7 +40,7 @@ bool LinuxGTKRenderer::InitialiseRenderer() {
     }
     // fragment shader
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &AngeloCoreFragment, NULL);
+    glShaderSource(fragmentShader, 1, &fragment, NULL);
     glCompileShader(fragmentShader);
     // check for shader compile errors
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
@@ -68,45 +65,39 @@ bool LinuxGTKRenderer::InitialiseRenderer() {
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
-    printf("SHADER COMPILATION SUCCEEDED\n");
-
-   // glGenFramebuffers(1, &FBO);
-   // glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-   // glBindFramebuffer(GL_FRAMEBUFFER, 0);
     return true;
 }
 
-//  render a view, override by platform for OpenGL/Metal functionality
-void LinuxGTKRenderer::RenderView(uView* view) {
-
-    // redraw view if anything changed.
-    if (view->needsRedraw || buffers[view].size.width != view->frame.width || buffers[view].size.height != view->frame.height) {
-        //ResizePixelBuffer(buffers[view], {view->frame.width, view->frame.height});
-        //ClearBuffer(buffers[view], CORE_GREEN);
+//  compiler shaders and prepare for rendering
+bool LinuxGTKRenderer::InitialiseRenderer() {
+    
+    if (!CompilerShader(AngeloCoreVertex, AngeloCoreFragment, genericShader)) {
+        return false;
     }
 
-    for (uView* subview : view->subviews) {
-        RenderView(subview);
-    }
+    printf("SHADER COMPILATION SUCCEEDED\n");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left  
-         0.5f, -0.5f, 0.0f, // right 
-         0.0f,  0.5f, 0.0f  // top   
-    }; 
+         1.0f,  1.0f, // bottom left  
+         1.0f, -1.0f, // bottom right 
+        -1.0f,  1.0f, // top left   
+         1.0f, -1.0f, // bottom right 
+        -1.0f, -1.0f, // top right
+        -1.0f,  1.0f  // top left   
+    };
 
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
+    unsigned int VBO;
+    glGenVertexArrays(1, &genericVertexArray);
     glGenBuffers(1, &VBO);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(VAO);
+    glBindVertexArray(genericVertexArray);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
@@ -114,63 +105,47 @@ void LinuxGTKRenderer::RenderView(uView* view) {
 
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-
-    glViewport((int) view->frame.x, (int) view->frame.y, (int) view->frame.width, (int) view->frame.height);
-    glClearColor(1.0, 1.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    
     glBindVertexArray(0); 
-    glUseProgram(shaderProgram);    
-    glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-    glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDisable(GL_CULL_FACE);
 
-    GLint validateStatus;
-    glValidateProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &validateStatus);
-    if (validateStatus == GL_FALSE) {
-        // validation failed
-        GLint logLength;
-        glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &logLength);
-        char *log = (char*)malloc(logLength);
-        glGetProgramInfoLog(shaderProgram, logLength, NULL, log);
-        printf("Before printing error\n");
-        printf("logLength = %d\n", logLength);
-        printf("log = %p\n", log);
+    return true;
+}
 
-        free(log);
+//  render a view, override by platform for OpenGL/Metal functionality
+void LinuxGTKRenderer::RenderView(uView* view) {
+
+    for (uView* subview : view->subviews) {
+        RenderView(subview);
     }
 
-
-    glValidateProgram(shaderProgram);
-    glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &validateStatus);
-    if (validateStatus == GL_FALSE) {
-    // validation failed
-    GLint logLength;
-    glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &logLength);
-    char *log = (char*)malloc(logLength);
-    glGetProgramInfoLog(shaderProgram, logLength, NULL, log);
-    printf("ERROR: %.*s\n", logLength, log);
-
-    free(log);
+    // redraw persistent views if anything changed.
+    if (view->persistent && view->needsRedraw) {
+        // ANGELO MAIN DRAW METHOD
+        printf("ANGELO-INFO: rendered to texture\n");
+        view->needsRedraw = false;
     }
-    else {
-    // validation succeeded
-    printf("Shader program validated successfully\n");
+    
+    if (view->persistent) {
+        // RENDER TEXTURE TO SCREEN
+        printf("ANGELO-INFO: render texture to screen\n");
+        return;
     }
 
+    // RENDER COMMAND TO VIEW FRAME
+  
+    glUseProgram(genericShader);
+    glBindVertexArray(genericVertexArray);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    printf("rendered\n");
-    // render view 
+    printf("ANGELO-INFO: rendered view to screen\n");
 }
 
 //  render a window, override by platform for OpenGL/Metal functionality
 void LinuxGTKRenderer::RenderWindow(uWindow* window) {
     printf("BEGINNING WINDOW RENDER FOR %s.\n", window->title.c_str());
     InitialiseRenderer();
+    SetupViewForRendering(window->rootView);
     RenderView(window->rootView);
 }
 
