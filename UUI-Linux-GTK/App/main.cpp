@@ -15,7 +15,7 @@ class view1: public uView {
         printf("I  AM VIEW!\n");
         return std::vector<aRenderOperation> {
             AngeloColour(CORE_GREEN),
-            AngeloWeight(1.0),
+            AngeloWeight(5.0),
             AngeloLine({5.0, 5.0}, {10.0, 5.0}),
             AngeloLine({10.0, 5.0}, {10.0, 10.0})
         };
@@ -40,6 +40,7 @@ class App: public uDesktopApplication {
         window2 = new uWindow({250, 750}, "App - Tools");
 
         window1->rootView = new view1;
+        window1->rootView->backgroundColour = CORE_GREEN;
 
         window1->background = CORE_RED;
 

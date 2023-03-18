@@ -1,0 +1,48 @@
+int codesSize = commands[view].codes.size(); // get the size of the vector
+    uint32_t* codesArray = &commands[view].codes[0]; // get a pointer to the first element
+
+    int paramsSize = commands[view].parameters.size(); // get the size of the vector
+    float* paramsArray = &commands[view].parameters[0]; // get a pointer to the first element
+
+    int indicesSize = commands[view].indices.size(); // get the size of the vector
+    uint32_t* indicesArray = &commands[view].indices[0]; // get a pointer to the first element
+
+    // create and fill a UBO with the array data 
+    GLuint codesUBO; 
+    glGenBuffers(1, &codesUBO); 
+    glBindBuffer(GL_UNIFORM_BUFFER, codesUBO); 
+    glBufferData(GL_UNIFORM_BUFFER, codesSize * sizeof(uint32_t), codesArray, GL_STATIC_DRAW);
+
+    // create and fill a UBO with the array data 
+    GLuint paramsUBO; 
+    glGenBuffers(1, &paramsUBO); 
+    glBindBuffer(GL_UNIFORM_BUFFER, paramsUBO); 
+    glBufferData(GL_UNIFORM_BUFFER, paramsSize * sizeof(float), paramsArray, GL_STATIC_DRAW);
+
+    // create and fill a UBO with the array data 
+    GLuint indicesUBO; 
+    glGenBuffers(1, &indicesUBO); 
+    glBindBuffer(GL_UNIFORM_BUFFER, indicesUBO); 
+    glBufferData(GL_UNIFORM_BUFFER, indicesSize * sizeof(uint32_t), indicesArray, GL_STATIC_DRAW);
+    
+    // bind the UBO to a binding point 
+    GLuint codesBind = 0; 
+    glBindBufferBase(GL_UNIFORM_BUFFER, codesBind, codesUBO);
+
+    // bind the UBO to a binding point 
+    GLuint paramsBind = 1; 
+    glBindBufferBase(GL_UNIFORM_BUFFER, paramsBind, paramsUBO);
+
+    // bind the UBO to a binding point 
+    GLuint indicesBind = 2; 
+    glBindBufferBase(GL_UNIFORM_BUFFER, indicesBind, indicesUBO);
+
+    // get the uniform block index from the shader program 
+    GLuint codesBlockIndex = glGetUniformBlockIndex(genericShader, "RenderOperations");
+    GLuint paramsBlockIndex = glGetUniformBlockIndex(genericShader, "RenderParameters");
+    GLuint indicesBlockIndex = glGetUniformBlockIndex(genericShader, "RenderIndices");
+
+    // associate the uniform block with the binding point 
+    glUniformBlockBinding(genericShader, codesBlockIndex, codesBind);
+    glUniformBlockBinding(genericShader, paramsBlockIndex, paramsBind);
+    glUniformBlockBinding(genericShader, indicesBlockIndex, indicesBind);

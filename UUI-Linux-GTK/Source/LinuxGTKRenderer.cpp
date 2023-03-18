@@ -20,6 +20,7 @@
 //  include standard C++ library functions
 #include <iostream>
 #include <stdio.h>
+#include <cstdint>
 
 bool CompilerShader(const char* vertex, const char* fragment, unsigned int &shaderProgram) {
     // build and compile our shader program
@@ -133,10 +134,82 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     }
 
     // RENDER COMMAND TO VIEW FRAME
+
+    int opsSize = commands[view].codes.size(); // get the size of the vector
+    uint32_t* opsArray = &commands[view].codes[0]; // get a pointer to the first element
+
+    int idsSize = commands[view].indices.size(); // get the size of the vector
+    uint32_t* idsArray = &commands[view].indices[0]; // get a pointer to the first element
+
+    int pmsSize = commands[view].parameters.size(); // get the size of the vector
+    float* pmsArray = &commands[view].parameters[0]; // get a pointer to the first element
+
+
+
+
+
+    unsigned int opsTex;
+
+    glGenTextures(1, &opsTex);
+    glBindTexture(GL_TEXTURE_2D, opsTex);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16UI, opsSize, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, opsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_SHORT, opsArray);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, opsTex);
+
+    unsigned int idsTex;
+
+    glGenTextures(1, &idsTex);
+    glBindTexture(GL_TEXTURE_2D, idsTex);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16UI, idsSize, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, idsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_SHORT, idsArray);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, idsTex);
+
+    unsigned int pmsTex;
+
+    glGenTextures(1, &pmsTex);
+    glBindTexture(GL_TEXTURE_2D, pmsTex);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16UI, pmsSize, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, pmsSize, 1, GL_RED, GL_UNSIGNED_BYTE, pmsArray);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, pmsTex);
   
     glUseProgram(genericShader);
+
+    glUniform1i(glGetUniformLocation(genericShader, "ops"), 0);
+    glUniform1i(glGetUniformLocation(genericShader, "ids"), 1);
+    glUniform1i(glGetUniformLocation(genericShader, "pms"), 2);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, opsTex);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, idsTex);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, pmsTex);
+
     glBindVertexArray(genericVertexArray);
+
+    //printf("BACKGROUND COLOUR: %f %f %f %f\n", commands[view].parameters[0], commands[view].parameters[1], commands[view].parameters[2], commands[view].parameters[3]);
+
+    //printf("NUMOPS = %d\n", paramsSize);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glDeleteTextures(1, &opsTex);
+    glDeleteTextures(1, &idsTex);
+    glDeleteTextures(1, &pmsTex);
 
     printf("ANGELO-INFO: rendered view to screen\n");
 }

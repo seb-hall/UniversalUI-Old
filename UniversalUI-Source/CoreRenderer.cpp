@@ -49,8 +49,13 @@ void CoreRenderer::SetupViewForRendering(uView* view) {
             renderCommand.parameters.insert(renderCommand.parameters.end(), op.data.begin(), op.data.end());
         }
 
-	    renderCommand.codes[0] = renderCommand.codes.size();
-	    renderCommand.codes[0] -= 1;
+	    //renderCommand.codes[0] = renderCommand.codes.size();
+	    //renderCommand.codes[0] -= 1;
+
+        renderCommand.parameters[0] = 0.0f;
+        renderCommand.parameters[1] = 1.0f;
+        renderCommand.parameters[2] = 0.0f;
+        renderCommand.parameters[3] = 1.0f;
 
         commands[view] = renderCommand;
 
@@ -86,56 +91,32 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
 
     SetupViewForRendering(window->rootView);
 
-    /*aRenderCommand* renderCommand = new aRenderCommand;
-    commands[window] = renderCommand;
+    aRenderCommand renderCommand = commands[window->rootView];
 
-    std::vector<aRenderOperation> ops = OpsForView(window->rootView);
-
-    //printf("\nBegin ROP-DUMP\n\n");
     
-    for (aRenderOperation op : ops) {
-        
-        /*printf("ROP: %d : ", op.code);
-
-        for (float f : op.data) {
-            printf("%f ", f);
-        }
-
-        printf("\n");
-        
-
-        renderCommand->codes.push_back(op.code);
-		renderCommand->indices.push_back(renderCommand->parameters.size());
-        renderCommand->parameters.insert(renderCommand->parameters.end(), op.data.begin(), op.data.end());
-    }
-
-	renderCommand->codes[0] = renderCommand->codes.size();
-	renderCommand->codes[0] -= 1;*/
-
-    /*
     printf("\nBegin RCOM-DUMP\n");
 
     printf("\nCODES\n");
 
-    for (unsigned short code : renderCommand->codes) {
+    for (unsigned short code : renderCommand.codes) {
         printf("%d ", code);
     }
 
     printf("\n\nPARAMS\n");
 
-    for (float param : renderCommand->parameters) {
+    for (float param : renderCommand.parameters) {
         printf("%f ", param);
     }
 
 	printf("\n\nINDICES\n");
 
-    for (unsigned short index : renderCommand->indices) {
+    for (unsigned short index : renderCommand.indices) {
         printf("%d ", index);
     }
 
     printf("\n\nDONE\n");
 
-    printf("UUI-INFO: window '%s' setup for Angelo rendering\n", window->title.c_str()); */
+    printf("UUI-INFO: window '%s' setup for Angelo rendering\n", window->title.c_str()); 
 }
 
 //  *** PLACEHOLDER FUNCTIONS ***

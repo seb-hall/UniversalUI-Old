@@ -19,6 +19,7 @@
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/CoreColour.h>
 #include <vector>
+#include <cstdint>
 
 // CODE THKNS  X1    Y1    X2    Y2
 // LINE [2.5, 5.0, 10.0, 10.0, 10.0]
@@ -27,7 +28,7 @@
 // IFL  [0.0, 0.0, 100.0, 50.0]
 
 struct UUI aRenderOperation {
-    unsigned short int code;
+    uint32_t code;
     std::vector<float> data;
 };
 

@@ -35,6 +35,8 @@ public:
     //  current frame of view, updated by parents
     uFrame frame;
 
+    uColour backgroundColour;
+
     //  vector of subviews
     std::vector<uView*> subviews;
 
