@@ -144,49 +144,40 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     int pmsSize = commands[view].parameters.size(); // get the size of the vector
     float* pmsArray = &commands[view].parameters[0]; // get a pointer to the first element
 
-
-
-
-
     unsigned int opsTex;
 
     glGenTextures(1, &opsTex);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, opsTex);
-    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16UI, opsSize, 1);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32UI, opsSize, 1);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, opsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_SHORT, opsArray);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, opsTex);
 
     unsigned int idsTex;
 
     glGenTextures(1, &idsTex);
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, idsTex);
-    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16UI, idsSize, 1);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32UI, idsSize, 1);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, idsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_SHORT, idsArray);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, idsTex);
+    
 
     unsigned int pmsTex;
 
     glGenTextures(1, &pmsTex);
+    glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, pmsTex);
-    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R16UI, pmsSize, 1);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, pmsSize, 1, GL_RED, GL_UNSIGNED_BYTE, pmsArray);
+    glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32F, pmsSize, 1);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, pmsSize, 1, GL_RED, GL_FLOAT, pmsArray);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, pmsTex);
-  
     glUseProgram(genericShader);
 
     glUniform1i(glGetUniformLocation(genericShader, "ops"), 0);
@@ -202,9 +193,6 @@ void LinuxGTKRenderer::RenderView(uView* view) {
 
     glBindVertexArray(genericVertexArray);
 
-    //printf("BACKGROUND COLOUR: %f %f %f %f\n", commands[view].parameters[0], commands[view].parameters[1], commands[view].parameters[2], commands[view].parameters[3]);
-
-    //printf("NUMOPS = %d\n", paramsSize);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
     glDeleteTextures(1, &opsTex);

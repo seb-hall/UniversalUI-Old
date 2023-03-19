@@ -8,7 +8,7 @@ const char* AngeloCoreFragment = R"(
 #version 330 core
 
 #define OPS(i) uint(texelFetch(ops, ivec2(i, 0), 0).r)
-#define IDS(i) int(texelFetch(ids, ivec2(i, 0), 0).r)
+#define IDS(i) uint(texelFetch(ids, ivec2(i, 0), 0).r)
 #define PMS(i) texelFetch(pms, ivec2(i, 0), 0).r
 
 #define CLEAR_COLOUR 	0u
@@ -36,45 +36,47 @@ float sdLine(vec2 p, vec2 a, vec2 b) {
 
 vec4 VectorMain(vec2 pos) { 
 
-	vec4 drawColour = vec4(1.0f ,0.0f ,0.0f ,1.0f);
-	vec4 clearColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	vec4 drawColour = vec4(1.0, 0.0, 0.0, 1.0);
+	vec4 clearColour = vec4(0.0, 0.0, 0.0, 1.0);
 
-	float drawWeight = 0;
+	float drawWeight = 2.0;
 
 	ivec2 size = textureSize(ops , 0);
-	int count = size.x;
 
-	for(int i=0; i<count; i++) {
-		switch (OPS(i)) {
+	int i = 0; // Initialize a loop counter
+	uint op = OPS(i); // Get the first operation
+
+	while (i < size.x) { // Loop until end-of-instructions marker or texture size limit
+		switch (op) {
 			case CLEAR_COLOUR:
-				clearColour = vec4(PMS(IDS(i)), PMS(IDS(i) + 1), PMS(IDS(i) + 2), PMS(IDS(i) + 3));
-				return vec4(PMS(IDS(i)), PMS(IDS(i) + 1), PMS(IDS(i) + 2), PMS(IDS(i) + 3));
-				//return vec4(0.0, 1.0, 1.0, 1.0);
+				clearColour = vec4(PMS(IDS(i)), PMS(IDS(i) + 1u), PMS(IDS(i) + 2u), PMS(IDS(i) + 3u));
 				break;
 			case DRAW_COLOUR:
-				drawColour = vec4(PMS(IDS(i)), PMS(IDS(i) + 1), PMS(IDS(i) + 2), PMS(IDS(i) + 3));
-				//return vec4(PMS(IDS(i)), PMS(IDS(i) + 1), PMS(IDS(i) + 2), PMS(IDS(i) + 3));
+				drawColour = vec4(PMS(IDS(i)), PMS(IDS(i) + 1u), PMS(IDS(i) + 2u), PMS(IDS(i) + 3u));
 				break;
 			case DRAW_WEIGHT:
 				drawWeight = PMS(IDS(i));
 				break;
+			case LINE_TWOPOINT:
+				//if (sdLine(pos, vec2(50.0, 50.0), vec2(150.0, 50.0)) <= drawWeight) {
+					return vec4(0.0, 0.0, 0.0, 1.0); // Red for object
+				//}
+				break;
 		}
+
+		i++; // Increment the loop counter
+		op = OPS(i); // Get the next operation
 	}
 	
-	float d = sdLine(pos, vec2(50.0, 50.0), vec2(150.0, 50.0));
-    
-    if (d <= 2.0) {
-        return drawColour; // Red for object
-    }
+	
 
-	return vec4(0.0, 1.0, 1.0, 1.0);// Black for background
+	return drawColour;// Black for background
 
 }
 
 void main() {
 
 	FragColor = VectorMain(gl_FragCoord.xy);
-
 }
 
 )";
