@@ -46,6 +46,10 @@ vec4 VectorMain(vec2 pos) {
 	int i = 0; // Initialize a loop counter
 	uint op = OPS(i); // Get the first operation
 
+	if (pos.x < 500 && IDS(0) == 0u) {
+		return vec4(1.0, 0.0, 1.0, 1.0);
+	}
+
 	while (i < size.x) { // Loop until end-of-instructions marker or texture size limit
 		switch (op) {
 			case CLEAR_COLOUR:
