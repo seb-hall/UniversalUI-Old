@@ -11,7 +11,7 @@ to produce applications that:
 - are perfectly cross-platform
 - are extremely efficient
 - are highly customisable
-- are beatifully designed
+- are beautifully designed
 
 <br>
 
