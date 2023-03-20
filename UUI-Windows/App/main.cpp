@@ -1,10 +1,27 @@
 #include <UniversalUI/UniversalUI.h>
 #include <UniversalUI/Core/uDesktopApplication.h>
 #include <UniversalUI/Core/CoreColour.h>
+#include <UniversalUI/Core/uView.h>
 //#include <UniversalUI/Core/uWindowManager.h>
+
+#include <UniversalUI/Angelo/AngeloOperations.h>
 
 #include <stdio.h>
 
+class view1: public uView {
+    public:
+
+    std::vector<aRenderOperation> Draw() override {
+        printf("I  AM VIEW!\n");
+        return std::vector<aRenderOperation> {
+            AngeloColour(CORE_BLUE),
+            AngeloWeight(5.0),
+            AngeloLine({25.0, 25.0}, {100.0, 25.0}),
+            AngeloLine({10.0, 5.0}, {10.0, 10.0})
+        };
+    }
+    
+};
 
 class App: public uDesktopApplication {
     public:
@@ -22,10 +39,13 @@ class App: public uDesktopApplication {
         window1 = new uWindow({1000, 750}, "App - Main");
         window2 = new uWindow({250, 750}, "App - Tools");
 
+        window1->rootView = new view1;
+        window1->rootView->backgroundColour = CORE_RED;
+
         window1->background = CORE_RED;
 
         ShowWindow(window1);
-        ShowWindow(window2);
+        //ShowWindow(window2);
         
     }
 

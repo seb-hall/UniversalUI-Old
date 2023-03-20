@@ -7,6 +7,8 @@
 #include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uWindow.h>
 
+#include <UniversalUI/Angelo/CoreRenderer.h>
+
 //  include standard C++ libraries
 #include <stdio.h>
 #include <string>
@@ -66,6 +68,8 @@ void WinHost::ShowWindow(uWindow* window) {
     windowMap[window] = pack;
     pack->window = window;
     DeployWindowPack(pack);
+    host->renderer->SetupWindowForRendering(window);
+
 }
 
 bool WinHost::TestEnvironment() {
@@ -173,6 +177,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 glViewport(0,0, wParam, lParam);
                 glClearColor(systemWindowMap[hwnd]->window->background.r, systemWindowMap[hwnd]->window->background.g, systemWindowMap[hwnd]->window->background.b, systemWindowMap[hwnd]->window->background.a);
                 glClear(GL_COLOR_BUFFER_BIT);
+
+                host->renderer->RenderWindow(systemWindowMap[hwnd]->window);
                 // Swap the front and back buffers
                 SwapBuffers(systemWindowMap[hwnd]->deviceContext);
 

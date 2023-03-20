@@ -11,6 +11,7 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 
 #include <WinHost.h>
+#include <WinRenderer.h>
 
 //  include standard C++ libraries
 
@@ -44,6 +45,8 @@ bool UniversalUI(uApplication* userApp) {
         host->appType = invalid;
         return false;
     }
+
+    host->renderer = new WinRenderer;
 
     if (!host->TestEnvironment()) {
         return false;
