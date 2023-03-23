@@ -1,0 +1,380 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		96F4AB8A29CC69FE00EB30B3 /* UniversalUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */; };
+		96F4ABE629CC7D6F00EB30B3 /* uDesktopApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABDD29CC7D6F00EB30B3 /* uDesktopApplication.cpp */; };
+		96F4ABE729CC7D6F00EB30B3 /* uView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABDE29CC7D6F00EB30B3 /* uView.cpp */; };
+		96F4ABE829CC7D6F00EB30B3 /* uWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABDF29CC7D6F00EB30B3 /* uWindow.cpp */; };
+		96F4ABE929CC7D6F00EB30B3 /* CoreRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABE029CC7D6F00EB30B3 /* CoreRenderer.cpp */; };
+		96F4ABEA29CC7D6F00EB30B3 /* uSimpleApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABE129CC7D6F00EB30B3 /* uSimpleApplication.cpp */; };
+		96F4ABEB29CC7D6F00EB30B3 /* CoreHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABE229CC7D6F00EB30B3 /* CoreHost.cpp */; };
+		96F4ABEC29CC7D6F00EB30B3 /* uApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABE329CC7D6F00EB30B3 /* uApplication.cpp */; };
+		96F4ABED29CC7D6F00EB30B3 /* AngeloOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABE429CC7D6F00EB30B3 /* AngeloOperations.cpp */; };
+		96F4ABEF29CC7D9000EB30B3 /* MacOSHost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABEE29CC7D9000EB30B3 /* MacOSHost.mm */; };
+		96F4ABF129CC7D9D00EB30B3 /* MacOSHost.h in Headers */ = {isa = PBXBuildFile; fileRef = 96F4ABF029CC7D9D00EB30B3 /* MacOSHost.h */; };
+		96F4ABFC29CC838900EB30B3 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96F4ABFB29CC838900EB30B3 /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		96F4AB8229CC69FE00EB30B3 /* libUniversalUI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libUniversalUI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UniversalUI.cpp; sourceTree = "<group>"; };
+		96F4AB9129CC6B7400EB30B3 /* UniversalUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UniversalUI; path = ../UniversalUI; sourceTree = "<group>"; };
+		96F4ABDD29CC7D6F00EB30B3 /* uDesktopApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uDesktopApplication.cpp; path = "../../UniversalUI-Source/uDesktopApplication.cpp"; sourceTree = "<group>"; };
+		96F4ABDE29CC7D6F00EB30B3 /* uView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uView.cpp; path = "../../UniversalUI-Source/uView.cpp"; sourceTree = "<group>"; };
+		96F4ABDF29CC7D6F00EB30B3 /* uWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uWindow.cpp; path = "../../UniversalUI-Source/uWindow.cpp"; sourceTree = "<group>"; };
+		96F4ABE029CC7D6F00EB30B3 /* CoreRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreRenderer.cpp; path = "../../UniversalUI-Source/CoreRenderer.cpp"; sourceTree = "<group>"; };
+		96F4ABE129CC7D6F00EB30B3 /* uSimpleApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uSimpleApplication.cpp; path = "../../UniversalUI-Source/uSimpleApplication.cpp"; sourceTree = "<group>"; };
+		96F4ABE229CC7D6F00EB30B3 /* CoreHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreHost.cpp; path = "../../UniversalUI-Source/CoreHost.cpp"; sourceTree = "<group>"; };
+		96F4ABE329CC7D6F00EB30B3 /* uApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uApplication.cpp; path = "../../UniversalUI-Source/uApplication.cpp"; sourceTree = "<group>"; };
+		96F4ABE429CC7D6F00EB30B3 /* AngeloOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AngeloOperations.cpp; path = "../../UniversalUI-Source/AngeloOperations.cpp"; sourceTree = "<group>"; };
+		96F4ABE529CC7D6F00EB30B3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "../../UniversalUI-Source/README.md"; sourceTree = "<group>"; };
+		96F4ABEE29CC7D9000EB30B3 /* MacOSHost.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSHost.mm; sourceTree = "<group>"; };
+		96F4ABF029CC7D9D00EB30B3 /* MacOSHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacOSHost.h; sourceTree = "<group>"; };
+		96F4ABFB29CC838900EB30B3 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96F4AB8029CC69FE00EB30B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96F4ABFC29CC838900EB30B3 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		96F4AB7929CC69FE00EB30B3 = {
+			isa = PBXGroup;
+			children = (
+				96F4AB9129CC6B7400EB30B3 /* UniversalUI */,
+				96F4ABDC29CC7D2F00EB30B3 /* UniversalUI-Source */,
+				96F4AB9029CC6A6600EB30B3 /* Include */,
+				96F4AB8429CC69FE00EB30B3 /* Source */,
+				96F4AB8329CC69FE00EB30B3 /* Products */,
+				96F4ABFA29CC838900EB30B3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+			usesTabs = 1;
+		};
+		96F4AB8329CC69FE00EB30B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96F4AB8229CC69FE00EB30B3 /* libUniversalUI.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96F4AB8429CC69FE00EB30B3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				96F4ABEE29CC7D9000EB30B3 /* MacOSHost.mm */,
+				96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		96F4AB9029CC6A6600EB30B3 /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				96F4ABF029CC7D9D00EB30B3 /* MacOSHost.h */,
+			);
+			path = Include;
+			sourceTree = "<group>";
+		};
+		96F4ABDC29CC7D2F00EB30B3 /* UniversalUI-Source */ = {
+			isa = PBXGroup;
+			children = (
+				96F4ABE429CC7D6F00EB30B3 /* AngeloOperations.cpp */,
+				96F4ABE229CC7D6F00EB30B3 /* CoreHost.cpp */,
+				96F4ABE029CC7D6F00EB30B3 /* CoreRenderer.cpp */,
+				96F4ABE529CC7D6F00EB30B3 /* README.md */,
+				96F4ABE329CC7D6F00EB30B3 /* uApplication.cpp */,
+				96F4ABDD29CC7D6F00EB30B3 /* uDesktopApplication.cpp */,
+				96F4ABE129CC7D6F00EB30B3 /* uSimpleApplication.cpp */,
+				96F4ABDE29CC7D6F00EB30B3 /* uView.cpp */,
+				96F4ABDF29CC7D6F00EB30B3 /* uWindow.cpp */,
+			);
+			name = "UniversalUI-Source";
+			path = Source;
+			sourceTree = SOURCE_ROOT;
+		};
+		96F4ABFA29CC838900EB30B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				96F4ABFB29CC838900EB30B3 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		96F4AB7E29CC69FE00EB30B3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96F4ABF129CC7D9D00EB30B3 /* MacOSHost.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		96F4AB8129CC69FE00EB30B3 /* UniversalUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96F4AB8D29CC69FE00EB30B3 /* Build configuration list for PBXNativeTarget "UniversalUI" */;
+			buildPhases = (
+				96F4AB7E29CC69FE00EB30B3 /* Headers */,
+				96F4AB7F29CC69FE00EB30B3 /* Sources */,
+				96F4AB8029CC69FE00EB30B3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UniversalUI;
+			productName = UniversalUI;
+			productReference = 96F4AB8229CC69FE00EB30B3 /* libUniversalUI.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		96F4AB7A29CC69FE00EB30B3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					96F4AB8129CC69FE00EB30B3 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 96F4AB7D29CC69FE00EB30B3 /* Build configuration list for PBXProject "UniversalUI" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 96F4AB7929CC69FE00EB30B3;
+			productRefGroup = 96F4AB8329CC69FE00EB30B3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				96F4AB8129CC69FE00EB30B3 /* UniversalUI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		96F4AB7F29CC69FE00EB30B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96F4ABEA29CC7D6F00EB30B3 /* uSimpleApplication.cpp in Sources */,
+				96F4ABE729CC7D6F00EB30B3 /* uView.cpp in Sources */,
+				96F4ABEC29CC7D6F00EB30B3 /* uApplication.cpp in Sources */,
+				96F4ABEF29CC7D9000EB30B3 /* MacOSHost.mm in Sources */,
+				96F4ABE829CC7D6F00EB30B3 /* uWindow.cpp in Sources */,
+				96F4ABE929CC7D6F00EB30B3 /* CoreRenderer.cpp in Sources */,
+				96F4AB8A29CC69FE00EB30B3 /* UniversalUI.cpp in Sources */,
+				96F4ABED29CC7D6F00EB30B3 /* AngeloOperations.cpp in Sources */,
+				96F4ABE629CC7D6F00EB30B3 /* uDesktopApplication.cpp in Sources */,
+				96F4ABEB29CC7D6F00EB30B3 /* CoreHost.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		96F4AB8B29CC69FE00EB30B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		96F4AB8C29CC69FE00EB30B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		96F4AB8E29CC69FE00EB30B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6YVVLBH5K4;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					./../,
+					./Include/,
+				);
+				LD_DYLIB_INSTALL_NAME = "@rpath/libUniversalUI.dylib";
+				LD_RUNPATH_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		96F4AB8F29CC69FE00EB30B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6YVVLBH5K4;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					./../,
+					./Include/,
+				);
+				LD_DYLIB_INSTALL_NAME = "@rpath/libUniversalUI.dylib";
+				LD_RUNPATH_SEARCH_PATHS = "";
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		96F4AB7D29CC69FE00EB30B3 /* Build configuration list for PBXProject "UniversalUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96F4AB8B29CC69FE00EB30B3 /* Debug */,
+				96F4AB8C29CC69FE00EB30B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96F4AB8D29CC69FE00EB30B3 /* Build configuration list for PBXNativeTarget "UniversalUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96F4AB8E29CC69FE00EB30B3 /* Debug */,
+				96F4AB8F29CC69FE00EB30B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 96F4AB7A29CC69FE00EB30B3 /* Project object */;
+}
