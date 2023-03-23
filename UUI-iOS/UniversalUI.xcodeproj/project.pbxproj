@@ -1,0 +1,367 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		96A33D1529CCC84A0079EEDF /* UniversalUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D1429CCC84A0079EEDF /* UniversalUI.cpp */; };
+		96A33D1A29CCC8CC0079EEDF /* IOSHost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D1929CCC8CC0079EEDF /* IOSHost.mm */; };
+		96A33D3729CCCABD0079EEDF /* uDesktopApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D2E29CCCABD0079EEDF /* uDesktopApplication.cpp */; };
+		96A33D3829CCCABD0079EEDF /* uApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3029CCCABD0079EEDF /* uApplication.cpp */; };
+		96A33D3929CCCABD0079EEDF /* CoreRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3129CCCABD0079EEDF /* CoreRenderer.cpp */; };
+		96A33D3A29CCCABD0079EEDF /* AngeloOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3229CCCABD0079EEDF /* AngeloOperations.cpp */; };
+		96A33D3B29CCCABD0079EEDF /* CoreHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3329CCCABD0079EEDF /* CoreHost.cpp */; };
+		96A33D3C29CCCABD0079EEDF /* uWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3429CCCABD0079EEDF /* uWindow.cpp */; };
+		96A33D3D29CCCABD0079EEDF /* uView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3529CCCABD0079EEDF /* uView.cpp */; };
+		96A33D3E29CCCABD0079EEDF /* uSimpleApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33D3629CCCABD0079EEDF /* uSimpleApplication.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		96A33CFF29CCC7C00079EEDF /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		96A33D0129CCC7C00079EEDF /* libUniversalUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUniversalUI.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		96A33D1429CCC84A0079EEDF /* UniversalUI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UniversalUI.cpp; sourceTree = "<group>"; };
+		96A33D1629CCC8760079EEDF /* UniversalUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UniversalUI; path = ../UniversalUI; sourceTree = "<group>"; };
+		96A33D1829CCC88B0079EEDF /* IOSHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IOSHost.h; sourceTree = "<group>"; };
+		96A33D1929CCC8CC0079EEDF /* IOSHost.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = IOSHost.mm; sourceTree = "<group>"; };
+		96A33D2E29CCCABD0079EEDF /* uDesktopApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uDesktopApplication.cpp; path = "../UniversalUI-Source/uDesktopApplication.cpp"; sourceTree = "<group>"; };
+		96A33D2F29CCCABD0079EEDF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = "../UniversalUI-Source/README.md"; sourceTree = "<group>"; };
+		96A33D3029CCCABD0079EEDF /* uApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uApplication.cpp; path = "../UniversalUI-Source/uApplication.cpp"; sourceTree = "<group>"; };
+		96A33D3129CCCABD0079EEDF /* CoreRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreRenderer.cpp; path = "../UniversalUI-Source/CoreRenderer.cpp"; sourceTree = "<group>"; };
+		96A33D3229CCCABD0079EEDF /* AngeloOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AngeloOperations.cpp; path = "../UniversalUI-Source/AngeloOperations.cpp"; sourceTree = "<group>"; };
+		96A33D3329CCCABD0079EEDF /* CoreHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreHost.cpp; path = "../UniversalUI-Source/CoreHost.cpp"; sourceTree = "<group>"; };
+		96A33D3429CCCABD0079EEDF /* uWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uWindow.cpp; path = "../UniversalUI-Source/uWindow.cpp"; sourceTree = "<group>"; };
+		96A33D3529CCCABD0079EEDF /* uView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uView.cpp; path = "../UniversalUI-Source/uView.cpp"; sourceTree = "<group>"; };
+		96A33D3629CCCABD0079EEDF /* uSimpleApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = uSimpleApplication.cpp; path = "../UniversalUI-Source/uSimpleApplication.cpp"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		96A33CFE29CCC7C00079EEDF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		96A33CF829CCC7C00079EEDF = {
+			isa = PBXGroup;
+			children = (
+				96A33D2D29CCCA4D0079EEDF /* UniversalUI-Source */,
+				96A33D2C29CCCA480079EEDF /* New Group */,
+				96A33D1629CCC8760079EEDF /* UniversalUI */,
+				96A33D1229CCC84A0079EEDF /* Include */,
+				96A33D1329CCC84A0079EEDF /* Source */,
+				96A33D0229CCC7C00079EEDF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		96A33D0229CCC7C00079EEDF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				96A33D0129CCC7C00079EEDF /* libUniversalUI.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		96A33D1229CCC84A0079EEDF /* Include */ = {
+			isa = PBXGroup;
+			children = (
+				96A33D1829CCC88B0079EEDF /* IOSHost.h */,
+			);
+			path = Include;
+			sourceTree = "<group>";
+		};
+		96A33D1329CCC84A0079EEDF /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				96A33D1429CCC84A0079EEDF /* UniversalUI.cpp */,
+				96A33D1929CCC8CC0079EEDF /* IOSHost.mm */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		96A33D2C29CCCA480079EEDF /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		96A33D2D29CCCA4D0079EEDF /* UniversalUI-Source */ = {
+			isa = PBXGroup;
+			children = (
+				96A33D3229CCCABD0079EEDF /* AngeloOperations.cpp */,
+				96A33D3329CCCABD0079EEDF /* CoreHost.cpp */,
+				96A33D3129CCCABD0079EEDF /* CoreRenderer.cpp */,
+				96A33D2F29CCCABD0079EEDF /* README.md */,
+				96A33D3029CCCABD0079EEDF /* uApplication.cpp */,
+				96A33D2E29CCCABD0079EEDF /* uDesktopApplication.cpp */,
+				96A33D3629CCCABD0079EEDF /* uSimpleApplication.cpp */,
+				96A33D3529CCCABD0079EEDF /* uView.cpp */,
+				96A33D3429CCCABD0079EEDF /* uWindow.cpp */,
+			);
+			name = "UniversalUI-Source";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		96A33D0029CCC7C00079EEDF /* UniversalUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 96A33D0A29CCC7C00079EEDF /* Build configuration list for PBXNativeTarget "UniversalUI" */;
+			buildPhases = (
+				96A33CFD29CCC7C00079EEDF /* Sources */,
+				96A33CFE29CCC7C00079EEDF /* Frameworks */,
+				96A33CFF29CCC7C00079EEDF /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UniversalUI;
+			productName = UniversalUI;
+			productReference = 96A33D0129CCC7C00079EEDF /* libUniversalUI.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		96A33CF929CCC7C00079EEDF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					96A33D0029CCC7C00079EEDF = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = 96A33CFC29CCC7C00079EEDF /* Build configuration list for PBXProject "UniversalUI" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 96A33CF829CCC7C00079EEDF;
+			productRefGroup = 96A33D0229CCC7C00079EEDF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				96A33D0029CCC7C00079EEDF /* UniversalUI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		96A33CFD29CCC7C00079EEDF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96A33D1529CCC84A0079EEDF /* UniversalUI.cpp in Sources */,
+				96A33D3C29CCCABD0079EEDF /* uWindow.cpp in Sources */,
+				96A33D1A29CCC8CC0079EEDF /* IOSHost.mm in Sources */,
+				96A33D3929CCCABD0079EEDF /* CoreRenderer.cpp in Sources */,
+				96A33D3E29CCCABD0079EEDF /* uSimpleApplication.cpp in Sources */,
+				96A33D3A29CCCABD0079EEDF /* AngeloOperations.cpp in Sources */,
+				96A33D3829CCCABD0079EEDF /* uApplication.cpp in Sources */,
+				96A33D3D29CCCABD0079EEDF /* uView.cpp in Sources */,
+				96A33D3729CCCABD0079EEDF /* uDesktopApplication.cpp in Sources */,
+				96A33D3B29CCCABD0079EEDF /* CoreHost.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		96A33D0829CCC7C00079EEDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		96A33D0929CCC7C00079EEDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		96A33D0B29CCC7C00079EEDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6YVVLBH5K4;
+				EXECUTABLE_EXTENSION = a;
+				HEADER_SEARCH_PATHS = (
+					./../,
+					./Include,
+				);
+				LD_DYLIB_INSTALL_NAME = "@rpath/libUniversalUI.a";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		96A33D0C29CCC7C00079EEDF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6YVVLBH5K4;
+				EXECUTABLE_EXTENSION = a;
+				HEADER_SEARCH_PATHS = (
+					./../,
+					./Include,
+				);
+				LD_DYLIB_INSTALL_NAME = "@rpath/libUniversalUI.a";
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		96A33CFC29CCC7C00079EEDF /* Build configuration list for PBXProject "UniversalUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96A33D0829CCC7C00079EEDF /* Debug */,
+				96A33D0929CCC7C00079EEDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		96A33D0A29CCC7C00079EEDF /* Build configuration list for PBXNativeTarget "UniversalUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96A33D0B29CCC7C00079EEDF /* Debug */,
+				96A33D0C29CCC7C00079EEDF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 96A33CF929CCC7C00079EEDF /* Project object */;
+}
