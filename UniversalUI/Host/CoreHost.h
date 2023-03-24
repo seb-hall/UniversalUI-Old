@@ -42,9 +42,6 @@ public:
     uApplicationType appType;
     CoreRenderer* renderer;
 
-    // return true if environment passes all checks
-    virtual bool TestEnvironment();
-
     // main loop function
     virtual int main();
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96C4D21229CE456E006E4CC7 /* MacOSRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96C4D21129CE456E006E4CC7 /* MacOSRenderer.mm */; };
 		96F4AB8A29CC69FE00EB30B3 /* UniversalUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */; };
 		96F4ABE629CC7D6F00EB30B3 /* uDesktopApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABDD29CC7D6F00EB30B3 /* uDesktopApplication.cpp */; };
 		96F4ABE729CC7D6F00EB30B3 /* uView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABDE29CC7D6F00EB30B3 /* uView.cpp */; };
@@ -22,6 +23,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96C4D21029CE451A006E4CC7 /* MacOSRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacOSRenderer.h; sourceTree = "<group>"; };
+		96C4D21129CE456E006E4CC7 /* MacOSRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSRenderer.mm; sourceTree = "<group>"; };
+		96C4D21329CE461E006E4CC7 /* Metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metal.h; sourceTree = "<group>"; };
 		96F4AB8229CC69FE00EB30B3 /* libUniversalUI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libUniversalUI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UniversalUI.cpp; sourceTree = "<group>"; };
 		96F4AB9129CC6B7400EB30B3 /* UniversalUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UniversalUI; path = ../UniversalUI; sourceTree = "<group>"; };
@@ -76,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				96F4ABEE29CC7D9000EB30B3 /* MacOSHost.mm */,
+				96C4D21129CE456E006E4CC7 /* MacOSRenderer.mm */,
 				96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */,
 			);
 			path = Source;
@@ -85,6 +90,8 @@
 			isa = PBXGroup;
 			children = (
 				96F4ABF029CC7D9D00EB30B3 /* MacOSHost.h */,
+				96C4D21029CE451A006E4CC7 /* MacOSRenderer.h */,
+				96C4D21329CE461E006E4CC7 /* Metal.h */,
 			);
 			path = Include;
 			sourceTree = "<group>";
@@ -182,6 +189,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96C4D21229CE456E006E4CC7 /* MacOSRenderer.mm in Sources */,
 				96F4ABEA29CC7D6F00EB30B3 /* uSimpleApplication.cpp in Sources */,
 				96F4ABE729CC7D6F00EB30B3 /* uView.cpp in Sources */,
 				96F4ABEC29CC7D6F00EB30B3 /* uApplication.cpp in Sources */,

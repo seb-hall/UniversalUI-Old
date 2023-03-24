@@ -46,10 +46,6 @@ int UniversalUI(uApplication* userApp) {
         host->appType = invalid;
         return false;
     }
-	
-	if (!host->TestEnvironment()) {
-		return false;
-	}
 
 	printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
     

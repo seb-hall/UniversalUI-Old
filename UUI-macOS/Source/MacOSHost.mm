@@ -9,6 +9,7 @@
 #include <UniversalUI/Core/CoreGeometry.h>
 
 #include <Cocoa/Cocoa.h>
+#import <MetalKit/MetalKit.h>
 
 #include <map>
 
@@ -23,48 +24,53 @@ struct SystemWindowPack {
 std::map<NSWindow*, SystemWindowPack*> packMap = { };
 std::map<uWindow*, SystemWindowPack*> windowMap = { };
 
-// Declare a class that conforms to NSWindowDelegate
-@interface WindowDelegate : NSObject <NSWindowDelegate>
-@end
+@interface AppDelegate : NSObject <NSWindowDelegate, MTKViewDelegate>
 
-// Implement the class
-@implementation WindowDelegate
-
-// Define a method that will be called when the window is resized
-- (void)windowDidResize:(NSNotification *)notification {
-	
-	// Get the window object from the notification
-	NSWindow *nsWindow = [notification object];
-	// Get the new size of the window
-	NSSize nsSize = [nsWindow frame].size;
-	uSize newSize = {float(nsSize.width), float(nsSize.height)};
-	
-	SystemWindowPack* pack = packMap[nsWindow];
-	
-	if (host->appType == desktop) {
-		uDesktopApplication* app = static_cast<uDesktopApplication*>(host->app);
-		app->WindowResized(pack->window, newSize);
-	} else if (host->appType == simple) {
-		uSimpleApplication* app = static_cast<uSimpleApplication*>(host->app);
-		app->Resized(newSize);
-	}
-}
+@property (nonatomic, strong) NSWindow *window;
+@property (nonatomic, strong) MTKView *view;
 
 @end
 
-NSApplication* nsApplication;
-WindowDelegate* windowDelegate;
+@implementation AppDelegate
 
-bool MacOSHost::TestEnvironment() {
-	nsApplication = [NSApplication sharedApplication];
-	[nsApplication setActivationPolicy:NSApplicationActivationPolicyRegular];
-	windowDelegate = [[WindowDelegate alloc] init];
+- (void)setupWindowAndMTKView {
+	// Create a window with a content view
+	self.window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 800, 600)
+											  styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable
+												backing:NSBackingStoreBuffered
+												  defer:NO];
+	self.window.delegate = self;
+	self.window.title = @"MTKView Example";
 	
-    return true;
+	// Create a MetalKit view as the content view
+	self.view = [[MTKView alloc] initWithFrame:self.window.contentView.bounds device:MTLCreateSystemDefaultDevice()];
+	self.view.delegate = self;
+	self.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+	self.view.clearColor = MTLClearColorMake(0.0, 0.5, 1.0, 1.0);
+	
+	// Add the view to the window's content view
+	[self.window.contentView addSubview:self.view];
+	
+	// Show the window
+	[self.window makeKeyAndOrderFront:nil];
 }
+
+// Implement the MTKViewDelegate methods
+- (void)mtkView:(MTKView *)view drawableSizeWillChange:(CGSize)size {
+	// Handle resize events here
+}
+
+- (void)drawInMTKView:(MTKView *)view {
+	// Draw the view here
+}
+
+@end
 
 int MacOSHost::main() {
 	
+	AppDelegate* appDelegate = [[AppDelegate alloc] init];
+	NSApplication* nsApplication = [NSApplication sharedApplication];
+
 	[nsApplication activateIgnoringOtherApps:true];
 	[nsApplication run];
 	

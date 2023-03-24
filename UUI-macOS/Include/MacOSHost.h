@@ -15,7 +15,6 @@
 class UUI MacOSHost: public CoreHost {
 
 public:
-    bool TestEnvironment() override;
     int main() override;
     void ShowWindow(uWindow* window) override;
     void SetTitle(uWindow* window, std::string title) override;
