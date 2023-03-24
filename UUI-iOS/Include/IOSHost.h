@@ -15,7 +15,6 @@
 class UUI IOSHost: public CoreHost {
 
 public:
-    bool TestEnvironment() override;
     int main() override;
 };
 

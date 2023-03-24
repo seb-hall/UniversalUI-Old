@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		967D384B29CE3F1100461E0B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 967D384A29CE3F1000461E0B /* UIKit.framework */; };
+		967D384D29CE3F2200461E0B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 967D384C29CE3F2200461E0B /* Foundation.framework */; };
 		96A33D9B29CCCDE10079EEDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96A33D9A29CCCDE10079EEDF /* Assets.xcassets */; };
 		96A33D9E29CCCDE10079EEDF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96A33D9C29CCCDE10079EEDF /* LaunchScreen.storyboard */; };
 		96A33DC429CCCEC00079EEDF /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96A33DC329CCCEC00079EEDF /* main.cpp */; };
@@ -45,6 +47,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		967D384A29CE3F1000461E0B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		967D384C29CE3F2200461E0B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		96A33D8B29CCCDE00079EEDF /* MyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96A33D9A29CCCDE10079EEDF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96A33D9D29CCCDE10079EEDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				96A33DD029CCD5590079EEDF /* libUniversalUI.a in Frameworks */,
+				967D384D29CE3F2200461E0B /* Foundation.framework in Frameworks */,
+				967D384B29CE3F1100461E0B /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +122,8 @@
 		96A33DC529CCCF710079EEDF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				967D384C29CE3F2200461E0B /* Foundation.framework */,
+				967D384A29CE3F1000461E0B /* UIKit.framework */,
 				96A33DCF29CCD5270079EEDF /* libUniversalUI.a */,
 			);
 			name = Frameworks;
@@ -420,7 +428,6 @@
 				INFOPLIST_FILE = MyApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -453,7 +460,6 @@
 				INFOPLIST_FILE = MyApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

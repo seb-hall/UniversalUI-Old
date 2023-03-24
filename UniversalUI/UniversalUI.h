@@ -17,8 +17,6 @@
 //  and should be included in your main.cpp file. All files in
 //  this directory - "UniversalUI" are completely cross-platform.
 
-// HOST-DEFINED
-
 #ifndef UNIVERSALUI_H
 #define UNIVERSALUI_H
 
@@ -34,23 +32,31 @@
 
 #include <UniversalUI/Core/uApplication.h>
 
+//  Run UniversalUI. This function takes an instance of uApplication
+//  but it should always be either an instance of uDesktopApplication
+//  or uSimpleApplication, depending on the platform and the kind of
+//  app you're designing. The framework will first check your app and
+//  the installation for compatibiltiy, returning an error code (defined
+//  later in this file) if there are any issues. If all is well, the
+//  framework will then start the main loop and call the FinishedLaunching
+//  method on your uApplication instance.
+int UUI UniversalUI(uApplication* userApp);
 
-//  Initialise UniversalUI - checking for installation and user
-//  aplication compatibility. If all is well, the function will
-//  return true, and uuiMain should be called to start your app.
-//  If the function returns false, there are errors in the host
-//  platform i.e no OpenGL support or missing resources. The
-//  int main() function should return at this point as UniversalUI
-//  will not run correctly.
+//  Run UniversalUI. This function takes an instance of uApplication
+//  but it should always be either an instance of uDesktopApplication
+//  or uSimpleApplication, depending on the platform and the kind of
+//  app you're designing. This function overload also takes launch arguments
+//  as parameters. The framework will first check your app and the 
+//  installation for compatibiltiy, returning an error code (defined
+//  later in this file) if there are any issues. If all is well, the
+//  framework will then start the main loop and call the FinishedLaunching
+//  method on your uApplication instance.
+int UUI UniversalUI(uApplication* userApp, int argc, char* argv[]);
 
-bool UUI UniversalUI(uApplication* userApp);
-
-//  Run UniversalUI. This function will only return after all
-//  the other parts of the framework are terminated. You shouldn't
-//  assume the function is returned and so the standard
-//  implementation is to add 'return uuiMain(argc, argv);' as the
-//  last line of your int main() function in main.cpp.
-
-int UUI uuiMain(int argc, char* argv[]);
+#define EXIT_SUCCESS    0       //  normal exit conditions
+#define APP_TYPE_ERROR  1       //  app type unsupported (e.g an instance of uDesktopApplication being used on iOS)
+#define APP_CLASS_ERROR 2       //  app is an instance of uApplication and not uDesktopApplication or uSimpleApplication
+#define OPENGL_ERROR    3       //  platform doesn't support OpenGL to the required level (for non-Apple platforms)
+#define METAL_ERROR     4       //  platform doesn't support Metal (for Apple platforms)
 
 #endif

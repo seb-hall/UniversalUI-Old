@@ -26,9 +26,6 @@ public:
 int main(int argc, char* argv[]) {
     
     MyApp* app = new MyApp;
-    if (!UniversalUI(app)) {
-        return -1;
-    }
     
-    return uuiMain(argc, argv);
+    return UniversalUI(app); 
 }

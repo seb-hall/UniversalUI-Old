@@ -63,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				96A33D2D29CCCA4D0079EEDF /* UniversalUI-Source */,
-				96A33D2C29CCCA480079EEDF /* New Group */,
 				96A33D1629CCC8760079EEDF /* UniversalUI */,
 				96A33D1229CCC84A0079EEDF /* Include */,
 				96A33D1329CCC84A0079EEDF /* Source */,
@@ -94,13 +93,6 @@
 				96A33D1929CCC8CC0079EEDF /* IOSHost.mm */,
 			);
 			path = Source;
-			sourceTree = "<group>";
-		};
-		96A33D2C29CCCA480079EEDF /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		96A33D2D29CCCA4D0079EEDF /* UniversalUI-Source */ = {

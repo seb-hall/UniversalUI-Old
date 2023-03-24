@@ -31,7 +31,7 @@ void uDesktopApplication::SetWindowTitle(uWindow* window, std::string title) {
 //  called when the application has finished launching - i.e only
 //  once the UniversalUI environment has been initialised and the 
 //  app can actually start doing stuff like making windows!
-void uDesktopApplication::FinishedLaunching(int argc, char* argv[]) { }
+void uDesktopApplication::FinishedLaunching() { }
 
 //  called when the application has been requested to quit by the operating
 //  system. use only for last-second mandatory operations.
