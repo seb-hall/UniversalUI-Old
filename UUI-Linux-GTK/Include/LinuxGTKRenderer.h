@@ -15,19 +15,22 @@ class LinuxGTKRenderer: public CoreRenderer {
     public:
 
 
-    unsigned int genericShader;
-    unsigned int textureShader;
-    unsigned int genericVertexArray;
-    unsigned int FBO;
+    //unsigned int genericShader;
+    //unsigned int textureShader;
+    //unsigned int genericVertexArray;
+    //unsigned int FBO;
 
     //  compiler shaders and prepare for rendering
     bool InitialiseRenderer() override;
+
+    //  compile shaders and generate buffers for window
+    void InitialiseRendererForWindow(uWindow* window) override;
 
     //  render a window, override by platform for OpenGL/Metal functionality
     void RenderWindow(uWindow* window) override;
 
     //  render a view, override by platform for OpenGL/Metal functionality
-    void RenderView(uView* view) override;
+    void RenderView(uView* view, uWindow* window) override;
     
     //  generate a new pixel buffer in GPU memory with a given size
     aPixelBuffer NewPixelBuffer(uSize size) override;

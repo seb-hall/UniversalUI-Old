@@ -39,11 +39,20 @@ class UUI CoreRenderer {
     //  compiler shaders and prepare for rendering
     virtual bool InitialiseRenderer();
 
+    //  initialise window resources and fetch render commands
+    void SetupWindowForRendering(uWindow* window);
+
+    // setup view resources
+    void SetupViewForRendering(uView* view);
+
+    //  compile shaders and generate buffers for window
+    virtual void InitialiseRendererForWindow(uWindow* window);
+
     //  render a window, override by platform for OpenGL/Metal functionality
     virtual void RenderWindow(uWindow* window);
     
     //  render a view, override by platform for OpenGL/Metal functionality
-    virtual void RenderView(uView* view);
+    virtual void RenderView(uView* view, uWindow* parentWindow);
 
     //  generate a new pixel buffer in GPU memory with a given size
     virtual aPixelBuffer NewPixelBuffer(uSize size);
@@ -53,12 +62,6 @@ class UUI CoreRenderer {
 
     //  fill a buffer with a given colour - use mainly for testing purposes
     virtual void ClearBuffer(aPixelBuffer buffer, uColour colour);
-
-    //  initialise window resources and fetch render commands
-    void SetupWindowForRendering(uWindow* window);
-
-    // setup view resources
-    void SetupViewForRendering(uView* view);
 
 };
 

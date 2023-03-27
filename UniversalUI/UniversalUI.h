@@ -42,17 +42,6 @@
 //  method on your uApplication instance.
 int UUI UniversalUI(uApplication* userApp);
 
-//  Run UniversalUI. This function takes an instance of uApplication
-//  but it should always be either an instance of uDesktopApplication
-//  or uSimpleApplication, depending on the platform and the kind of
-//  app you're designing. This function overload also takes launch arguments
-//  as parameters. The framework will first check your app and the 
-//  installation for compatibiltiy, returning an error code (defined
-//  later in this file) if there are any issues. If all is well, the
-//  framework will then start the main loop and call the FinishedLaunching
-//  method on your uApplication instance.
-int UUI UniversalUI(uApplication* userApp, int argc, char* argv[]);
-
 #define EXIT_SUCCESS    0       //  normal exit conditions
 #define APP_TYPE_ERROR  1       //  app type unsupported (e.g an instance of uDesktopApplication being used on iOS)
 #define APP_CLASS_ERROR 2       //  app is an instance of uApplication and not uDesktopApplication or uSimpleApplication

@@ -33,6 +33,7 @@ struct SystemWindowPack {
     unsigned int VAO, VBO, pixelbuffer, framebuffer;
 };
 
+//  map of uWindows to SystemWindowPack for getting GTK objects for a given uWindow
 std::map<uWindow*, SystemWindowPack*> windowMap = { };
 
 //  forward definition of callbacks
@@ -79,7 +80,6 @@ void DeployWindowPack(SystemWindowPack* pack) {
     printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
 
     // Enable alpha blending
-
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -137,11 +137,12 @@ void LinuxGTKHost::ShowWindow(uWindow* window) {
     pack->window = window;
     DeployWindowPack(pack);
     host->renderer->SetupWindowForRendering(window);
+    host->renderer->InitialiseRendererForWindow(window);
 }
 
 bool LinuxGTKHost::TestEnvironment() {
 
-    // initialise GTK with no arguments (arguments are for user app not windowing framework)
+    // initialise GTK with no arguments
     gtk_init(nullptr, nullptr);
 
     //  create test window and check for valid context creation
@@ -187,25 +188,27 @@ void LinuxGTKHost::SetTitle(uWindow* window, std::string title) {
 //  GTK draw callback
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
 
-    //printf("INFO: draw window\n");
-
-    int width, height;
+    //  get background colour of widget
     GdkRGBA color;
-    GtkStyleContext* styleContext = gtk_widget_get_style_context (widget);
+    GtkStyleContext* styleContext = gtk_widget_get_style_context(widget);
 
+    //  get width and height of widget
+    int width, height;
     width = gtk_widget_get_allocated_width(widget);
     height = gtk_widget_get_allocated_height(widget);
 
-    gtk_render_background (styleContext, cairoContext, 0, 0, width, height);
+    //  apply background colour to widget
+    gtk_render_background(styleContext, cairoContext, 0, 0, width, height);
     gtk_style_context_get_color(styleContext, gtk_style_context_get_state (styleContext), &color);
-    gdk_cairo_set_source_rgba (cairoContext, &color);
+    gdk_cairo_set_source_rgba(cairoContext, &color);
+    cairo_fill(cairoContext);
 
-    cairo_fill (cairoContext);
 
+    //  set glContext to current
     gdk_gl_context_make_current(pack->glContext);
 
+    //  bind framebuffer and resize GL Image
     glBlendFunc(GL_BLEND, GL_ONE_MINUS_SRC_ALPHA);
-
     glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
     glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
@@ -222,11 +225,14 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    //  render window
     host->renderer->RenderWindow(pack->window);
 
+    //  unbind framebuffer and image
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    //  draw GL Image to cairo surface
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, width, height);
 
     return false;

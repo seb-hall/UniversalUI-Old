@@ -21,6 +21,15 @@
 #include <iostream>
 #include <stdio.h>
 #include <cstdint>
+#include <map>
+
+struct WindowRenderPack {
+    unsigned int ShaderProgram;
+    unsigned int VertexArray;
+
+};
+
+std::map<uWindow*, WindowRenderPack> renderPackMap;
 
 bool CompilerShader(const char* vertex, const char* fragment, unsigned int &shaderProgram) {
     // build and compile our shader program
@@ -71,53 +80,17 @@ bool CompilerShader(const char* vertex, const char* fragment, unsigned int &shad
 
 //  compiler shaders and prepare for rendering
 bool LinuxGTKRenderer::InitialiseRenderer() {
+
     
-    if (!CompilerShader(AngeloCoreVertex, AngeloCoreFragment, genericShader)) {
-        return false;
-    }
-
-    printf("SHADER COMPILATION SUCCEEDED\n");
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-    // ------------------------------------------------------------------
-    float vertices[] = {
-         1.0f,  1.0f, // bottom left  
-         1.0f, -1.0f, // bottom right 
-        -1.0f,  1.0f, // top left   
-         1.0f, -1.0f, // bottom right 
-        -1.0f, -1.0f, // top right
-        -1.0f,  1.0f  // top left   
-    };
-
-    unsigned int VBO;
-    glGenVertexArrays(1, &genericVertexArray);
-    glGenBuffers(1, &VBO);
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(genericVertexArray);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-    glBindVertexArray(0); 
-
-    glDisable(GL_CULL_FACE);
 
     return true;
 }
 
 //  render a view, override by platform for OpenGL/Metal functionality
-void LinuxGTKRenderer::RenderView(uView* view) {
+void LinuxGTKRenderer::RenderView(uView* view, uWindow* parentWindow) {
 
     for (uView* subview : view->subviews) {
-        RenderView(subview);
+        RenderView(subview, parentWindow);
     }
 
     // redraw persistent views if anything changed.
@@ -144,15 +117,40 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     int pmsSize = commands[view].parameters.size(); // get the size of the vector
     float* pmsArray = &commands[view].parameters[0]; // get a pointer to the first element
 
+    
+
+    printf("\nBegin RCOM-DUMP IN RENDERER\n");
+
+    printf("\nCODES\n");
+
+    for (unsigned short code : commands[view].codes) {
+        printf("%d ", code);
+    }
+
+    printf("\n\nPARAMS\n");
+
+    for (float param : commands[view].parameters) {
+        printf("%f ", param);
+    }
+
+	printf("\n\nINDICES\n");
+
+    for (unsigned short index : commands[view].indices) {
+        printf("%d ", index);
+    }
+
+    printf("\n\nDONE\n");
+
     unsigned int opsTex;
 
     glGenTextures(1, &opsTex);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, opsTex);
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32UI, opsSize, 1);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, opsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_SHORT, opsArray);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, opsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, opsArray);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     unsigned int idsTex;
 
@@ -160,7 +158,7 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, idsTex);
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_R32UI, idsSize, 1);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, idsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_SHORT, idsArray);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, idsSize, 1, GL_RED_INTEGER, GL_UNSIGNED_INT, idsArray);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -178,11 +176,13 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
 
-    glUseProgram(genericShader);
+    glUseProgram(renderPackMap[parentWindow].ShaderProgram);
 
-    glUniform1i(glGetUniformLocation(genericShader, "ops"), 0);
-    glUniform1i(glGetUniformLocation(genericShader, "ids"), 1);
-    glUniform1i(glGetUniformLocation(genericShader, "pms"), 2);
+    glUniform1i(glGetUniformLocation(renderPackMap[parentWindow].ShaderProgram, "ops"), 0);
+    glUniform1i(glGetUniformLocation(renderPackMap[parentWindow].ShaderProgram, "ids"), 1);
+    glUniform1i(glGetUniformLocation(renderPackMap[parentWindow].ShaderProgram, "pms"), 2);
+
+    glUniform1i(glGetUniformLocation(renderPackMap[parentWindow].ShaderProgram, "numIndices"), opsSize);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, opsTex);
@@ -191,7 +191,7 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, pmsTex);
 
-    glBindVertexArray(genericVertexArray);
+    glBindVertexArray(renderPackMap[parentWindow].VertexArray);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
@@ -202,12 +202,55 @@ void LinuxGTKRenderer::RenderView(uView* view) {
     printf("ANGELO-INFO: rendered view to screen\n");
 }
 
+//  setup shaders and buffers for window
+void LinuxGTKRenderer::InitialiseRendererForWindow(uWindow* window) {
+    WindowRenderPack pack;
+    renderPackMap[window] = pack;
+    
+    if (!CompilerShader(AngeloCoreVertex, AngeloCoreFragment, renderPackMap[window].ShaderProgram)) {
+        return;
+    }
+
+    printf("SHADER COMPILATION SUCCEEDED\n");
+
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+         1.0f,  1.0f, // bottom left  
+         1.0f, -1.0f, // bottom right 
+        -1.0f,  1.0f, // top left   
+         1.0f, -1.0f, // bottom right 
+        -1.0f, -1.0f, // top right
+        -1.0f,  1.0f  // top left   
+    };
+
+    unsigned int VBO;
+    glGenVertexArrays(1, &renderPackMap[window].VertexArray);
+    glGenBuffers(1, &VBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(renderPackMap[window].VertexArray);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+    glBindVertexArray(0); 
+
+    glDisable(GL_CULL_FACE);
+}
+
 //  render a window, override by platform for OpenGL/Metal functionality
 void LinuxGTKRenderer::RenderWindow(uWindow* window) {
     printf("BEGINNING WINDOW RENDER FOR %s.\n", window->title.c_str());
-    InitialiseRenderer();
     SetupViewForRendering(window->rootView);
-    RenderView(window->rootView);
+    RenderView(window->rootView, window);
 }
 
 //  generate a new pixel buffer in GPU memory with a given size
@@ -232,7 +275,7 @@ void LinuxGTKRenderer::ResizePixelBuffer(aPixelBuffer buffer, uSize size) {
 
 //  fill a buffer with a given colour - use mainly for testing purposes
 void LinuxGTKRenderer::ClearBuffer(aPixelBuffer buffer, uColour colour) {
-    glGenFramebuffers(1, &FBO);
+    /*glGenFramebuffers(1, &FBO);
     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
     glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, buffer.id, 0);
     GLenum drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
@@ -243,6 +286,6 @@ void LinuxGTKRenderer::ClearBuffer(aPixelBuffer buffer, uColour colour) {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+    */
     printf("cleared buffer\n");
 }

@@ -66,20 +66,6 @@ void CoreRenderer::SetupViewForRendering(uView* view) {
     
 }
 
-// return a combined vector of all render operations for all subviews within a specified view (inclusive)
-/*std::vector<aRenderOperation> OpsForView(uView* view) {
-    std::vector<aRenderOperation> renderOps;
-
-    for (uView* subview : view->subviews) {
-        std::vector<aRenderOperation> subviewOps = OpsForView(subview);
-        renderOps.insert(renderOps.end(), subviewOps.begin(), subviewOps.end());
-    }
-
-    std::vector<aRenderOperation> viewOps = view->Draw();
-    renderOps.insert(renderOps.end(), viewOps.begin(), viewOps.end());
-    return renderOps;
-} */
-
 //  initialise window resources and fetch render commands
 void CoreRenderer::SetupWindowForRendering(uWindow* window) {
 
@@ -124,11 +110,14 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
 //  compiler shaders and prepare for rendering
 bool CoreRenderer::InitialiseRenderer() { return true; }
 
+//  compiler shaders and prepare for rendering
+void CoreRenderer::InitialiseRendererForWindow(uWindow* window) { }
+
 //  render a window, override by platform for OpenGL/Metal functionality
 void CoreRenderer::RenderWindow(uWindow* window) { }
 
 //  render a view, override by platform for OpenGL/Metal functionality
-void CoreRenderer::RenderView(uView* view) { }
+void CoreRenderer::RenderView(uView* view, uWindow* parentWindow) { }
 
 //  generate a new pixel buffer in GPU memory with a given size
 aPixelBuffer CoreRenderer::NewPixelBuffer(uSize size) { aPixelBuffer a; return a; }

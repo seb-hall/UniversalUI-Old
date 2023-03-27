@@ -1,10 +1,3 @@
-//  AngeloCoreFragment.h    written by sebhall in March 2023
-
-#ifndef ANGELOCOREFRAGMENT_H
-#define ANGELOCOREFRAGMENT_H
-
-const char* AngeloCoreFragment = R"(
-
 #version 330 core
 
 //  access macros for reading Operations, IDs, and Parameters arrays respectively
@@ -53,7 +46,6 @@ vec4 VectorMain(vec2 pos) {
 	int i = 0; // Initialize a loop counter
 	uint op = OPS(i); // Get the first operation
 
-
 	while (i < numIndices) { // Loop until end-of-instructions marker or texture size limit
 		switch (op) {
 			case CLEAR_COLOUR:
@@ -66,9 +58,9 @@ vec4 VectorMain(vec2 pos) {
 				drawWeight = PMS(IDS(i));
 				break;
 			case LINE_TWOPOINT:
-				if (LineDistance(pos, vec2(PMS(IDS(i)), PMS(IDS(i) + 1u)), vec2(PMS(IDS(i) + 2u), PMS(IDS(i) + 3u))) <= drawWeight) {
-					return drawColour; // Red for object
-				}
+				//if (sdLine(pos, vec2(50.0, 50.0), vec2(150.0, 50.0)) <= drawWeight) {
+					return vec4(0.0, 0.0, 0.0, 1.0); // Red for object
+				//}
 				break;
 		}
 
@@ -76,7 +68,7 @@ vec4 VectorMain(vec2 pos) {
 		op = OPS(i); // Get the next operation
 	}
 
-	return clearColour;// Black for background
+	return drawColour;// Black for background
 
 }
 
@@ -84,6 +76,3 @@ void main() {
 
 	FragColor = VectorMain(gl_FragCoord.xy);
 }
-)";
-
-#endif
