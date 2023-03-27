@@ -8,18 +8,44 @@
 
 #include <stdio.h>
 
-class view1: public uView {
+class ToolBar: public uView {
+    public:
+    std::vector<aRenderOperation> Draw() override {
+        printf("I AM TOOLBAR\n");
+        return {};
+    }
+};
+
+class MainView: public uView {
     public:
 
+    ToolBar* toolBar;
+
+    MainView() : uView() {
+        toolBar = new ToolBar;
+        toolBar->backgroundColour = CORE_RED;
+        subviews.push_back(toolBar);
+    }
+
     std::vector<aRenderOperation> Draw() override {
-        printf("I  AM VIEW!\n");
-        return std::vector<aRenderOperation> {
-            AngeloColour(CORE_BLUE),
+
+        toolBar->frame.x = 0.0f;
+        toolBar->frame.y = 0.0f;
+        toolBar->frame.width = frame.width;
+        toolBar->frame.height = 10.0f;
+        toolBar->needsRedraw = true;
+
+        std::vector<aRenderOperation> operations =  {
+            AngeloColour(CORE_ALMOST_BLACK),
             AngeloWeight(2.5),
-            AngeloLine({25.0, 25.0}, {100.0, 25.0}),
-            AngeloWeight(5.0),
-            AngeloLine({25.0, 50.0}, {100.0, 50.0})
+            AngeloLine({10.0f, 10.0f}, {frame.width - 10.0f, 10.0f}),
+            AngeloLine({10.0f, frame.height - 10.0f}, {frame.width - 10.0f, frame.height - 10.0f}),
+            AngeloLine({10.0f, 10.0f}, {10.0f, frame.height - 10.0f}),
+            AngeloLine({frame.width - 10.0f, 10.0f}, {frame.width - 10.0f, frame.height - 10.0f})
+
         };
+
+        return operations;
     }
     
 };
@@ -40,8 +66,8 @@ class App: public uDesktopApplication {
         window1 = new uWindow({1000, 750}, "App - Main");
         window2 = new uWindow({250, 750}, "App - Tools");
 
-        window1->rootView = new view1;
-        window1->rootView->backgroundColour = CORE_RED;
+        window1->rootView = new MainView;
+        window1->rootView->backgroundColour = {1.0, 1.0, 1.0, 0.0};
 
         window1->background = CORE_RED;
 

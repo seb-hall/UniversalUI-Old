@@ -98,9 +98,7 @@ void LinuxGTKRenderer::RenderView(uView* view, uWindow* parentWindow) {
         // ANGELO MAIN DRAW METHOD
         printf("ANGELO-INFO: rendered to texture\n");
         view->needsRedraw = false;
-    }
-    
-    if (view->persistent) {
+    } else if (view->persistent) {
         // RENDER TEXTURE TO SCREEN
         printf("ANGELO-INFO: render texture to screen\n");
         return;
@@ -116,30 +114,6 @@ void LinuxGTKRenderer::RenderView(uView* view, uWindow* parentWindow) {
 
     int pmsSize = commands[view].parameters.size(); // get the size of the vector
     float* pmsArray = &commands[view].parameters[0]; // get a pointer to the first element
-
-    
-
-    printf("\nBegin RCOM-DUMP IN RENDERER\n");
-
-    printf("\nCODES\n");
-
-    for (unsigned short code : commands[view].codes) {
-        printf("%d ", code);
-    }
-
-    printf("\n\nPARAMS\n");
-
-    for (float param : commands[view].parameters) {
-        printf("%f ", param);
-    }
-
-	printf("\n\nINDICES\n");
-
-    for (unsigned short index : commands[view].indices) {
-        printf("%d ", index);
-    }
-
-    printf("\n\nDONE\n");
 
     unsigned int opsTex;
 
@@ -162,8 +136,6 @@ void LinuxGTKRenderer::RenderView(uView* view, uWindow* parentWindow) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glBindTexture(GL_TEXTURE_2D, 0);
-
-    
 
     unsigned int pmsTex;
 
@@ -199,7 +171,6 @@ void LinuxGTKRenderer::RenderView(uView* view, uWindow* parentWindow) {
     glDeleteTextures(1, &idsTex);
     glDeleteTextures(1, &pmsTex);
 
-    printf("ANGELO-INFO: rendered view to screen\n");
 }
 
 //  setup shaders and buffers for window
@@ -248,7 +219,7 @@ void LinuxGTKRenderer::InitialiseRendererForWindow(uWindow* window) {
 
 //  render a window, override by platform for OpenGL/Metal functionality
 void LinuxGTKRenderer::RenderWindow(uWindow* window) {
-    printf("BEGINNING WINDOW RENDER FOR %s.\n", window->title.c_str());
+    //printf("BEGINNING WINDOW RENDER FOR %s.\n", window->title.c_str());
     SetupViewForRendering(window->rootView);
     RenderView(window->rootView, window);
 }

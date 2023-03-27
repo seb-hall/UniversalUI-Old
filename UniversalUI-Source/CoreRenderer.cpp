@@ -78,31 +78,6 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
     SetupViewForRendering(window->rootView);
 
     aRenderCommand renderCommand = commands[window->rootView];
-
-    
-    printf("\nBegin RCOM-DUMP\n");
-
-    printf("\nCODES\n");
-
-    for (unsigned short code : renderCommand.codes) {
-        printf("%d ", code);
-    }
-
-    printf("\n\nPARAMS\n");
-
-    for (float param : renderCommand.parameters) {
-        printf("%f ", param);
-    }
-
-	printf("\n\nINDICES\n");
-
-    for (unsigned short index : renderCommand.indices) {
-        printf("%d ", index);
-    }
-
-    printf("\n\nDONE\n");
-
-    printf("UUI-INFO: window '%s' setup for Angelo rendering\n", window->title.c_str()); 
 }
 
 //  *** PLACEHOLDER FUNCTIONS ***
