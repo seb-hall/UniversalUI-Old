@@ -81,6 +81,10 @@ void DeployWindowPack(SystemWindowPack* pack) {
     gdk_gl_context_get_version(pack->glContext, &major, &minor);
     printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
 
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     /*
     // Enable alpha blending
     glEnable(GL_CULL_FACE);
