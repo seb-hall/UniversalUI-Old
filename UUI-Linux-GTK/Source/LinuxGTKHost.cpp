@@ -235,6 +235,23 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     //  draw GL Image to cairo surface
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pack->pixelbuffer, GL_TEXTURE, 1.0, 0, 0, width, height);
 
+    cairo_font_extents_t fe;
+    cairo_text_extents_t te;
+    char alphabet[] = "AbCdEfGhIjKlMnOpQrStUvWxYz";
+    char letter[2];
+
+    cairo_font_extents (cairoContext, &fe);
+    for (int i=0; i < strlen(alphabet); i++) {
+        *letter = '\0';
+        strncat (letter, alphabet + i, 1);
+
+        cairo_text_extents (cairoContext, letter, &te);
+        cairo_move_to (cairoContext, i + 0.5 - te.x_bearing - te.width / 2,
+                0.5 - fe.descent + fe.height / 2);
+        cairo_show_text (cairoContext, letter);
+    }
+
+    cairo_fill (cairoContext);
     return false;
 } 
 

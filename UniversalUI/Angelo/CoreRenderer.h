@@ -1,11 +1,11 @@
 //  CoreRenderer.h   first written by Seb H in March 2023
 //
 //  CoreRenderer is a generic renderer object, designed 
-//  as an abstraction layer over the underlying API, 
-//  be that OpenGL, Metal or possibly in the future, 
-//  Vulkan. In the interest of simplicity, for now
-//  aRenderer will perform most of the actual render
-//  management, but may be split up in future
+//  as an abstraction layer over the underlying API, be 
+//  that OpenGL, Metal or possibly in the future, Vulkan. 
+//  In the interest of simplicity, for now aRenderer will 
+//  perform most of the actual render management, but may 
+//  be split up in future
 
 #ifndef CORERENDERER_H
 #define CORERENDERER_H
