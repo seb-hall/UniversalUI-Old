@@ -43,8 +43,10 @@ public:
     uView(uFrame initFrame = {0.0, 0.0, 100.0, 100.0}, bool initPersistent = false);
 
     //  overridable draw command
-    virtual std::vector<aRenderOperation> Draw();
-    
+    //virtual std::vector<aRenderOperation> Draw();
+    virtual void Draw();
+
+
     //virtual void ClickUp();
     //virtual void ClickDown();
     //virtual void PointerEnter();

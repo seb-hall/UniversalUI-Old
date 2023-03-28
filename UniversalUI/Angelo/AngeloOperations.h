@@ -26,7 +26,6 @@ aRenderOperation UUI AngeloColour(uColour colour);
 //  set the drawing weight / stroke thickness for subsequent operations
 aRenderOperation UUI AngeloWeight(float weight);
 
-
 //  draw a line between first and second points
 aRenderOperation UUI AngeloLine(uPoint first, uPoint second);
 

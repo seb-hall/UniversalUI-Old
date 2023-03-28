@@ -10,7 +10,4 @@ uView::uView(uFrame initFrame, bool initPersistent) {
     persistent = initPersistent;
 }
 
-std::vector<aRenderOperation> uView::Draw() {
-    printf("draw view!");
-    return {};
-}
+void uView::Draw() { }

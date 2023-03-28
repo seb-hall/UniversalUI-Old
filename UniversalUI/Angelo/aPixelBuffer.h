@@ -1,10 +1,10 @@
 //  aPixelBuffer.h   first written by Seb H in February 2023
 //
-//  aPixelBuffer is a generic pixel buffer object, used to
-//  represent objects such as a texture in OpenGL.
+//  aPixelBuffer is a generic pixel buffer object, used for 
+//  compositing and as a render target.
 
-#ifndef ARENDERTARGET_H
-#define ARENDERTARGET_H
+#ifndef APIXELBUFFER_H
+#define APIXELBUFFER_H
 
 #ifdef _WIN32
     #ifdef UUI_BUILD
@@ -18,10 +18,12 @@
 
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/CoreColour.h>
+#include <cstdint>
 
 struct UUI aPixelBuffer {
-    uSize size;
-    unsigned long long int id;
+    uSize size;                 //  size of allocation (float but should never be fractional)
+    uFrame frame;               //  compositing frame
+    unsigned int id;  //  buffer instance
 };
 
 #endif

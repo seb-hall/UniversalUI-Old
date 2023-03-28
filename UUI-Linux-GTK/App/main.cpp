@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 
+/*
 class ToolBar: public uView {
     public:
     std::vector<aRenderOperation> Draw() override {
@@ -48,7 +49,7 @@ class MainView: public uView {
         return operations;
     }
     
-};
+}; */
 
 class App: public uDesktopApplication {
     public:
@@ -66,7 +67,7 @@ class App: public uDesktopApplication {
         window1 = new uWindow({1000, 750}, "App - Main");
         window2 = new uWindow({250, 750}, "App - Tools");
 
-        window1->rootView = new MainView;
+        window1->rootView = new uView;
         window1->rootView->backgroundColour = {1.0, 1.0, 1.0, 0.0};
 
         window1->background = CORE_RED;

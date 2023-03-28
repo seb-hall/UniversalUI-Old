@@ -81,7 +81,6 @@ void DeployWindowPack(SystemWindowPack* pack) {
     gdk_gl_context_get_version(pack->glContext, &major, &minor);
     printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
 
-    /*
     // Enable alpha blending
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
@@ -120,10 +119,9 @@ void DeployWindowPack(SystemWindowPack* pack) {
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0); */
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     host->angelo->compositor->SetupForCompositing();
-    host->angelo->renderer->SetupForRendering();
 
     // Set up the draw signal handler for the drawing area
     g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);
@@ -209,25 +207,40 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     gdk_cairo_set_source_rgba(cairoContext, &color);
     cairo_fill(cairoContext);
 
-    cairo_matrix_t matrix;
-    cairo_get_matrix(cairoContext, &matrix);
-    cairo_matrix_scale(&matrix, 1.0, -1.0); // Flip vertically
-    cairo_matrix_translate(&matrix, 0.0, -height); // Translate back
-    cairo_set_matrix(cairoContext, &matrix);
+
     //  set glContext to current
     gdk_gl_context_make_current(pack->glContext);
 
-    aPixelBuffer* text = host->angelo->renderer->RenderText("hello world!", 20.0);
-    aPixelBuffer* image = host->angelo->renderer->RenderImage("./Build/image.png");
-    image->frame = { 50, 50, 100, 100};
-    text->frame = { 50, 62.5, text->frame.width, text->frame.height};
-    aPixelBuffer* pb = host->angelo->compositor->CompositeBuffers({(float) width, (float) height}, { image, text });
+    //  bind framebuffer and resize GL Image
+    /*glBlendFunc(GL_BLEND, GL_ONE_MINUS_SRC_ALPHA);
+    glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
+    glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pack->pixelbuffer, 0);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        printf("UUI-ERROR: OpenGL framebuffer error\n");
+        return false;
+    }
+
+    // fill buffer with black
+    glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+    glClearColor(pack->window->background.r, pack->window->background.g, pack->window->background.b, pack->window->background.a);
+    glClear(GL_COLOR_BUFFER_BIT);*/
+
+    //  render window
+    //host->renderer->RenderWindow(pack->window);
+
+    //  unbind framebuffer and image
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    //glBindTexture(GL_TEXTURE_2D, 0);
+
+    aPixelBuffer* pb = host->angelo->compositor->CompositeBuffers({(float)width, (float)height}, { });
     //  draw GL Image to cairo surface
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pb->id, GL_TEXTURE, 1.0, 0, 0, width, height);
 
-    host->angelo->DestroyPixelBuffer(text);
     host->angelo->DestroyPixelBuffer(pb);
-    host->angelo->DestroyPixelBuffer(image);
 
     return false;
 } 

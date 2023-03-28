@@ -10,6 +10,8 @@ declare -a XP_SRC=(
     CoreHost.cpp
     uWindow.cpp
     CoreRenderer.cpp
+    CoreAngelo.cpp
+    CoreCompositor.cpp
     uView.cpp
     AngeloOperations.cpp
 );
@@ -20,8 +22,9 @@ XP_SRC_ARGS="${XP_SRC[@]/#/$XP_SRC_PATH}";
 declare -a DP_SRC=(
     UniversalUI.cpp
     LinuxGTKHost.cpp
+    LinuxGTKAngelo.cpp
+    LinuxGTKCompositor.cpp
     LinuxGTKRenderer.cpp
-    #second.cpp
 );
 
 DP_PATH="./Source/";
@@ -29,14 +32,12 @@ DP_ARGS="${DP_SRC[@]/#/$DP_PATH}";
 
 declare -a APP_SRC=(
     main.cpp
-    #second.cpp
 );
 
 APP_PATH="./App/";
 APP_ARGS="${APP_SRC[@]/#/$APP_PATH}";
 
 declare -a LINK=(
-    #-lfreetype
     -lepoxy
 );
 

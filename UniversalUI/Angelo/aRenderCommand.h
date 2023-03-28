@@ -1,8 +1,9 @@
 //  aRenderCommand.h   first written by Seb H in February 2023
 //
-//  aRenderCommand is a generic render process, analagous to a
-//  render pass in Metal. I.e it should have defined textures,
-//  buffers and operations.
+//  aRenderCommand is a structure containing Angelo drawing 
+//  commands and parameters. These should be generated when
+//  a view's attributes change and must be unpacked into GPU
+//  buffers in order to perform a render pass
 
 #ifndef ARENDERCOMMAND_H
 #define ARENDERCOMMAND_H
@@ -26,10 +27,10 @@
 
 struct UUI aRenderCommand {
 
-    // size of view for which the command was generated. If this is different to the curent size, regenerate command.
+    // size of buffer for which the command was generated. If this is different to the curent size, regenerate command.
     uSize size = {100.0f, 100.0f};
 
-    // GPU BUFFER: continuous array of command codes - first is always the index of the final command code
+    // GPU BUFFER: continuous array of command codes - first is always 0 for clear colour
     std::vector<uint32_t> codes = { 0 };
      
     // GPU BUFFER: continuous array of parameters - first is always the 4 clear colour components
@@ -38,8 +39,6 @@ struct UUI aRenderCommand {
     // GPU BUFFER: continuous arrray of first parameter indices for each command code - first is always 0 for clear colour
     std::vector<uint32_t> indices = { 0 };
 
-    // continuous array of pixelBuffer indices - not sent to GPU but used to assign the 8 POSSIBLE INPUT TEXTURES!
-    std::vector<unsigned long long> pixelBuffers = { };
 };
 
 #endif

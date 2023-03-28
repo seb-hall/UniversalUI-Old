@@ -11,6 +11,8 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 
 #include <LinuxGTKHost.h>
+#include <LinuxGTKAngelo.h>
+#include <LinuxGTKCompositor.h>
 #include <LinuxGTKRenderer.h>
 
 //  include standard C++ libraries
@@ -49,7 +51,9 @@ int UniversalUI(uApplication* userApp) {
     }
 
     //  create instance of CoreRenderer for LinuxGTK
-    host->renderer = new LinuxGTKRenderer;
+    host->angelo = new LinuxGTKAngelo;
+    host->angelo->renderer = new LinuxGTKRenderer;
+    host->angelo->compositor = new LinuxGTKCompositor;
 
     
     if (!host->TestEnvironment()) {

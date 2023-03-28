@@ -10,39 +10,26 @@
 
 #include <UniversalUI/Angelo/CoreRenderer.h>
 
-class LinuxGTKRenderer: public CoreRenderer {
+class UUI LinuxGTKRenderer: public CoreRenderer { 
+    unsigned int FBO;
+public:
 
-    public:
+    //  test shader compilation etc
+    bool TestEnvironment() override;
 
+    //  setup framebuffer etc
+    bool SetupForRendering() override;  
 
-    //unsigned int genericShader;
-    //unsigned int textureShader;
-    //unsigned int genericVertexArray;
-    //unsigned int FBO;
+    //  render specified command
+    aPixelBuffer* RenderCommand(aRenderCommand command) override;
 
-    //  compiler shaders and prepare for rendering
-    bool InitialiseRenderer() override;
+    //  render specified text
+    aPixelBuffer* RenderText(std::string text, float size) override;
 
-    //  compile shaders and generate buffers for window
-    void InitialiseRendererForWindow(uWindow* window) override;
-
-    //  render a window, override by platform for OpenGL/Metal functionality
-    void RenderWindow(uWindow* window) override;
-
-    //  render a view, override by platform for OpenGL/Metal functionality
-    void RenderView(uView* view, uWindow* window) override;
-    
-    //  generate a new pixel buffer in GPU memory with a given size
-    aPixelBuffer NewPixelBuffer(uSize size) override;
-
-    //  resize an existing pixel buffer
-    void ResizePixelBuffer(aPixelBuffer buffer, uSize size) override;
-
-    //  fill a buffer with a given colour - use mainly for testing purposes
-    void ClearBuffer(aPixelBuffer buffer, uColour colour) override;
+    //  render specified image
+    aPixelBuffer* RenderImage(std::string path) override;
 
 };
-
 
 
 #endif

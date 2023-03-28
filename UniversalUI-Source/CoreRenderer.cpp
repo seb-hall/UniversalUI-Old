@@ -2,23 +2,35 @@
 
 #include <UniversalUI/Angelo/CoreRenderer.h>
 #include <UniversalUI/Angelo/aRenderOperation.h>
+
+bool CoreRenderer::TestEnvironment() { 
+    return true; 
+}
+
+bool CoreRenderer::SetupForRendering() {
+    return true;
+}
+
+aPixelBuffer* CoreRenderer::RenderCommand(aRenderCommand command) {
+    return new aPixelBuffer;
+}
+
+aPixelBuffer* CoreRenderer::RenderText(std::string text, float size) {
+    return new aPixelBuffer;
+}
+
+aPixelBuffer* CoreRenderer::RenderImage(std::string path) {
+    return new aPixelBuffer;
+}
+
+
+/*
 #include <UniversalUI/Core/uWindow.h>
 #include <UniversalUI/Core/uView.h>
 
 #include <vector>
 #include <iterator>
 #include <map>
-
-const std::map<unsigned short, unsigned short> paramNumberMap = {
-    {0, 4},     // clear colour
-    {2, 4},     // drawing colour
-    {3, 1},     // drawing weight
-    {10, 4},	// line
-    {11, 3},	// circle
-    {12, 5},	// arc
-    {13, 4},	// aligned rectangle
-    {14, 5}		// aligned, rounded rectangle
-};
 
 // update drawing commands for view
 void CoreRenderer::SetupViewForRendering(uView* view) {
@@ -80,25 +92,4 @@ void CoreRenderer::SetupWindowForRendering(uWindow* window) {
     aRenderCommand renderCommand = commands[window->rootView];
 }
 
-//  *** PLACEHOLDER FUNCTIONS ***
-
-//  compiler shaders and prepare for rendering
-bool CoreRenderer::InitialiseRenderer() { return true; }
-
-//  compiler shaders and prepare for rendering
-void CoreRenderer::InitialiseRendererForWindow(uWindow* window) { }
-
-//  render a window, override by platform for OpenGL/Metal functionality
-void CoreRenderer::RenderWindow(uWindow* window) { }
-
-//  render a view, override by platform for OpenGL/Metal functionality
-void CoreRenderer::RenderView(uView* view, uWindow* parentWindow) { }
-
-//  generate a new pixel buffer in GPU memory with a given size
-aPixelBuffer CoreRenderer::NewPixelBuffer(uSize size) { aPixelBuffer a; return a; }
-
-//  resize an existing pixel buffer
-void CoreRenderer::ResizePixelBuffer(aPixelBuffer buffer, uSize size) { }
-
-//  fill a buffer with a given colour - use mainly for testing purposes
-void CoreRenderer::ClearBuffer(aPixelBuffer buffer, uColour colour) { }
+*/

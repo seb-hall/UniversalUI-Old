@@ -26,7 +26,7 @@
 
 class uApplication;
 class uWindow;
-class CoreRenderer;
+class CoreAngelo;
 
 enum uApplicationType {
     invalid,
@@ -40,7 +40,7 @@ public:
     //  pointers to single-instance modules
     uApplication* app;
     uApplicationType appType;
-    CoreRenderer* renderer;
+    CoreAngelo* angelo;
 
     // main loop function
     virtual int main();
