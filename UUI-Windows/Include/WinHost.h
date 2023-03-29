@@ -2,6 +2,11 @@
 //
 //  WinHost is a subclass of CoreHost, designed as the
 //  standard Windows host for UniversalUI applications.
+//
+//  WinHost is the module directly interfacing with 
+//  Win32, meaning it is responsible for the creation
+//  of windows and contexts, window events, and the
+//  conrol of OpenGL contexts.
 
 #ifndef WINHOST_H
 #define WINHOST_H
@@ -23,7 +28,7 @@
 class UUI WinHost: public CoreHost {
 
 public:
-    bool TestEnvironment() override;
+    bool TestEnvironment();
     int main() override;
     void ShowWindow(uWindow* window) override;
     void SetTitle(uWindow* window, std::string title) override;

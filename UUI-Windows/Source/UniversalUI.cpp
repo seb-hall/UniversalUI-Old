@@ -11,6 +11,8 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 
 #include <WinHost.h>
+#include <WinAngelo.h>
+#include <WinCompositor.h>
 #include <WinRenderer.h>
 
 //  include standard C++ libraries
@@ -22,14 +24,15 @@
 // global host pointer.
 WinHost* host;
 
-//  Initialise UniversalUI - checking for installation and user
-//  aplication compatibility. If all is well, the function will
-//  return true, and uuiMain should be called to start your app.
-//  If the function returns false, there are errors in the host
-//  platform i.e no OpenGL support or missing resources. The
-//  int main() function should return at this point as UniversalUI
-//  will not run correctly.
-bool UniversalUI(uApplication* userApp) {
+//  Run UniversalUI. This function takes an instance of uApplication
+//  but it should always be either an instance of uDesktopApplication
+//  or uSimpleApplication, depending on the platform and the kind of
+//  app you're designing. The framework will first check your app and
+//  the installation for compatibiltiy, returning an error code (defined
+//  later in this file) if there are any issues. If all is well, the
+//  framework will then start the main loop and call the FinishedLaunching
+//  method on your uApplication instance.
+int UniversalUI(uApplication* userApp) {
 
     host = new WinHost;
 
@@ -43,32 +46,27 @@ bool UniversalUI(uApplication* userApp) {
     } else {
         printf("UUI-CRITICAL: Invalid Application Created! Please use subclass either uSimpleApplication or uDesktopApplication.\n");
         host->appType = invalid;
-        return false;
+        return APP_CLASS_ERROR;
     }
 
-    host->renderer = new WinRenderer;
+    host->angelo = new WinAngelo;
+    host->angelo->compositor = new WinCompositor;
+    host->angelo->renderer = new WinRenderer;
 
     if (!host->TestEnvironment()) {
-        return false;
+        return OPENGL_ERROR;
     }
 
     printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
-    
+        
     host->app = userApp;
+    
     userApp->host = host; 
 
-    return true;
-}
-
-//  Run UniversalUI. This function will only return after all
-//  the other parts of the framework are terminated. You shouldn't
-//  assume the function is returned and so the standard
-//  implementation is to add 'return uuiMain(argc, argv);' as the
-//  last line of your int main() function in main.cpp.
-int uuiMain(int argc, char* argv[]) {
-
     // call finished launching function for app.
-    host->app->FinishedLaunching(argc, argv);
+    host->app->FinishedLaunching();
 
     return host->main();
+
+    return EXIT_SUCCESS;
 }

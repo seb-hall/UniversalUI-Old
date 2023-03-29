@@ -7,12 +7,15 @@
 #include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uWindow.h>
 
-#include <UniversalUI/Angelo/CoreRenderer.h>
+#include <WinRenderer.h>
+#include <WinAngelo.h>
+#include <WinCompositor.h>
 
 //  include standard C++ libraries
 #include <stdio.h>
 #include <string>
 #include <map>
+#include <iostream>
 
 //  include platform-specific libraries
 #include <windows.h>
@@ -22,7 +25,6 @@
 
 //  reference to global host pointer
 extern WinHost* host;
-
 
 // Define the attributes for the desired OpenGL version
 int attributes[] = {
@@ -39,7 +41,7 @@ struct SystemWindowPack {
     HINSTANCE instance;
     HDC deviceContext;
     HGLRC renderContext;
-    unsigned int VAO, VBO, pixelbuffer, framebuffer;
+    unsigned int VAO, VBO, textureShader, framebuffer;
 };
 
 std::map<uWindow*, SystemWindowPack*> windowMap = { };
@@ -58,6 +60,100 @@ void DeployWindowPack(SystemWindowPack* pack) {
     CreateWindowAndDC(pack->instance, pack->systemWindow, pack->deviceContext, pack->window);
     CreateOpenGLContext(pack->deviceContext, pack->renderContext);
     systemWindowMap[pack->systemWindow] = pack;
+
+    // Create a vertex array object and a vertex buffer object for the quad
+    glGenVertexArrays(1, &pack->VAO);
+    glGenBuffers(1, &pack->VBO);
+    glBindVertexArray(pack->VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, pack->VBO);
+
+    // Define the quad vertices and texture coordinates
+    float quad[] = {
+        -1.0f, -1.0f, 0.0f, 0.0f,
+        1.0f, -1.0f, 1.0f, 0.0f,
+        1.0f,  1.0f, 1.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f, 0.0f,
+        1.0f,  1.0f, 1.0f, 1.0f,
+        -1.0f,  1.0f, 0.0f, 1.0f
+    };
+    // Upload the quad data to the GPU
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quad), quad, GL_STATIC_DRAW);
+
+    // Enable the vertex attribute pointers for position and texture coordinates
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+    // Create and compile a shader program for rendering the textures
+    pack->textureShader = glCreateProgram();
+    
+    // Define the vertex shader source code
+    const char* vertexShaderSource = "#version 330 core\n"
+                                     "layout (location = 0) in vec2 aPos;\n"
+                                     "layout (location = 1) in vec2 aTexCoord;\n"
+                                     "out vec2 TexCoord;\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     "   gl_Position = vec4(aPos.x,aPos.y,0, 1.0);\n"
+                                     "   TexCoord = aTexCoord;\n"
+                                     "}\n";
+    
+    // Create and compile the vertex shader
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    
+    glCompileShader(vertexShader);
+
+    // Check for compilation errors
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+
+    if (!success) {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+
+    // Define the fragment shader source code
+    const char* fragmentShaderSource = "#version 330 core\n"
+                                   "out vec4 FragColor;\n"
+                                   "in vec2 TexCoord;\n"
+                                   "uniform sampler2D texture1;\n"
+                                   "void main()\n"
+                                   "{\n" 
+                                    //"   if (TexCoord.x < 0.01 || TexCoord.x > 0.99 || TexCoord.y < 0.01 || TexCoord.y > 0.99) {FragColor = vec4(1.0, 0.0, 0.0, 1.0);} else {"
+                                   "   FragColor = texture(texture1, TexCoord); \n"
+                                   "}\n";
+
+    // Create and compile the fragment shader
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Check for compilation errors
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+
+    // Link the vertex and fragment shaders to the shader program
+    glAttachShader(pack->textureShader, vertexShader);
+    glAttachShader(pack->textureShader, fragmentShader);
+    glLinkProgram(pack->textureShader);
+
+    // Check for linking errors
+    glGetProgramiv(pack->textureShader, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(pack->textureShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+
+    // Delete the vertex and fragment shaders as they are no longer needed
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
     ShowWindow(pack->systemWindow, SW_SHOW);
 }
 
@@ -68,7 +164,7 @@ void WinHost::ShowWindow(uWindow* window) {
     windowMap[window] = pack;
     pack->window = window;
     DeployWindowPack(pack);
-    host->renderer->SetupWindowForRendering(window);
+    //host->renderer->SetupWindowForRendering(window);
 
 }
 
@@ -158,6 +254,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             break;
         case WM_SIZE:
             {
+                SystemWindowPack* pack = systemWindowMap[hwnd];
                     int width = LOWORD(lParam);
                     int height = HIWORD(lParam);
                 uSize newSize = {(float) width, (float) height};
@@ -176,9 +273,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 wglMakeCurrent(systemWindowMap[hwnd]->deviceContext, systemWindowMap[hwnd]->renderContext);
                 glViewport(0,0, wParam, lParam);
                 glClearColor(systemWindowMap[hwnd]->window->background.r, systemWindowMap[hwnd]->window->background.g, systemWindowMap[hwnd]->window->background.b, systemWindowMap[hwnd]->window->background.a);
-                glClear(GL_COLOR_BUFFER_BIT);
+                glClear(GL_COLOR_BUFFER_BIT);  
+                // Use the shader program
+                glUseProgram(pack->textureShader);
 
-                host->renderer->RenderWindow(systemWindowMap[hwnd]->window);
+                aPixelBuffer* buffer = host->angelo->renderer->RenderText();
+
+
+                glBindTexture(GL_TEXTURE_2D, buffer->id);
+                // Draw the quad with the input texture
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+
+               // host->renderer->RenderWindow(systemWindowMap[hwnd]->window);
                 // Swap the front and back buffers
                 SwapBuffers(systemWindowMap[hwnd]->deviceContext);
 

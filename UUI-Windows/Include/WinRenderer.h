@@ -1,10 +1,10 @@
-//  LinuxGTKRenderer.h   first written by sebhall in March 2023
+//  WinRenderer.h   first written by sebhall in March 2023
 //
-//  LinuxGTKRenderer is a subclass of CoreRenderer, designed to
-//  implement OpenGL rendering functionality in Linux.
+//  WinRenderer is a subclass of CoreRenderer, designed to
+//  implement OpenGL rendering functionality in Windows.
 
-#ifndef LINUXGTKRENDERER_H
-#define LINUXGTKRENDERER_H
+#ifndef WINRENDERER_H
+#define WINRENDERER_H
 
 #ifdef _WIN32
     #ifdef UUI_BUILD
@@ -18,36 +18,26 @@
 
 #include <UniversalUI/Angelo/CoreRenderer.h>
 
-class WinRenderer: public CoreRenderer {
-
-    public:
-
-
-    unsigned int genericShader;
-    unsigned int textureShader;
-    unsigned int genericVertexArray;
+class UUI WinRenderer: public CoreRenderer { 
     unsigned int FBO;
+public:
 
-    //  compiler shaders and prepare for rendering
-    bool InitialiseRenderer() override;
+    //  test shader compilation etc
+    bool TestEnvironment() override;
 
-    //  render a window, override by platform for OpenGL/Metal functionality
-    void RenderWindow(uWindow* window) override;
+    //  setup framebuffer etc
+    bool SetupForRendering() override;  
 
-    //  render a view, override by platform for OpenGL/Metal functionality
-    void RenderView(uView* view) override;
-    
-    //  generate a new pixel buffer in GPU memory with a given size
-    aPixelBuffer NewPixelBuffer(uSize size) override;
+    //  render specified command
+    aPixelBuffer* RenderCommand(aRenderCommand command) override;
 
-    //  resize an existing pixel buffer
-    void ResizePixelBuffer(aPixelBuffer buffer, uSize size) override;
+    //  render specified text
+    aPixelBuffer* RenderText(std::string text, float size) override;
 
-    //  fill a buffer with a given colour - use mainly for testing purposes
-    void ClearBuffer(aPixelBuffer buffer, uColour colour) override;
+    //  render specified image
+    aPixelBuffer* RenderImage(std::string path) override;
 
 };
-
 
 
 #endif
