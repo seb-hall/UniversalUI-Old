@@ -1,7 +1,6 @@
 //  UniversalUI.cpp for UUI-LinuxGTK, first written by sebhall in February 2023
-//  this file is the Windows specific implementation of the UniversalUI root
-//  interface. There are two functions - UniversalUI() and uuiMain() - which
-//  are the initialisation and main loop functions respectively.
+//  this file is the Linux specific implementation of the UniversalUI root
+//  interface.
 
 // include required UniversalUI header files
 
@@ -34,9 +33,6 @@ LinuxGTKHost* host;
 //  method on your uApplication instance.
 int UniversalUI(uApplication* userApp) {
 
-    //  create instance of CoreHost for LinuxGTK
-    host = new LinuxGTKHost;
-
     //  check format of userApp - simple, desktop or (wrongly) base uApplication
     if (dynamic_cast<uSimpleApplication*>(userApp)) {
         printf("UUI-INFO: Simple Application Created\n");
@@ -50,26 +46,29 @@ int UniversalUI(uApplication* userApp) {
         return APP_CLASS_ERROR;
     }
 
-    //  create instance of CoreRenderer for LinuxGTK
+    //  create instance of CoreHost
+    host = new LinuxGTKHost;
+
+
+    //  create instances of Angelo modules
     host->angelo = new LinuxGTKAngelo;
     host->angelo->renderer = new LinuxGTKRenderer;
     host->angelo->compositor = new LinuxGTKCompositor;
 
-    
+    //  test OpenGL environment
     if (!host->TestEnvironment()) {
         return OPENGL_ERROR;
     }
 
-    printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
-    
+    //  assign app and host references
     host->app = userApp;
-    
     userApp->host = host; 
+
+    //  everything started successfully so display welcome message
+    printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");=
 
     // call finished launching function for app.
     host->app->FinishedLaunching();
 
     return host->main();
-
-    return EXIT_SUCCESS;
 }

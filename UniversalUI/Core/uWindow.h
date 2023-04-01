@@ -21,6 +21,9 @@
 #include <UniversalUI/Core/CoreColour.h>
 #include <UniversalUI/Core/uView.h>
 
+
+class CoreAngelo;
+
 #include <string>
 
 class UUI uWindow {

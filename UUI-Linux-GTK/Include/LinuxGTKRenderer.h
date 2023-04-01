@@ -9,6 +9,8 @@
 #define UUI
 
 #include <UniversalUI/Angelo/CoreRenderer.h>
+#include <vector>
+#include <epoxy/gl.h>
 
 class UUI LinuxGTKRenderer: public CoreRenderer { 
     unsigned int FBO;

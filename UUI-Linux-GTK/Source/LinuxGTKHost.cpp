@@ -43,100 +43,12 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
 void DestroyCallback(SystemWindowPack* pack);
 bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack);
 
-//  takes a pointer to a windowPack and creates new GTK & OpenGL resources
-void DeployWindowPack(SystemWindowPack* pack) {
+int LinuxGTKHost::main() {
 
-    // Create a new GTK window
-    pack->gtkWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(pack->gtkWindow), pack->window->title.c_str());
-    gtk_window_set_default_size(GTK_WINDOW(pack->gtkWindow), (int) pack->window->size.width, (int) pack->window->size.height);
-
-    // Create a new GTK drawing area
-    pack->canvas = gtk_drawing_area_new();
-
-    gtk_widget_set_hexpand(pack->canvas, TRUE);
-    gtk_widget_set_vexpand(pack->canvas, TRUE);
-
-    // Add the drawing area to the window
-    gtk_container_add(GTK_CONTAINER(pack->gtkWindow), pack->canvas);
-
-    //  generate a new context provider so that the real GTKwindow is happy and
-    //  behaves as expected
-    pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
-
-    // Realize the context provider to create a GdkWindow and an OpenGL context
-    gtk_widget_realize(pack->contextProvider);
+    // run GTK main function. Will never return but feels wrong to have a void main function
+    gtk_main();
+    return 0;
     
-    // Get the GdkWindow of the drawing area
-    GdkWindow *gdk_window = gtk_widget_get_window(pack->contextProvider);
-
-    // Create an OpenGL context with version 3.3 and core profile
-    pack->glContext = gdk_window_create_gl_context(gdk_window, NULL);
-    gdk_gl_context_set_required_version(pack->glContext, 3, 3);
-    
-    // Make the OpenGL context current
-    gdk_gl_context_make_current(pack->glContext);
-
-    int major, minor;
-    gdk_gl_context_get_version(pack->glContext, &major, &minor);
-    printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
-
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    /*
-    // Enable alpha blending
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // configure VAO/VBO for texture quads
-    // -----------------------------------
-    glGenVertexArrays(1, &pack->VAO);
-    glGenBuffers(1, &pack->VBO);
-    glBindVertexArray(pack->VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, pack->VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    // create OpenGL buffers
-    glGenFramebuffers(1, &pack->framebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, pack->framebuffer);
-    glGenTextures(1, &pack->pixelbuffer);
-    glBindTexture(GL_TEXTURE_2D, pack->pixelbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int) pack->window->size.width, (int) pack->window->size.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, pack->pixelbuffer, 0);
-    GLenum drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, drawBuffers);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        printf("UUI-ERROR: OpenGL framebuffer error\n");
-        return;
-    }
-
-    glViewport(0, 0, (int) pack->window->size.width, (int) pack->window->size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0); */
-
-    host->angelo->compositor->SetupForCompositing();
-    host->angelo->renderer->SetupForRendering();
-
-    // Set up the draw signal handler for the drawing area
-    g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);
-    g_signal_connect(pack->gtkWindow, "destroy", G_CALLBACK(DestroyCallback), pack);
-    g_signal_connect(pack->canvas,"configure-event", G_CALLBACK(ConfigureCallback), pack);
-
-    // Show the window and all its widgets
-    gtk_widget_show_all(pack->gtkWindow);  
-
 }
 
 void LinuxGTKHost::ShowWindow(uWindow* window) {
@@ -180,13 +92,6 @@ bool LinuxGTKHost::TestEnvironment() {
     gtk_widget_destroy(testWindow);
 
     return true;
-}
-
-int LinuxGTKHost::main() {
-
-    // run GTK main function. Will never return but feels wrong to have a void main function
-    gtk_main();
-    return 0;
 }
 
 void LinuxGTKHost::SetTitle(uWindow* window, std::string title) {
@@ -274,4 +179,59 @@ bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindow
     }
     
     return true;
+}
+
+//  takes a pointer to a windowPack and creates new GTK & OpenGL resources
+void DeployWindowPack(SystemWindowPack* pack) {
+
+    // Create a new GTK window
+    pack->gtkWindow = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(pack->gtkWindow), pack->window->title.c_str());
+    gtk_window_set_default_size(GTK_WINDOW(pack->gtkWindow), (int) pack->window->size.width, (int) pack->window->size.height);
+
+    // Create a new GTK drawing area
+    pack->canvas = gtk_drawing_area_new();
+
+    gtk_widget_set_hexpand(pack->canvas, TRUE);
+    gtk_widget_set_vexpand(pack->canvas, TRUE);
+
+    // Add the drawing area to the window
+    gtk_container_add(GTK_CONTAINER(pack->gtkWindow), pack->canvas);
+
+    //  generate a new context provider so that the real GTKwindow is happy and
+    //  behaves as expected
+    pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
+
+    // Realize the context provider to create a GdkWindow and an OpenGL context
+    gtk_widget_realize(pack->contextProvider);
+    
+    // Get the GdkWindow of the drawing area
+    GdkWindow *gdk_window = gtk_widget_get_window(pack->contextProvider);
+
+    // Create an OpenGL context with version 3.3 and core profile
+    pack->glContext = gdk_window_create_gl_context(gdk_window, NULL);
+    gdk_gl_context_set_required_version(pack->glContext, 3, 3);
+    
+    // Make the OpenGL context current
+    gdk_gl_context_make_current(pack->glContext);
+
+    int major, minor;
+    gdk_gl_context_get_version(pack->glContext, &major, &minor);
+    printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
+
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    host->angelo->compositor->SetupForCompositing();
+    host->angelo->renderer->SetupForRendering();
+
+    // Set up the draw signal handler for the drawing area
+    g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);
+    g_signal_connect(pack->gtkWindow, "destroy", G_CALLBACK(DestroyCallback), pack);
+    g_signal_connect(pack->canvas,"configure-event", G_CALLBACK(ConfigureCallback), pack);
+
+    // Show the window and all its widgets
+    gtk_widget_show_all(pack->gtkWindow);  
+
 }
