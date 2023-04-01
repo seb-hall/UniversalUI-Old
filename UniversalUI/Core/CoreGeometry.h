@@ -36,4 +36,16 @@ struct UUI uFrame {
     float height;
 };
 
+//  uDirection definition
+enum UUI uDirection {
+    north,
+    northWest,
+    west,
+    southWest,
+    south,
+    southEast,
+    east,
+    northEast
+};
+
 #endif /* CoreGeometry_h */

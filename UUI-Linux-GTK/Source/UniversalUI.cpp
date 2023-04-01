@@ -10,9 +10,6 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 
 #include <LinuxGTKHost.h>
-#include <LinuxGTKAngelo.h>
-#include <LinuxGTKCompositor.h>
-#include <LinuxGTKRenderer.h>
 
 //  include standard C++ libraries
 
@@ -33,6 +30,9 @@ LinuxGTKHost* host;
 //  method on your uApplication instance.
 int UniversalUI(uApplication* userApp) {
 
+    //  create instance of CoreHost
+    host = new LinuxGTKHost;
+
     //  check format of userApp - simple, desktop or (wrongly) base uApplication
     if (dynamic_cast<uSimpleApplication*>(userApp)) {
         printf("UUI-INFO: Simple Application Created\n");
@@ -46,15 +46,6 @@ int UniversalUI(uApplication* userApp) {
         return APP_CLASS_ERROR;
     }
 
-    //  create instance of CoreHost
-    host = new LinuxGTKHost;
-
-
-    //  create instances of Angelo modules
-    host->angelo = new LinuxGTKAngelo;
-    host->angelo->renderer = new LinuxGTKRenderer;
-    host->angelo->compositor = new LinuxGTKCompositor;
-
     //  test OpenGL environment
     if (!host->TestEnvironment()) {
         return OPENGL_ERROR;
@@ -65,7 +56,7 @@ int UniversalUI(uApplication* userApp) {
     userApp->host = host; 
 
     //  everything started successfully so display welcome message
-    printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");=
+    printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
 
     // call finished launching function for app.
     host->app->FinishedLaunching();

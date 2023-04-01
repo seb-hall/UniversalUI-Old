@@ -7,9 +7,9 @@
 #include <UniversalUI/Core/uSimpleApplication.h>
 #include <UniversalUI/Core/uWindow.h>
 
-#include <UniversalUI/Angelo/CoreAngelo.h>
-#include <UniversalUI/Angelo/CoreRenderer.h>
-#include <UniversalUI/Angelo/CoreCompositor.h>
+#include <LinuxGTKAngelo.h>
+#include <LinuxGTKCompositor.h>
+#include <LinuxGTKRenderer.h>
 
 //  include standard C++ libraries
 #include <stdio.h>
@@ -42,6 +42,7 @@ std::map<uWindow*, SystemWindowPack*> windowMap = { };
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack);
 void DestroyCallback(SystemWindowPack* pack);
 bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack);
+void DeployWindowPack(SystemWindowPack* pack);
 
 int LinuxGTKHost::main() {
 
@@ -58,8 +59,7 @@ void LinuxGTKHost::ShowWindow(uWindow* window) {
     windowMap[window] = pack;
     pack->window = window;
     DeployWindowPack(pack);
-    //host->renderer->SetupWindowForRendering(window);
-    //host->renderer->InitialiseRendererForWindow(window);
+
 }
 
 bool LinuxGTKHost::TestEnvironment() {
@@ -84,10 +84,6 @@ bool LinuxGTKHost::TestEnvironment() {
     int major, minor;
     gdk_gl_context_get_version(testContext, &major, &minor);
     printf("UUI-INFO: OpenGL init with version %u.%u\n", major, minor);
-
-    if (!host->angelo->renderer->TestEnvironment()) {
-        printf("UUI-ERROR: shader compilation failed\n");
-    }
 
     gtk_widget_destroy(testWindow);
 
@@ -126,17 +122,17 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     //  set glContext to current
     gdk_gl_context_make_current(pack->glContext);
 
-    aPixelBuffer* text = host->angelo->renderer->RenderText("hello world!", 20.0);
-    aPixelBuffer* image = host->angelo->renderer->RenderImage("./Build/image.png");
-    image->frame = { 50, 50, 100, 100};
+    aPixelBuffer* text = pack->window->angelo->renderer->RenderText(pack->window->title.c_str(), 20.0);
+    //aPixelBuffer* image = pack->window->angelo->renderer->RenderImage("./Build/image.png");
+    //image->frame = { 50, 50, 100, 100};
     text->frame = { 50, 62.5, text->frame.width, text->frame.height};
-    aPixelBuffer* pb = host->angelo->compositor->CompositeBuffers({(float) width, (float) height}, { image, text });
+    aPixelBuffer* pb = pack->window->angelo->compositor->CompositeBuffers({(float) width, (float) height}, { text });
     //  draw GL Image to cairo surface
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pb->id, GL_TEXTURE, 1.0, 0, 0, width, height);
 
-    host->angelo->DestroyPixelBuffer(text);
-    host->angelo->DestroyPixelBuffer(pb);
-    host->angelo->DestroyPixelBuffer(image);
+    pack->window->angelo->DestroyPixelBuffer(text);
+    pack->window->angelo->DestroyPixelBuffer(pb);
+    //pack->window->angelo->DestroyPixelBuffer(image);
 
     return false;
 } 
@@ -147,11 +143,12 @@ void DestroyCallback(SystemWindowPack* pack) {
 
 bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack) { 
 
+    printf("got to here for %s\n", pack->window->title.c_str());
     if (pack->cairoSurface)
         cairo_surface_destroy (pack->cairoSurface);
-
+    printf("got to here2 for %s\n", pack->window->title.c_str());
     pack->cairoSurface = gdk_window_create_similar_surface(gtk_widget_get_window(widget), CAIRO_CONTENT_COLOR, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
-
+    printf("got to here3 for %s\n", pack->window->title.c_str());
     cairo_t *cr;
 
     cr = cairo_create(pack->cairoSurface);
@@ -165,10 +162,11 @@ bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindow
     int height = gtk_widget_get_allocated_height(pack->gtkWindow);
 
     uSize newSize = {(float) width, (float) height};
+    printf("got to here4 for %s\n", pack->window->title.c_str());
 
     if (pack->window->size.width != newSize.width || pack->window->size.height != newSize.height) {
         pack->window->size = newSize;
-        pack->window->rootView->frame = {(float) 0, (float) 0, (float) width, (float) height};
+        //pack->window->rootView->frame = {(float) 0, (float) 0, (float) width, (float) height};
         if (host->appType == desktop) {
             uDesktopApplication* app = static_cast<uDesktopApplication*>(host->app);
             app->WindowResized(pack->window, newSize);
@@ -223,8 +221,12 @@ void DeployWindowPack(SystemWindowPack* pack) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    host->angelo->compositor->SetupForCompositing();
-    host->angelo->renderer->SetupForRendering();
+    pack->window->angelo = new LinuxGTKAngelo;
+    pack->window->angelo->compositor = new LinuxGTKCompositor;
+    pack->window->angelo->renderer = new LinuxGTKRenderer;
+
+    pack->window->angelo->compositor->SetupForCompositing();
+    pack->window->angelo->renderer->SetupForRendering();
 
     // Set up the draw signal handler for the drawing area
     g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);

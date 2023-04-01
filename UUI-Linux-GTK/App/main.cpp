@@ -8,48 +8,6 @@
 
 #include <stdio.h>
 
-/*
-class ToolBar: public uView {
-    public:
-    std::vector<aRenderOperation> Draw() override {
-        printf("I AM TOOLBAR\n");
-        return {};
-    }
-};
-
-class MainView: public uView {
-    public:
-
-    ToolBar* toolBar;
-
-    MainView() : uView() {
-        toolBar = new ToolBar;
-        toolBar->backgroundColour = CORE_RED;
-        subviews.push_back(toolBar);
-    }
-
-    std::vector<aRenderOperation> Draw() override {
-
-        toolBar->frame.x = 0.0f;
-        toolBar->frame.y = 0.0f;
-        toolBar->frame.width = frame.width;
-        toolBar->frame.height = 10.0f;
-        toolBar->needsRedraw = true;
-
-        std::vector<aRenderOperation> operations =  {
-            AngeloColour(CORE_ALMOST_BLACK),
-            AngeloWeight(2.5),
-            AngeloLine({10.0f, 10.0f}, {frame.width - 10.0f, 10.0f}),
-            AngeloLine({10.0f, frame.height - 10.0f}, {frame.width - 10.0f, frame.height - 10.0f}),
-            AngeloLine({10.0f, 10.0f}, {10.0f, frame.height - 10.0f}),
-            AngeloLine({frame.width - 10.0f, 10.0f}, {frame.width - 10.0f, frame.height - 10.0f})
-
-        };
-
-        return operations;
-    }
-    
-}; */
 
 class App: public uDesktopApplication {
     public:
@@ -73,7 +31,7 @@ class App: public uDesktopApplication {
         window1->background = CORE_RED;
 
         ShowWindow(window1);
-        //ShowWindow(window2);
+        ShowWindow(window2);
         
     }
 
