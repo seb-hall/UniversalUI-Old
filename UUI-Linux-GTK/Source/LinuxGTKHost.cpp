@@ -21,6 +21,9 @@
 #include <gdk/gdk.h>
 #include <epoxy/gl.h>
 
+#include <chrono>  // for high_resolution_clock
+#include <iostream>
+
 //  reference to global host pointer
 extern LinuxGTKHost* host;
 
@@ -97,6 +100,8 @@ void LinuxGTKHost::SetTitle(uWindow* window, std::string title) {
 //  GTK draw callback
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
 
+     
+
     //  get background colour of widget
     GdkRGBA color;
     GtkStyleContext* styleContext = gtk_widget_get_style_context(widget);
@@ -122,26 +127,48 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
 
     uSize size = {(float) width, (float) height};
 
+   
+
+
     aRenderCommand command;
     command.size = size;
     command.codes = {0, 2, 10, 10, 10, 10};
     command.parameters = {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 10.0f, 10.0f, size.width - 10.0f, 10.0f, 10.0f, size.height - 10.0f, size.width - 10.0f, size.height - 10.0f, 10.0f, 10.0f, 10.0f, size.height - 10.0f, size.width - 10.0f, 10.0f, size.width - 10.0f, size.height - 10.0f};
     command.indices = {0, 4, 8, 12, 16, 20};
     
+    
 
     aPixelBuffer* drawing = pack->window->angelo->renderer->RenderCommand(command);
+
+    
+
+    
     aPixelBuffer* text = pack->window->angelo->renderer->RenderText(pack->window->title.c_str(), 20.0);
+
+    
 
     //aPixelBuffer* image = pack->window->angelo->renderer->RenderImage("./Build/image.png");
     //image->frame = { 50, 50, 100, 100};
     text->frame = { 50, 62.5, text->frame.width, text->frame.height};
+    
     aPixelBuffer* pb = pack->window->angelo->compositor->CompositeBuffers({(float) width, (float) height}, { text, drawing });
+    // Record start time
+    auto start = std::chrono::high_resolution_clock::now();
+    
     //  draw GL Image to cairo surface
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pb->id, GL_TEXTURE, 1.0, 0, 0, width, height);
+
+    // Record end time
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    std::cout << "Elapsed time: " << (float)elapsed.count() * 1000 << " ms\n";
 
     pack->window->angelo->DestroyPixelBuffer(text);
     pack->window->angelo->DestroyPixelBuffer(pb);
     pack->window->angelo->DestroyPixelBuffer(drawing);
+
+    
+
     //pack->window->angelo->DestroyPixelBuffer(image);
 
     return false;

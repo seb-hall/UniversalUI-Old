@@ -23,6 +23,9 @@ public:
 
     //  render input buffers to output buffer
     aPixelBuffer* CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers) override;
+
+    //  render view to screen
+    void CompositeView(uView* view) override;
 };
 
 #endif

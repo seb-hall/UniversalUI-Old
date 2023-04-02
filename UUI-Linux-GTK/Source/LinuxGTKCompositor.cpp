@@ -1,8 +1,13 @@
 //  LinuxGTKCompositor.cpp   first written by sebhall in March 2023
 
+
+#include <UniversalUI/Angelo/CoreAngelo.h>
 #include <UniversalUI/Angelo/aPixelBuffer.h>
 #include <UniversalUI/Core/CoreGeometry.h>
+#include <UniversalUI/Core/uView.h>
+#include <UniversalUI/Core/uWindow.h>
 #include <LinuxGTKCompositor.h>
+#include <LinuxGTKHost.h>
 #include <epoxy/gl.h>
 #include <stdio.h>
 #include <iostream>
@@ -126,7 +131,7 @@ aPixelBuffer* LinuxGTKCompositor::CompositeBuffers(uSize extents, std::vector<aP
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("UUI-ERROR: OpenGL framebuffer error\n");
     } else {
-        printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
+       // printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
     }
 
     glViewport(0, 0, (int) extents.width, (int) extents.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
@@ -159,4 +164,27 @@ aPixelBuffer* LinuxGTKCompositor::CompositeBuffers(uSize extents, std::vector<aP
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return output;
+}
+
+void LinuxGTKCompositor::CompositeView(uView* view) {
+    
+    //  render view before rendering children
+    if (view->isPersistant) {
+        if (!parent->angelo->buffers.count(view)) {
+            //  buffer doesn't exist so make new one and render to buffer, render buffer to screen
+        } else if (view->needsRedraw) {
+            //  buffer exists but is out of date, regenerate and render to buffer, render buffer to screen
+            view->needsRedraw = false;
+        } else {
+            //  buffer exists and is ok, so render buffer to screen
+        }
+    } else {
+        // render directly to screen
+    }
+    
+    //  render each subview to screen
+    for (uView* subview : view->subviews) {
+        CompositeView(subview);
+    }
+
 }

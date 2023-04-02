@@ -9,3 +9,7 @@ bool CoreCompositor::SetupForCompositing() {
 aPixelBuffer* CoreCompositor::CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers) {
     return new aPixelBuffer;
 }
+
+void CoreCompositor::CompositeView(uView* view) {
+    
+}

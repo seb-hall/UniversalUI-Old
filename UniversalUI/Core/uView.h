@@ -30,7 +30,7 @@ public:
 
     //  if set to true, the view will retain it's own 
     //  dedicated pixel buffer
-    bool persistent;
+    bool isPersistant;
 
     //  current frame of view, updated by parents
     uFrame frame;

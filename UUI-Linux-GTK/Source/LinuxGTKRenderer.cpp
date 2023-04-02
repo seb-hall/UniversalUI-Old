@@ -94,7 +94,7 @@ aPixelBuffer* LinuxGTKRenderer::RenderCommand(aRenderCommand command) {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("UUI-ERROR: OpenGL framebuffer error\n");
     } else {
-        printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
+        //printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
     }
     glViewport(0, 0, (int)command.size.width, (int)command.size.height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
     glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -231,8 +231,6 @@ aPixelBuffer* LinuxGTKRenderer::RenderText(std::string text, float size) {
     cairo_move_to(cr, te.x_bearing*-1, te.y_bearing*-1);
     cairo_show_text(cr, text.c_str());
 
-    printf("TE %f %f\n", te.width, te.x_advance);
-
     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
     aPixelBuffer* output = new aPixelBuffer;
     output->size = {te.width, te.height};
@@ -248,7 +246,7 @@ aPixelBuffer* LinuxGTKRenderer::RenderText(std::string text, float size) {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("UUI-ERROR: OpenGL framebuffer error\n");
     } else {
-        printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
+        //printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -301,7 +299,7 @@ aPixelBuffer* LinuxGTKRenderer::RenderImage(std::string path) {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         printf("UUI-ERROR: OpenGL framebuffer error\n");
     } else {
-        printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
+       // printf("UUI-INFO: Compositor Framebuffer created successfully!\n");
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

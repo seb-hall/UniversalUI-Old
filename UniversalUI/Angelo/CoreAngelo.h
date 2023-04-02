@@ -27,9 +27,9 @@ class uView;
 
 class UUI CoreAngelo {
 
-    std::map<uView*, aPixelBuffer> buffers;
-
 public:
+
+    std::map<uView*, aPixelBuffer> buffers;
 
     CoreRenderer* renderer;
     CoreCompositor* compositor;

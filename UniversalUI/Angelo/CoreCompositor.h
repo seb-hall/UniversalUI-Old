@@ -21,14 +21,23 @@
 
 #include <vector>
 
+class uView;
+class uWindow;
+
 class UUI CoreCompositor {
     public:
+
+    //  pointer to parent window
+    uWindow* parent;
 
     //  setup compositor
     virtual bool SetupForCompositing();
     
     //  render input buffers to output buffer
     virtual aPixelBuffer* CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers);
+
+    //  render view to screen
+    virtual void CompositeView(uView* view);
 
 };
 
