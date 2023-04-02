@@ -31,8 +31,6 @@ struct SystemWindowPack {
     GtkWidget* contextProvider;
     GtkWidget* canvas;
     GdkGLContext* glContext;
-    cairo_surface_t* cairoSurface = nullptr;
-    unsigned int VAO, VBO, pixelbuffer, framebuffer;
 };
 
 //  map of uWindows to SystemWindowPack for getting GTK objects for a given uWindow
@@ -122,16 +120,28 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     //  set glContext to current
     gdk_gl_context_make_current(pack->glContext);
 
+    uSize size = {(float) width, (float) height};
+
+    aRenderCommand command;
+    command.size = size;
+    command.codes = {0, 2, 10, 10, 10, 10};
+    command.parameters = {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 10.0f, 10.0f, size.width - 10.0f, 10.0f, 10.0f, size.height - 10.0f, size.width - 10.0f, size.height - 10.0f, 10.0f, 10.0f, 10.0f, size.height - 10.0f, size.width - 10.0f, 10.0f, size.width - 10.0f, size.height - 10.0f};
+    command.indices = {0, 4, 8, 12, 16, 20};
+    
+
+    aPixelBuffer* drawing = pack->window->angelo->renderer->RenderCommand(command);
     aPixelBuffer* text = pack->window->angelo->renderer->RenderText(pack->window->title.c_str(), 20.0);
+
     //aPixelBuffer* image = pack->window->angelo->renderer->RenderImage("./Build/image.png");
     //image->frame = { 50, 50, 100, 100};
     text->frame = { 50, 62.5, text->frame.width, text->frame.height};
-    aPixelBuffer* pb = pack->window->angelo->compositor->CompositeBuffers({(float) width, (float) height}, { text });
+    aPixelBuffer* pb = pack->window->angelo->compositor->CompositeBuffers({(float) width, (float) height}, { text, drawing });
     //  draw GL Image to cairo surface
     gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), pb->id, GL_TEXTURE, 1.0, 0, 0, width, height);
 
     pack->window->angelo->DestroyPixelBuffer(text);
     pack->window->angelo->DestroyPixelBuffer(pb);
+    pack->window->angelo->DestroyPixelBuffer(drawing);
     //pack->window->angelo->DestroyPixelBuffer(image);
 
     return false;
@@ -143,26 +153,10 @@ void DestroyCallback(SystemWindowPack* pack) {
 
 bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindowPack* pack) { 
 
-    printf("got to here for %s\n", pack->window->title.c_str());
-    if (pack->cairoSurface)
-        cairo_surface_destroy (pack->cairoSurface);
-    printf("got to here2 for %s\n", pack->window->title.c_str());
-    pack->cairoSurface = gdk_window_create_similar_surface(gtk_widget_get_window(widget), CAIRO_CONTENT_COLOR, gtk_widget_get_allocated_width(widget), gtk_widget_get_allocated_height(widget));
-    printf("got to here3 for %s\n", pack->window->title.c_str());
-    cairo_t *cr;
-
-    cr = cairo_create(pack->cairoSurface);
-
-    cairo_set_source_rgb(cr, 0.125, 0.125, 0.125);
-    cairo_paint(cr);
-
-    cairo_destroy(cr);
-
     int width = gtk_widget_get_allocated_width(pack->gtkWindow);
     int height = gtk_widget_get_allocated_height(pack->gtkWindow);
 
     uSize newSize = {(float) width, (float) height};
-    printf("got to here4 for %s\n", pack->window->title.c_str());
 
     if (pack->window->size.width != newSize.width || pack->window->size.height != newSize.height) {
         pack->window->size = newSize;
@@ -196,7 +190,7 @@ void DeployWindowPack(SystemWindowPack* pack) {
     // Add the drawing area to the window
     gtk_container_add(GTK_CONTAINER(pack->gtkWindow), pack->canvas);
 
-    //  generate a new context provider so that the real GTKwindow is happy and
+    //  generate a new context provider so that the real GTK Window is happy and
     //  behaves as expected
     pack->contextProvider = gtk_window_new(GTK_WINDOW_POPUP);
 

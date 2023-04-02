@@ -14,6 +14,8 @@
 
 class UUI LinuxGTKRenderer: public CoreRenderer { 
     unsigned int FBO;
+    unsigned int CommandShader;
+    unsigned int VAO;
 public:
 
     //  test shader compilation etc

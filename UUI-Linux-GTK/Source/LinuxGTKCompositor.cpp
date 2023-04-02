@@ -138,6 +138,9 @@ aPixelBuffer* LinuxGTKCompositor::CompositeBuffers(uSize extents, std::vector<aP
     // Use the shader program
     glUseProgram(ShaderProgram);
 
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
     // Loop through the input buffers and render them to the result texture
     for (aPixelBuffer* buffer : inputBuffers) {
         // Bind the input texture
@@ -150,6 +153,7 @@ aPixelBuffer* LinuxGTKCompositor::CompositeBuffers(uSize extents, std::vector<aP
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
+    glUseProgram(0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);

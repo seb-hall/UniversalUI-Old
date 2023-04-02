@@ -3,7 +3,7 @@
 
 class uView;
 
-class lLayoutContainer {    
+class lContainer {    
     uFrame currentFrame;
     uView* target;
 };
