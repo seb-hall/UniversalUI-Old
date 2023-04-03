@@ -125,6 +125,10 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
 
     uSize size = {(float) width, (float) height};
 
+    pack->window->rootView->frame = {(float) 0, (float) 0, (float) width, (float) height};
+    pack->window->rootView->globalFrame = {(float) 0, (float) 0, (float) width, (float) height};
+
+
     //printf("UUI-INFO: starting to draw window %s\n", pack->window->title.c_str());
 
     aPixelBuffer* angeloOutput = pack->window->angelo->compositor->CompositeRootView(pack->window->rootView);
@@ -189,9 +193,10 @@ bool ConfigureCallback(GtkWidget* widget, GdkEventConfigure *event, SystemWindow
 
     uSize newSize = {(float) width, (float) height};
 
+
     if (pack->window->size.width != newSize.width || pack->window->size.height != newSize.height) {
         pack->window->size = newSize;
-        //pack->window->rootView->frame = {(float) 0, (float) 0, (float) width, (float) height};
+        
         if (host->appType == desktop) {
             uDesktopApplication* app = static_cast<uDesktopApplication*>(host->app);
             app->WindowResized(pack->window, newSize);
@@ -242,7 +247,7 @@ void DeployWindowPack(SystemWindowPack* pack) {
     gdk_gl_context_get_version(pack->glContext, &major, &minor);
     printf("UUI-INFO: OpenGL initialised with version %d.%d\n", major, minor);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -252,7 +257,7 @@ void DeployWindowPack(SystemWindowPack* pack) {
 
     pack->window->angelo->compositor->parent = pack->window;
     pack->window->angelo->renderer->parent = pack->window;
-
+ 
     if (!pack->window->angelo->Init()) {
         printf("ANGELO INIT ERROR\n");
         return;

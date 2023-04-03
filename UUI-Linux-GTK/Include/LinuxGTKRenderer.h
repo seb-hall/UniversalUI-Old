@@ -13,9 +13,10 @@
 #include <epoxy/gl.h>
 
 class UUI LinuxGTKRenderer: public CoreRenderer { 
+
     unsigned int CommandShader;
     unsigned int BufferShader;
-    unsigned int VAO;
+    unsigned int VAO, VBO;
 
 public:
 

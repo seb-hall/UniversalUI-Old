@@ -24,7 +24,7 @@ aPixelBuffer* LinuxGTKAngelo::GeneratePixelBuffer(uView* view) {
     buffer->size = {view->frame.width, view->frame.height};
     glGenTextures(1, &buffer->id);
     glBindTexture(GL_TEXTURE_2D, buffer->id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)100, (int)100, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)view->frame.width, (int)view->frame.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 

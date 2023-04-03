@@ -10,7 +10,15 @@ class backgroundView: public uView {
     public: 
 
     void Draw(CoreRenderer* renderer) override {
-        renderer->RenderText("hi text here", 10.0f);
+        
+        renderer->RenderText("hi text here", 20.0f);
+        
+        renderer->RenderOperations({
+            AngeloColour({0.75f, 0.75f, 0.75f, 0.5f}),
+            AngeloRoundedRectangle({25.0f, 25.0f}, {frame.width - 25.0f, frame.height - 25.0f}, 10.0f)
+
+        });
+        
     }
 };
 
@@ -37,9 +45,11 @@ class App: public uDesktopApplication {
 
         background = new backgroundView;
         window1->rootView = background;
-        window1->rootView->frame = {0.0, 0.0, 100.0, 100.0};
-        window1->rootView->globalFrame = {0.0, 0.0, 100.0, 100.0};
+        window1->rootView->frame = {0.0, 0.0, 250.0, 250.0};
+        window1->rootView->globalFrame = {0.0, 0.0, 250.0, 250.0};
         window1->rootView->backgroundColour = {1.0, 1.0, 1.0, 0.0};
+        //background->isPersistant = true;
+        //background->needsRedraw = true;
 
         window1->background = CORE_RED;
 
