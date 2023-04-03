@@ -3,7 +3,24 @@
 #ifndef ANGELOCOREFRAGMENT_H
 #define ANGELOCOREFRAGMENT_H
 
-const char* AngeloCoreFragment = R"(
+const char* AngeloBufferFS = R"(
+
+#version 330 core
+
+out vec4 FragColor;
+in vec2 TexCoord;
+uniform sampler2D bufferTexture;
+
+void main() {
+
+	FragColor = texture(bufferTexture, TexCoord);
+
+}
+
+)";
+								
+
+const char* AngeloCommandFS = R"(
 
 #version 330 core
 
@@ -34,17 +51,51 @@ uniform sampler2D 	pms;
 uniform int numIndices;
 
 
-float LineDistance(vec2 p, vec2 a, vec2 b) {
+float LineTwoPoint(vec2 p, vec2 a, vec2 b) {
   vec2 pa = p - a;
   vec2 ba = b - a;
   float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
   return length(pa - ba * h);
 }
 
+float RectStd(vec2 p, vec2 a, vec2 b) {
+	// Compute the center and size of the rectangle
+	vec2 c = (a + b) * 0.5;
+	vec2 s = abs(b - a);
+	// Transform the point to the rectangle's local space
+	p -= c;
+	// Mirror the point to the first quadrant
+	p = abs(p);
+	// Subtract half the size to get the point relative to the border
+	p -= s * 0.5;
+	// Clamp the point to the positive quadrant
+	p = max(p, vec2(0.0));
+	// Return the length of the point
+	return length(p);
+}
+
+float RectRound(vec2 p, vec2 a, vec2 b, float r) {
+	// Compute the center and size of the rectangle
+	vec2 c = (a + b) * 0.5;
+	vec2 s = abs(b - a);
+	// Adjust the size to account for the radius
+	s -= 2.0 * r;
+	// Transform the point to the rectangle's local space
+	p -= c;
+	// Mirror the point to the first quadrant
+	p = abs(p);
+	// Subtract half the size and the radius to get the point relative to the border
+	p -= s * 0.5 + r;
+	// Clamp the point to the positive quadrant
+	p = max(p, vec2(0.0));
+	// Return the length of the point minus the radius
+	return length(p) - r;
+}
+
 vec4 VectorMain(vec2 pos) { 
 
 	vec4 drawColour = vec4(1.0, 0.0, 0.0, 1.0);
-	vec4 clearColour = vec4(0.0, 0.0, 0.0, 1.0);
+	vec4 clearColour = vec4(0.0, 0.0, 0.0, 0.0);
 
 	float drawWeight = 2.0;
 
@@ -66,10 +117,21 @@ vec4 VectorMain(vec2 pos) {
 				drawWeight = PMS(IDS(i));
 				break;
 			case LINE_TWOPOINT:
-				if (LineDistance(pos, vec2(PMS(IDS(i)), PMS(IDS(i) + 1u)), vec2(PMS(IDS(i) + 2u), PMS(IDS(i) + 3u))) <= drawWeight) {
+				if (LineTwoPoint(pos, vec2(PMS(IDS(i)), PMS(IDS(i) + 1u)), vec2(PMS(IDS(i) + 2u), PMS(IDS(i) + 3u))) <= drawWeight) {
 					return drawColour; // Red for object
 				}
 				break;
+			case RECT_STD:
+				if (RectStd(pos, vec2(PMS(IDS(i)), PMS(IDS(i) + 1u)), vec2(PMS(IDS(i) + 2u), PMS(IDS(i) + 3u))) <= 0) {
+					return drawColour; // Red for object
+				}
+				break;
+			case RECT_ROUND:
+				if (RectRound(pos, vec2(PMS(IDS(i)), PMS(IDS(i) + 1u)), vec2(PMS(IDS(i) + 2u), PMS(IDS(i) + 3u)), PMS(IDS(i) + 4u)) <= 0) {
+					return drawColour; // Red for object
+				}
+				break;
+			
 		}
 
 		i++; // Increment the loop counter
@@ -83,6 +145,7 @@ vec4 VectorMain(vec2 pos) {
 void main() {
 
 	FragColor = VectorMain(gl_FragCoord.xy);
+	//FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 }
 )";
 
