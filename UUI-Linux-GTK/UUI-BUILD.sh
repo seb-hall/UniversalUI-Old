@@ -23,7 +23,6 @@ declare -a DP_SRC=(
     UniversalUI.cpp
     LinuxGTKHost.cpp
     LinuxGTKAngelo.cpp
-    LinuxGTKCompositor.cpp
     LinuxGTKRenderer.cpp
 );
 

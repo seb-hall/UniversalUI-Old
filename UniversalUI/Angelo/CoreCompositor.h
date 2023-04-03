@@ -31,13 +31,16 @@ class UUI CoreCompositor {
     uWindow* parent;
 
     //  setup compositor
-    virtual bool SetupForCompositing();
-    
-    //  render input buffers to output buffer
-    virtual aPixelBuffer* CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers);
+    //virtual bool Init();
 
     //  render view to screen
-    virtual void CompositeView(uView* view);
+    void CompositeView(uView* view, aPixelBuffer* ontoBuffer);
+
+    //  create pixelbuffer and render all child views to it
+    aPixelBuffer* CompositeRootView(uView* rootView);
+
+    //  render input buffers to output buffer - NOT IMPLEMENTED FOR NOW!
+    aPixelBuffer* CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers);
 
 };
 

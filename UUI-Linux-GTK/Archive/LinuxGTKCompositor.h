@@ -12,20 +12,20 @@
 
 class UUI LinuxGTKCompositor: public CoreCompositor { 
 
-    unsigned int FBO;
-    unsigned int VAO, VBO;
-    unsigned int ShaderProgram;
+    //unsigned int FBO;
+    //unsigned int VAO, VBO;
+    //unsigned int ShaderProgram;
 
 public:
 
     //  setup compositor
-    bool SetupForCompositing() override;
+    //bool Init() override;
 
     //  render input buffers to output buffer
-    aPixelBuffer* CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers) override;
+    //aPixelBuffer* CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers) override;
 
     //  render view to screen
-    void CompositeView(uView* view) override;
+    //void CompositeView(uView* view) override;
 };
 
 #endif

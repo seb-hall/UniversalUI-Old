@@ -4,10 +4,10 @@
 
 #include <stdio.h>
 
-uView::uView(uFrame initFrame, bool initPersistent) {
+uView::uView(uFrame initFrame) {
     frame = initFrame;
     needsRedraw = true;
-    persistent = initPersistent;
+    isPersistant = false;
 }
 
-void uView::Draw() { }
+void uView::Draw(CoreRenderer* renderer) { }

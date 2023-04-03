@@ -19,27 +19,36 @@
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/CoreColour.h>
 #include <UniversalUI/Angelo/aPixelBuffer.h>
-#include <UniversalUI/Angelo/aRenderCommand.h>
+#include <UniversalUI/Angelo/aRenderOperation.h>
 
 #include <string>
+#include <vector>
+
+class uWindow;
 
 class UUI CoreRenderer {
     public:
 
-    //  test shader compilation etc
-    virtual bool TestEnvironment();
+    //  pointer to parent window
+    uWindow* parent;
+
+    //  rendering frame
+    uFrame renderFrame;
 
     //  setup framebuffer etc
-    virtual bool SetupForRendering();
+    virtual bool Init();
 
-    //  render specified command
-    virtual aPixelBuffer* RenderCommand(aRenderCommand command);
+    //  render specified operations
+    virtual void RenderOperations(std::vector<aRenderOperation> operations);
 
     //  render specified text
-    virtual aPixelBuffer* RenderText(std::string text, float size);
+    virtual void RenderText(std::string text, float size);
 
     //  render specified image
-    virtual aPixelBuffer* RenderImage(std::string path);
+    virtual void RenderImage(std::string path, uSize size);
+
+    //  render specified buffer
+    virtual void RenderBuffer(aPixelBuffer* buffer);
 
 };
 

@@ -26,25 +26,27 @@
 class uView;
 
 class UUI CoreAngelo {
+    public:
 
-public:
-
-    std::map<uView*, aPixelBuffer> buffers;
+    std::map<uView*, aPixelBuffer*> buffers;
 
     CoreRenderer* renderer;
     CoreCompositor* compositor;
 
+    //  initialise renderer
+    virtual bool Init();
+
+    //  create new pixel buffer
+    virtual aPixelBuffer* GeneratePixelBuffer(uView* view);
+
     //  destoy pixel buffer in system and GPU memory
     virtual void DestroyPixelBuffer(aPixelBuffer* buffer);
 
-    //  render view command for view 
-    virtual void RenderViewCommand(uView* view, aRenderCommand command);
-    
-    //  render text for view
-    virtual void RenderViewText(uView* view, std::string text);
+    //  bind pixelbuffer to render target
+    virtual void BindRenderTarget(aPixelBuffer* buffer);
 
-    //  render image for view
-    virtual void RenderViewImage(uView* view, std::string path);
+    //  unbind current render target
+    virtual void UnBindRenderTarget();
 
 };
 

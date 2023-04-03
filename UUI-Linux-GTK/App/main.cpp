@@ -2,11 +2,17 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 #include <UniversalUI/Core/CoreColour.h>
 #include <UniversalUI/Core/uView.h>
-//#include <UniversalUI/Core/uWindowManager.h>
-
 #include <UniversalUI/Angelo/AngeloOperations.h>
 
 #include <stdio.h>
+
+class backgroundView: public uView {
+    public: 
+
+    void Draw(CoreRenderer* renderer) override {
+        renderer->RenderText("hi text here", 10.0f);
+    }
+};
 
 
 class App: public uDesktopApplication {
@@ -14,6 +20,8 @@ class App: public uDesktopApplication {
 
     uWindow* window1;
     uWindow* window2;
+
+    backgroundView* background;
 
     App() : uDesktopApplication("MYAPP", 1, 0) {
 
@@ -25,7 +33,12 @@ class App: public uDesktopApplication {
         window1 = new uWindow({1000, 750}, "App - Main");
         window2 = new uWindow({250, 750}, "App - Tools");
 
-        window1->rootView = new uView;
+        window2->rootView = new uView;
+
+        background = new backgroundView;
+        window1->rootView = background;
+        window1->rootView->frame = {0.0, 0.0, 100.0, 100.0};
+        window1->rootView->globalFrame = {0.0, 0.0, 100.0, 100.0};
         window1->rootView->backgroundColour = {1.0, 1.0, 1.0, 0.0};
 
         window1->background = CORE_RED;

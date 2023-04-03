@@ -13,25 +13,26 @@
 #include <epoxy/gl.h>
 
 class UUI LinuxGTKRenderer: public CoreRenderer { 
-    unsigned int FBO;
     unsigned int CommandShader;
+    unsigned int BufferShader;
     unsigned int VAO;
+
 public:
 
-    //  test shader compilation etc
-    bool TestEnvironment() override;
+    //  compile shaders etc
+    bool Init() override;
 
-    //  setup framebuffer etc
-    bool SetupForRendering() override;  
-
-    //  render specified command
-    aPixelBuffer* RenderCommand(aRenderCommand command) override;
+    //  render specified operations
+    void RenderOperations(std::vector<aRenderOperation> operations) override;
 
     //  render specified text
-    aPixelBuffer* RenderText(std::string text, float size) override;
+    void RenderText(std::string text, float size) override;
 
     //  render specified image
-    aPixelBuffer* RenderImage(std::string path) override;
+    void RenderImage(std::string path, uSize size) override;
+
+    //  render specified buffer
+    void RenderBuffer(aPixelBuffer* buffer) override;
 
 };
 

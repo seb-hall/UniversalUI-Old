@@ -3,25 +3,20 @@
 #include <UniversalUI/Angelo/CoreRenderer.h>
 #include <UniversalUI/Angelo/aRenderOperation.h>
 
-bool CoreRenderer::TestEnvironment() { 
-    return true; 
-}
+//  setup framebuffer etc
+bool CoreRenderer::Init() { return true; }
 
-bool CoreRenderer::SetupForRendering() {
-    return true;
-}
+//  render specified operations
+void CoreRenderer::RenderOperations(std::vector<aRenderOperation> operations) { }
 
-aPixelBuffer* CoreRenderer::RenderCommand(aRenderCommand command) {
-    return new aPixelBuffer;
-}
+//  render specified text
+void CoreRenderer::RenderText(std::string text, float size) { }
 
-aPixelBuffer* CoreRenderer::RenderText(std::string text, float size) {
-    return new aPixelBuffer;
-}
+//  render specified image
+void CoreRenderer::RenderImage(std::string path, uSize size) { }
 
-aPixelBuffer* CoreRenderer::RenderImage(std::string path) {
-    return new aPixelBuffer;
-}
+//  render specified buffer
+void CoreRenderer::RenderBuffer(aPixelBuffer* buffer) { }
 
 
 /*

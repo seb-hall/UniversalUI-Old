@@ -8,7 +8,7 @@
 #include <UniversalUI/Core/uWindow.h>
 
 #include <LinuxGTKAngelo.h>
-#include <LinuxGTKCompositor.h>
+#include <UniversalUI/Angelo/CoreCompositor.h>
 #include <LinuxGTKRenderer.h>
 
 //  include standard C++ libraries
@@ -100,8 +100,6 @@ void LinuxGTKHost::SetTitle(uWindow* window, std::string title) {
 //  GTK draw callback
 bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pack) { 
 
-     
-
     //  get background colour of widget
     GdkRGBA color;
     GtkStyleContext* styleContext = gtk_widget_get_style_context(widget);
@@ -127,10 +125,16 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
 
     uSize size = {(float) width, (float) height};
 
-   
+    //printf("UUI-INFO: starting to draw window %s\n", pack->window->title.c_str());
 
+    aPixelBuffer* angeloOutput = pack->window->angelo->compositor->CompositeRootView(pack->window->rootView);
 
-    aRenderCommand command;
+    gdk_cairo_draw_from_gl(cairoContext, gtk_widget_get_window (pack->contextProvider), angeloOutput->id, GL_TEXTURE, 1.0, 0, 0, width, height);
+     //printf("got to main2\n");
+    pack->window->angelo->DestroyPixelBuffer(angeloOutput);
+    //printf("got to main3\n");
+
+    /*aRenderCommand command;
     command.size = size;
     command.codes = {0, 2, 10, 10, 10, 10};
     command.parameters = {0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 10.0f, 10.0f, size.width - 10.0f, 10.0f, 10.0f, size.height - 10.0f, size.width - 10.0f, size.height - 10.0f, 10.0f, 10.0f, 10.0f, size.height - 10.0f, size.width - 10.0f, 10.0f, size.width - 10.0f, size.height - 10.0f};
@@ -167,7 +171,7 @@ bool DrawCallback(GtkWidget* widget, cairo_t* cairoContext, SystemWindowPack* pa
     pack->window->angelo->DestroyPixelBuffer(pb);
     pack->window->angelo->DestroyPixelBuffer(drawing);
 
-    
+    */
 
     //pack->window->angelo->DestroyPixelBuffer(image);
 
@@ -243,11 +247,16 @@ void DeployWindowPack(SystemWindowPack* pack) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     pack->window->angelo = new LinuxGTKAngelo;
-    pack->window->angelo->compositor = new LinuxGTKCompositor;
+    pack->window->angelo->compositor = new CoreCompositor;
     pack->window->angelo->renderer = new LinuxGTKRenderer;
 
-    pack->window->angelo->compositor->SetupForCompositing();
-    pack->window->angelo->renderer->SetupForRendering();
+    pack->window->angelo->compositor->parent = pack->window;
+    pack->window->angelo->renderer->parent = pack->window;
+
+    if (!pack->window->angelo->Init()) {
+        printf("ANGELO INIT ERROR\n");
+        return;
+    }
 
     // Set up the draw signal handler for the drawing area
     g_signal_connect(pack->canvas, "draw", G_CALLBACK(DrawCallback), pack);

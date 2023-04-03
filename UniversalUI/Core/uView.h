@@ -18,7 +18,7 @@
 
 #include <UniversalUI/Core/CoreGeometry.h>
 #include <UniversalUI/Core/CoreColour.h>
-#include <UniversalUI/Angelo/aRenderOperation.h>
+#include <UniversalUI/Angelo/CoreRenderer.h>
 #include <vector>
 
 class UUI uView {
@@ -32,19 +32,21 @@ public:
     //  dedicated pixel buffer
     bool isPersistant;
 
-    //  current frame of view, updated by parents
+    //  current frame of view within it's superview
     uFrame frame;
+
+    //  current frame of view within root view
+    uFrame globalFrame;
 
     uColour backgroundColour;
 
     //  vector of subviews
     std::vector<uView*> subviews;
 
-    uView(uFrame initFrame = {0.0, 0.0, 100.0, 100.0}, bool initPersistent = false);
+    uView(uFrame initFrame = {0.0, 0.0, 100.0, 100.0});
 
     //  overridable draw command
-    //virtual std::vector<aRenderOperation> Draw();
-    virtual void Draw();
+    virtual void Draw(CoreRenderer* renderer);
 
 
     //virtual void ClickUp();

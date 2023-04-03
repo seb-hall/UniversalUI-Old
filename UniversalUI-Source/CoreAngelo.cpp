@@ -2,14 +2,17 @@
 
 #include <UniversalUI/Angelo/CoreAngelo.h>
 
+//  initialise renderer
+bool CoreAngelo::Init() { return true; }
+
+//  create new pixel buffer
+aPixelBuffer* CoreAngelo::GeneratePixelBuffer(uView* view) { return new aPixelBuffer; }
+
 //  destoy pixel buffer in system and GPU memory
 void CoreAngelo::DestroyPixelBuffer(aPixelBuffer* buffer) { }
 
-//  render view command for view 
-void CoreAngelo::RenderViewCommand(uView* view, aRenderCommand command) { }
+//  bind pixelbuffer to render target
+void CoreAngelo::BindRenderTarget(aPixelBuffer* buffer) { }
 
-//  render text for view
-void CoreAngelo::RenderViewText(uView* view, std::string text) { }
-
-//  render image for view
-void CoreAngelo::RenderViewImage(uView* view, std::string path) { }
+//  unbind current render target
+void CoreAngelo::UnBindRenderTarget() { }
