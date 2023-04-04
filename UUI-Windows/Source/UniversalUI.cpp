@@ -11,9 +11,6 @@
 #include <UniversalUI/Core/uDesktopApplication.h>
 
 #include <WinHost.h>
-#include <WinAngelo.h>
-#include <WinCompositor.h>
-#include <WinRenderer.h>
 
 //  include standard C++ libraries
 
@@ -49,10 +46,6 @@ int UniversalUI(uApplication* userApp) {
         return APP_CLASS_ERROR;
     }
 
-    host->angelo = new WinAngelo;
-    host->angelo->compositor = new WinCompositor;
-    host->angelo->renderer = new WinRenderer;
-
     if (!host->TestEnvironment()) {
         return OPENGL_ERROR;
     }
@@ -68,5 +61,4 @@ int UniversalUI(uApplication* userApp) {
 
     return host->main();
 
-    return EXIT_SUCCESS;
 }

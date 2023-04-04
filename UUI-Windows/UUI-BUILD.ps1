@@ -26,7 +26,6 @@ $XP_SRC_ARGS = $XP_SRC | ForEach-Object { "$XP_SRC_PATH$_" }
     "glad.c",
     "glad_wgl.c",
     "WinAngelo.cpp",
-    "WinCompositor.cpp",
     "WinRenderer.cpp",
     "WinHost.cpp"
 

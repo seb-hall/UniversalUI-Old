@@ -3,13 +3,30 @@
 #ifndef ANGELOCOREVERTEX_H
 #define ANGELOCOREVERTEX_H
 
-const char* AngeloCoreVertex = R"(
+const char* AngeloBufferVS = R"(
 
 #version 330 core
-layout (location = 0) in vec2 aPos;
 
-void main()
-{
+layout (location = 0) in vec2 aPos;
+layout (location = 1) in vec2 aTexCoord;
+
+out vec2 TexCoord;
+
+void main() {
+	gl_Position = vec4(aPos.xy, 0.0, 1.0);
+	TexCoord = aTexCoord;
+}
+
+)";
+
+const char* AngeloCommandVS = R"(
+
+#version 330 core
+
+layout (location = 0) in vec2 aPos;
+layout (location = 1) in vec2 aTexCoord;
+
+void main() {
 	gl_Position = vec4(aPos.xy, 0.0, 1.0);
 }
 

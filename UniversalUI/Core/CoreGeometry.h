@@ -37,7 +37,7 @@ struct UUI uFrame {
 };
 
 //  uDirection definition
-enum UUI uDirection {
+enum uDirection {
     north,
     northWest,
     west,

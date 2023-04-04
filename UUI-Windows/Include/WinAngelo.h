@@ -19,19 +19,23 @@
 #include <UniversalUI/Angelo/CoreAngelo.h>
 
 class UUI WinAngelo: public CoreAngelo { 
+    unsigned int FBO;
 public:
+
+    //  initialise renderer
+    bool Init() override;
+
+    //  create new pixel buffer
+    aPixelBuffer* GeneratePixelBuffer(uView* view) override;
 
     //  destoy pixel buffer in system and GPU memory
     void DestroyPixelBuffer(aPixelBuffer* buffer) override;
 
-    //  render view command for view 
-    void RenderViewCommand(uView* view, aRenderCommand command) override;
-    
-    //  render text for view
-    void RenderViewText(uView* view, std::string text) override;
+    //  bind pixelbuffer to render target
+    void BindRenderTarget(aPixelBuffer* buffer) override;
 
-    //  render image for view
-    void RenderViewImage(uView* view, std::string path) override;
+    //  unbind current render target
+    void UnBindRenderTarget() override;
 
 };
 
