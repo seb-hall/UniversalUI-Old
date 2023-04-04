@@ -134,9 +134,8 @@ bool LinuxGTKRenderer::Init() {
 
 //  render specified operations
 void LinuxGTKRenderer::RenderOperations(std::vector<aRenderOperation> operations) { 
-    printf("ANGELO-RENDERER: Render Operations\n");
+    //printf("ANGELO-RENDERER: Render Operations\n");
 
-    printf("WIDTH: %f, HEIGHT: %f\n", renderFrame.width, renderFrame.height);
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
     aRenderCommand command;
@@ -217,12 +216,12 @@ void LinuxGTKRenderer::RenderOperations(std::vector<aRenderOperation> operations
     glDeleteTextures(1, &pmsTex);
 
     glUseProgram(0);
-    printf("got to here!");
+
 }
 
 //  render specified text
 void LinuxGTKRenderer::RenderText(std::string text, float size) { 
-    printf("ANGELO-RENDERER: Render Text\n");
+    //printf("ANGELO-RENDERER: Render Text\n");
 
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
@@ -243,13 +242,18 @@ void LinuxGTKRenderer::RenderText(std::string text, float size) {
     cairo_select_font_face(cr, "Roboto", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, size);
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
+
     cairo_move_to(cr, te.x_bearing*-1, te.y_bearing*-1);
     cairo_show_text(cr, text.c_str());
-    cairo_fill(cr);
+
+    float widthDiffToFrame = renderFrame.width - te.width;
+    float heightDiffToFrame = renderFrame.height - te.height;
+
+    printf("FHEIGHT %f TEHEIGHT %f\n", renderFrame.height, te.height);
 
     aPixelBuffer* output = new aPixelBuffer;
     output->size = {te.width, te.height};
-    output->frame = {0.0, 0.0, te.width, te.height};
+    output->frame = {te.x_bearing*-1 + widthDiffToFrame/2, heightDiffToFrame/2, te.width, te.height};
     glGenTextures(1, &output->id);
     glBindTexture(GL_TEXTURE_2D, output->id);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)te.width, (int)te.height, 0, GL_BGRA, GL_UNSIGNED_BYTE, cairo_image_surface_get_data(surface));
@@ -267,7 +271,7 @@ void LinuxGTKRenderer::RenderText(std::string text, float size) {
 
 //  render specified image
 void LinuxGTKRenderer::RenderImage(std::string path, uSize size) { 
-    printf("ANGELO-RENDERER: Render Image\n");
+    //printf("ANGELO-RENDERER: Render Image\n");
 
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
@@ -275,16 +279,17 @@ void LinuxGTKRenderer::RenderImage(std::string path, uSize size) {
 
 //  render specified buffer
 void LinuxGTKRenderer::RenderBuffer(aPixelBuffer* buffer) { 
-    printf("ANGELO-RENDERER: Render Buffer\n");
+    //printf("ANGELO-RENDERER: Render Buffer\n");
 
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    //glClearColor(0.0, 0.0, 0.0, 0.0);
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
     // Use the shader program
     glUseProgram(BufferShader);
 
     glBindVertexArray(VAO);
+    glActiveTexture(GL_TEXTURE0);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindTexture(GL_TEXTURE_2D, buffer->id);
     // Set the viewport to match the input frame

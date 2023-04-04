@@ -5,17 +5,33 @@
 #include <UniversalUI/Angelo/AngeloOperations.h>
 
 #include <stdio.h>
+#include <string>
 
-class backgroundView: public uView {
+class uButton: public uView {
+    public:
+
+    std::string title;
+
+    void Draw(CoreRenderer* renderer) override {
+        printf("UUI-INFO: Render uButton\n");
+        renderer->RenderOperations({
+            AngeloColour({0.125, 0.125, 0.125, 1.0}),
+            AngeloRoundedRectangle({5.0f, 5.0f}, {frame.width - 5.0f, frame.height - 5.0f}, 5.0f)
+        });
+        renderer->RenderText(title, 15.0f);
+    }
+};
+
+class BackgroundView: public uView {
     public: 
 
     void Draw(CoreRenderer* renderer) override {
-        
-        renderer->RenderText("hi text here", 20.0f);
+        printf("UUI-INFO: Render BackgroundView\n");
+        //renderer->RenderText("hi text here", 20.0f);
         
         renderer->RenderOperations({
-            AngeloColour({0.75f, 0.75f, 0.75f, 0.5f}),
-            AngeloRoundedRectangle({25.0f, 25.0f}, {frame.width - 25.0f, frame.height - 25.0f}, 10.0f)
+            AngeloColour({0.75f, 0.75f, 0.75f, 0.25f}),
+            AngeloRoundedRectangle({15.0f, 15.0f}, {frame.width - 15.0f, frame.height - 15.0f}, 10.0f)
 
         });
         
@@ -29,7 +45,8 @@ class App: public uDesktopApplication {
     uWindow* window1;
     uWindow* window2;
 
-    backgroundView* background;
+    BackgroundView* background;
+   
 
     App() : uDesktopApplication("MYAPP", 1, 0) {
 
@@ -43,13 +60,42 @@ class App: public uDesktopApplication {
 
         window2->rootView = new uView;
 
-        background = new backgroundView;
+        background = new BackgroundView;
         window1->rootView = background;
         window1->rootView->frame = {0.0, 0.0, 250.0, 250.0};
         window1->rootView->globalFrame = {0.0, 0.0, 250.0, 250.0};
         window1->rootView->backgroundColour = {1.0, 1.0, 1.0, 0.0};
         //background->isPersistant = true;
         //background->needsRedraw = true;
+
+        for (int i = 0; i < 5; i++) {
+            uButton* button = new uButton;
+            button->frame = {10.0f + (65.0f*(float)i), 10.0f, 60.0f, 25.0f};
+            button->isPersistant = true;
+            button->needsRedraw = true;
+            button->title = "File";
+
+            if (i == 1) {
+                button->title = "Edit";
+            }
+
+            if (i == 2) {
+                button->title = "View";
+            }
+
+            if (i == 3) {
+                button->title = "Window";
+            }
+
+            if (i == 4) {
+                button->title = "Help";
+            }
+            
+
+            background->subviews.push_back(button);
+        }
+        
+
 
         window1->background = CORE_RED;
 
