@@ -14,6 +14,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <chrono>
 
 //  include platform-specific libraries
 #include <windows.h>
@@ -42,6 +43,8 @@ struct SystemWindowPack {
     unsigned int VAO, VBO, textureShader, framebuffer;
 };
 
+
+unsigned int shaderProgram, VAO;
 std::map<uWindow*, SystemWindowPack*> windowMap = { };
 std::map<HWND, SystemWindowPack*> systemWindowMap = { };
 
@@ -75,6 +78,88 @@ void DeployWindowPack(SystemWindowPack* pack) {
     }
 
     ShowWindow(pack->systemWindow, SW_SHOW);
+
+    const char *vertexShaderSource = "#version 330 core\n"
+    "layout (location = 0) in vec3 aPos;\n"
+    "void main()\n"
+    "{\n"
+    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "}\0";
+const char *fragmentShaderSource = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+    "}\n\0";
+
+    // build and compile our shader program
+    // ------------------------------------
+    // vertex shader
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    // check for shader compile errors
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    // fragment shader
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+    // check for shader compile errors
+    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    // link shaders
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    // check for linking errors
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left  
+         0.5f, -0.5f, 0.0f, // right 
+         0.0f,  0.5f, 0.0f  // top   
+    }; 
+
+    unsigned int VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+
+    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+    glBindVertexArray(0); 
+
+
 }
 
 void WinHost::ShowWindow(uWindow* window) {
@@ -172,12 +257,17 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_DESTROY:
             exit(0);
             break;
-        case WM_SIZE:
-            {
-                SystemWindowPack* pack = systemWindowMap[hwnd];
-                    int width = LOWORD(lParam);
-                    int height = HIWORD(lParam);
-                uSize newSize = {(float) width, (float) height};
+        case WM_WINDOWPOSCHANGED: //When the window position or size has changed
+      {
+        RECT rc;
+        GetClientRect(hwnd, &rc);
+        int width = rc.right;
+        int height = rc.bottom;
+
+         SystemWindowPack* pack = systemWindowMap[hwnd];
+       uSize newSize = {(float) width, (float) height};
+
+                          printf("NEWSIZE: %d %d\n", width, height);
 
                 if (systemWindowMap[hwnd]->window->size.width != newSize.width || systemWindowMap[hwnd]->window->size.height != newSize.height) {
                     systemWindowMap[hwnd]->window->size = newSize;
@@ -189,27 +279,52 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                         app->Resized(newSize);
                     }
                 }
-            
-                wglMakeCurrent(systemWindowMap[hwnd]->deviceContext, systemWindowMap[hwnd]->renderContext);
-                glViewport(0,0, wParam, lParam);
-                //glClearColor(systemWindowMap[hwnd]->window->background.r, systemWindowMap[hwnd]->window->background.g, systemWindowMap[hwnd]->window->background.b, systemWindowMap[hwnd]->window->background.a);
-                glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+        //Call DefWindowProc to let it send WM_SIZE and WM_MOVE messages
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+      }
+      break;
+        case WM_PAINT:
+            {   
+                printf("paint\n");
+                PAINTSTRUCT ps;
+                HDC drawHdc = BeginPaint(hwnd, &ps); 
+
+                SystemWindowPack* pack = systemWindowMap[hwnd];
+                //glViewport(0, 0, (int) 100, (int) 100);
+                //wglMakeCurrent(systemWindowMap[hwnd]->deviceContext, systemWindowMap[hwnd]->renderContext);
+                
+                
+                glClearColor(systemWindowMap[hwnd]->window->background.r, systemWindowMap[hwnd]->window->background.g, systemWindowMap[hwnd]->window->background.b, systemWindowMap[hwnd]->window->background.a);
                 glClear(GL_COLOR_BUFFER_BIT);  
     
-                pack->window->rootView->frame = {(float) 0, (float) 0, (float) width, (float) height};
-                pack->window->rootView->globalFrame = {(float) 0, (float) 0, (float) width, (float) height};
+                pack->window->rootView->frame = {(float) 0, (float) 0, systemWindowMap[hwnd]->window->size.width, systemWindowMap[hwnd]->window->size.height};
+                pack->window->rootView->globalFrame = {(float) 0, (float) 0, systemWindowMap[hwnd]->window->size.width, systemWindowMap[hwnd]->window->size.height};
+
+
 
                 aPixelBuffer* angeloOutput = pack->window->angelo->compositor->CompositeRootView(pack->window->rootView);
 
+
+
+                pack->window->angelo->renderer->renderFrame = {(float) 0, (float) 0, pack->window->size.width, pack->window->size.height};
                 pack->window->angelo->renderer->RenderBuffer(angeloOutput);
 
-                // Swap the front and back buffers
-                SwapBuffers(systemWindowMap[hwnd]->deviceContext);
+                pack->window->angelo->DestroyPixelBuffer(angeloOutput);
 
-                // Update the window
-                UpdateWindow(hwnd);
-                break;
-            } 
+                //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+                //glClear(GL_COLOR_BUFFER_BIT);
+
+                // draw our first triangle
+                //glUseProgram(shaderProgram);
+                //glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
+                //glDrawArrays(GL_TRIANGLES, 0, 3);
+                //glBindVertexArray(0); // no need to unbind it every time 
+
+                SwapBuffers(drawHdc); //Swap the front and back buffers of your OpenGL context
+                EndPaint(hwnd, &ps); //End the painting process and validate the update region
+            break;
+            }
         default:
             return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }

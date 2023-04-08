@@ -6,9 +6,12 @@
 #include <UniversalUI/Core/uView.h>
 #include <UniversalUI/Core/uWindow.h>
 
+#include <chrono>
+
 //bool CoreCompositor::Init() {
 //    return true;
 //}
+
 
 void CoreCompositor::CompositeView(uView* view, aPixelBuffer* ontoBuffer) {
     
@@ -63,13 +66,13 @@ void CoreCompositor::CompositeView(uView* view, aPixelBuffer* ontoBuffer) {
 }
 
 aPixelBuffer* CoreCompositor::CompositeRootView(uView* view) {
-    
+
     aPixelBuffer* outputBuffer = parent->angelo->GeneratePixelBuffer(view);
     parent->angelo->BindRenderTarget(outputBuffer);
     CompositeView(view, outputBuffer);
     parent->angelo->UnBindRenderTarget();
     return outputBuffer;
-
+    
 }
 
 aPixelBuffer* CoreCompositor::CompositeBuffers(uSize extents, std::vector<aPixelBuffer*> inputBuffers) {

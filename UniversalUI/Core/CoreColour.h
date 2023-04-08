@@ -31,6 +31,7 @@ struct UUI uColour {
 
 //  standard uColour implementations for easy colouring
 
+#define CORE_BLACK  { 0.0, 0.0, 0.0, 1.0 }
 #define CORE_RED    { 0.9, 0.2, 0.2, 1.0 }
 #define CORE_GREEN  { 0.2, 0.9, 0.2, 1.0 }
 #define CORE_BLUE   { 0.2, 0.2, 0.9, 1.0 }
