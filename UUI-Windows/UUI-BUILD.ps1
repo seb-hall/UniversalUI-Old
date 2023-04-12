@@ -39,7 +39,7 @@ $MODE=$args[0]
 
 if ($MODE -eq "-STATIC") {
     Write-Output "building static UniversalUI program..."
-    g++ -DUUI_BUILD .\App\main.cpp @XP_SRC_ARGS @DP_SRC_ARGS -o .\Build\main.exe -Wall -g -mwindows -lglu32 -lgdi32 -lopengl32  -I.\Include -I.\..\ --static -static-libgcc -static-libstdc++
+    g++ -DUUI_BUILD .\App\main.cpp @XP_SRC_ARGS @DP_SRC_ARGS -o .\Build\main.exe -Wall -g -mconsole -lgdiplus -lglu32 -lgdi32  -lopengl32  -I.\Include -I.\..\ --static -static-libgcc -static-libstdc++
     Write-Output "DONE!"
 } elseif ($MODE -eq "-DYLIB") {
     Write-Output "building UniversalUI dynamic library..."

@@ -11,6 +11,11 @@
 #include <glad/glad_wgl.h>
 #include <stdio.h>
 #include <chrono>
+#include <windows.h>
+#include <objidl.h>
+#include <gdiplus.h>
+
+
 
 
 //  compile shaders etc
@@ -130,6 +135,10 @@ bool WinRenderer::Init() {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
     glDisable(GL_CULL_FACE);
+    
+    Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+    ULONG_PTR gdiplusToken;
+    Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
     return true;
 }
@@ -231,40 +240,56 @@ void WinRenderer::RenderText(std::string text, float size) {
 
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
-    // Create a bitmap font texture from a GDI font
-    HFONT hFont = CreateFont (32, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, ANSI_CHARSET,
-                            OUT_TT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY,
-                            DEFAULT_PITCH | FF_DONTCARE, "Arial");
-    HDC hDC = CreateCompatibleDC (NULL);
-    HBITMAP hBitmap = CreateCompatibleBitmap (hDC, 256, 256);
-    SelectObject (hDC, hBitmap);
-    SelectObject (hDC, hFont);
-    SetBkColor (hDC, RGB (1, 1, 1));
-    SetTextColor (hDC, RGB (255, 255, 255));
-    TextOut (hDC, 0, 0, text.c_str(), size);
+    Gdiplus::Rect bitmapRect(0, 0, 512, 512);
+    Gdiplus::Rect bitmapRect2(256, 0, 256, 512);
+    int bmpWidth = 512;
+    int bmpHeight = 512;
+    int bmpStride = 4*bmpWidth;
+    BYTE bytes[1048576];
 
-    printf("GOT TO HERE\n");
+    Gdiplus::Bitmap gdiBitmap(bmpWidth, bmpHeight, bmpStride, PixelFormat32bppARGB, &bytes[0]);
+    Gdiplus::Graphics gr(&gdiBitmap);
 
+    Gdiplus::FontFamily  fontFamily(L"Times New Roman");
+    Gdiplus::Font        font(&fontFamily, 5.0, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+    Gdiplus::PointF      pointF(0.0f, 0.0f);
+    //                      // a  b g r
+    Gdiplus::Color drawColor(255, 255, 0, 255);
+    Gdiplus::SolidBrush  solidBrush(drawColor);
+    Gdiplus::SolidBrush  solidBrush2(Gdiplus::Color(255, 0, 0, 255));
+
+    Gdiplus::Pen mypen(Gdiplus::Color(255, 0, 0));
+    mypen.SetWidth(5);
+
+
+    gr.FillRectangle(&solidBrush, bitmapRect);
+    gr.FillRectangle(&solidBrush2, bitmapRect);
+    printf("1\n");
+
+    gr.DrawString(L"Hello", -1, &font, pointF, &solidBrush);
+    gr.DrawLine(&mypen, Gdiplus::Point(0,0), Gdiplus::Point(10,10));
+
+    //Gdiplus::BitmapData bitmapData;
+    //gdiBitmap.LockBits(&bitmapRect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
+    //printf("data width %d, stride %d\n", bitmapData.Width, bitmapData.Stride);
     
     aPixelBuffer* output = new aPixelBuffer;
-    output->size = {256.0f, 256.0f};
-    output->frame = {0.0f, 0.0f, 256.0f, 256.0f};
-    printf("GOT TO HERE2\n");
+    output->size = {512.0f, 512.0f};
+    output->frame = {renderFrame.x, renderFrame.y, renderFrame.width, renderFrame.height};
+    printf("2\n");
     glGenTextures(1, &output->id);
     glBindTexture(GL_TEXTURE_2D, output->id);
-    printf("GOT TO HERE3\n");
-    /*glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)256, (int)256, 0, GL_BGRA, GL_UNSIGNED_BYTE, hBitmap);
+    printf("3\n");
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)512, (int)512, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, &bytes[0]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-*/
-    printf("GOT TO HERE2\n");
+
+    printf("4\n");
 
     // Delete the GDI objects
-    DeleteObject (hBitmap);
-    DeleteObject (hFont);
-    DeleteDC (hDC);
+    //gdiBitmap.UnlockBits(&bitmapData);
 
-    //RenderBuffer(output);
+    RenderBuffer(output);
 
     glDeleteTextures(1, &output->id);
     delete output;
