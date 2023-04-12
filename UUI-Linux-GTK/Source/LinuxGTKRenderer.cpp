@@ -228,7 +228,7 @@ void LinuxGTKRenderer::RenderText(std::string text, float size) {
     // Draw some text on the surface
     cairo_surface_t* surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, 100.0, 100.0);
     cairo_t* cr = cairo_create(surface);
-    cairo_select_font_face(cr, "Roboto", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_select_font_face(cr, "JetBrains Mono", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, size);
 
     cairo_text_extents_t te;
@@ -239,7 +239,7 @@ void LinuxGTKRenderer::RenderText(std::string text, float size) {
 
     surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, te.width, te.height);
     cr = cairo_create(surface);
-    cairo_select_font_face(cr, "Roboto", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_select_font_face(cr, "JetBrains Mono", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
     cairo_set_font_size(cr, size);
     cairo_set_source_rgb(cr, 1.0, 1.0, 1.0);
 
