@@ -18,7 +18,7 @@ class uButton: public uView {
             AngeloColour({0.125, 0.125, 0.125, 1.0}),
             AngeloRoundedRectangle({5.0f, 5.0f}, {frame.width - 5.0f, frame.height - 5.0f}, 5.0f)
         });
-        renderer->RenderText(title, 15.0f);
+        //renderer->RenderText(title, 15.0f);
     }
 };
 
@@ -64,13 +64,12 @@ class App: public uDesktopApplication {
         window1->rootView = background;
         window1->rootView->frame = {0.0, 0.0, 250.0, 250.0};
         window1->rootView->globalFrame = {0.0, 0.0, 250.0, 250.0};
-        window1->rootView->backgroundColour = {1.0, 1.0, 1.0, 0.0};
-        //background->isPersistant = true;
-        //background->needsRedraw = true;
+        window1->rootView->backgroundColour = {0.0, 0.0, 0.0, 1.0};
 
         for (int i = 0; i < 5; i++) {
             uButton* button = new uButton;
             button->frame = {10.0f + (65.0f*(float)i), 10.0f, 60.0f, 25.0f};
+            button->globalFrame = {10.0f + (65.0f*(float)i), 10.0f, 60.0f, 25.0f};
             button->isPersistant = true;
             button->needsRedraw = true;
             button->title = "File";
@@ -97,7 +96,7 @@ class App: public uDesktopApplication {
         
 
 
-        window1->background = CORE_RED;
+        window1->background = CORE_BLACK;
 
         ShowWindow(window1);
         //ShowWindow(window2);

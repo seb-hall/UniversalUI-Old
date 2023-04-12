@@ -10,6 +10,7 @@
 
 #include <glad/glad_wgl.h>
 #include <stdio.h>
+#include <chrono>
 
 
 //  compile shaders etc
@@ -135,7 +136,7 @@ bool WinRenderer::Init() {
 
 //  render specified operations
 void WinRenderer::RenderOperations(std::vector<aRenderOperation> operations) { 
-    //printf("ANGELO-RENDERER: Render Operations\n");
+    printf("ANGELO-RENDERER: Render Operations\n");
 
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
@@ -225,6 +226,8 @@ void WinRenderer::RenderOperations(std::vector<aRenderOperation> operations) {
 //  render specified text
 void WinRenderer::RenderText(std::string text, float size) { 
     //printf("ANGELO-RENDERER: Render Text\n");
+
+
 
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
