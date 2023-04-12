@@ -235,61 +235,62 @@ void WinRenderer::RenderOperations(std::vector<aRenderOperation> operations) {
 //  render specified text
 void WinRenderer::RenderText(std::string text, float size) { 
     //printf("ANGELO-RENDERER: Render Text\n");
-
-
-
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
 
-    Gdiplus::Rect bitmapRect(0, 0, 512, 512);
-    Gdiplus::Rect bitmapRect2(256, 0, 256, 512);
-    int bmpWidth = 512;
-    int bmpHeight = 512;
-    int bmpStride = 4*bmpWidth;
-    BYTE bytes[1048576];
+    Gdiplus::Rect bitmapRect(0, 0, 60, 25);
+    int bmpWidth = 60;
+    int bmpHeight = 25;
 
-    Gdiplus::Bitmap gdiBitmap(bmpWidth, bmpHeight, bmpStride, PixelFormat32bppARGB, &bytes[0]);
+
+    Gdiplus::Bitmap gdiBitmap(bmpWidth, bmpHeight, PixelFormat32bppARGB);
     Gdiplus::Graphics gr(&gdiBitmap);
+    gr.TranslateTransform(0, 0);
+    gr.ScaleTransform(1, 1);
 
-    Gdiplus::FontFamily  fontFamily(L"Times New Roman");
-    Gdiplus::Font        font(&fontFamily, 5.0, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+    Gdiplus::FontFamily  fontFamily(L"Consolas");
+    Gdiplus::Font        font(&fontFamily, 20.0, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
     Gdiplus::PointF      pointF(0.0f, 0.0f);
     //                      // a  b g r
-    Gdiplus::Color drawColor(255, 255, 0, 255);
+    Gdiplus::Color drawColor(255, 255, 255, 255);
     Gdiplus::SolidBrush  solidBrush(drawColor);
-    Gdiplus::SolidBrush  solidBrush2(Gdiplus::Color(255, 0, 0, 255));
 
-    Gdiplus::Pen mypen(Gdiplus::Color(255, 0, 0));
-    mypen.SetWidth(5);
+    std::wstring wideString(text.begin(), text.end());
+    gr.DrawString(wideString.c_str(), -1, &font, pointF, &solidBrush);
 
-
-    gr.FillRectangle(&solidBrush, bitmapRect);
-    gr.FillRectangle(&solidBrush2, bitmapRect);
-    printf("1\n");
-
-    gr.DrawString(L"Hello", -1, &font, pointF, &solidBrush);
-    gr.DrawLine(&mypen, Gdiplus::Point(0,0), Gdiplus::Point(10,10));
-
-    //Gdiplus::BitmapData bitmapData;
-    //gdiBitmap.LockBits(&bitmapRect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
-    //printf("data width %d, stride %d\n", bitmapData.Width, bitmapData.Stride);
+    Gdiplus::BitmapData bitmapData;
+    gdiBitmap.LockBits(&bitmapRect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
+    printf("data width %d, stride %d\n", bitmapData.Width, bitmapData.Stride);
     
     aPixelBuffer* output = new aPixelBuffer;
-    output->size = {512.0f, 512.0f};
+    output->size = {60.0f, 25.0f};
     output->frame = {renderFrame.x, renderFrame.y, renderFrame.width, renderFrame.height};
     printf("2\n");
     glGenTextures(1, &output->id);
     glBindTexture(GL_TEXTURE_2D, output->id);
     printf("3\n");
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)512, (int)512, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, &bytes[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)60, (int)25, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmapData.Scan0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     printf("4\n");
 
     // Delete the GDI objects
-    //gdiBitmap.UnlockBits(&bitmapData);
+    gdiBitmap.UnlockBits(&bitmapData);
 
     RenderBuffer(output);
+
+    /*glUseProgram(BufferShader);
+
+    glBindVertexArray(VAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindTexture(GL_TEXTURE_2D, output->id);
+    // Set the viewport to match the input frame
+    glViewport(0, 0, (int)512, (int)512);
+    // Draw the quad with the input texture
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glUseProgram(0);*/
 
     glDeleteTextures(1, &output->id);
     delete output;
