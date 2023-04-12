@@ -71,6 +71,13 @@
         "numbers": "cpp",
         "cinttypes": "cpp",
         "chrono": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "charconv": "cpp",
+        "format": "cpp",
+        "forward_list": "cpp",
+        "mutex": "cpp",
+        "optional": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     }
 }

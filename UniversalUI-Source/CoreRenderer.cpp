@@ -10,7 +10,7 @@ bool CoreRenderer::Init() { return true; }
 void CoreRenderer::RenderOperations(std::vector<aRenderOperation> operations) { }
 
 //  render specified text
-void CoreRenderer::RenderText(std::string text, float size) { }
+void CoreRenderer::RenderText(std::string text, float size, aTextLayout layout) { }
 
 //  render specified image
 void CoreRenderer::RenderImage(std::string path, uSize size) { }

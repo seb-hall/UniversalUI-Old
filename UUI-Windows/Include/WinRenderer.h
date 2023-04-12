@@ -31,7 +31,7 @@ public:
     void RenderOperations(std::vector<aRenderOperation> operations) override;
 
     //  render specified text
-    void RenderText(std::string text, float size) override;
+    void RenderText(std::string text, float size, aTextLayout layout) override;
 
     //  render specified image
     void RenderImage(std::string path, uSize size) override;

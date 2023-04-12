@@ -26,6 +26,12 @@
 
 class uWindow;
 
+enum aTextLayout {
+    left,
+    centre,
+    right
+};
+
 class UUI CoreRenderer {
     public:
 
@@ -42,7 +48,7 @@ class UUI CoreRenderer {
     virtual void RenderOperations(std::vector<aRenderOperation> operations);
 
     //  render specified text
-    virtual void RenderText(std::string text, float size);
+    virtual void RenderText(std::string text, float size, aTextLayout layout);
 
     //  render specified image
     virtual void RenderImage(std::string path, uSize size);

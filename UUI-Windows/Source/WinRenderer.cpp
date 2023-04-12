@@ -233,10 +233,50 @@ void WinRenderer::RenderOperations(std::vector<aRenderOperation> operations) {
 }
 
 //  render specified text
-void WinRenderer::RenderText(std::string text, float size) { 
+void WinRenderer::RenderText(std::string text, float size, aTextLayout layout) { 
     //printf("ANGELO-RENDERER: Render Text\n");
     glViewport((int)renderFrame.x, (int)renderFrame.y, (int)renderFrame.width, (int)renderFrame.height);
+    Gdiplus::RectF boundingRect(0.0f, 0.0f, renderFrame.width, renderFrame.height);
 
+    //  set font and string stuff
+    Gdiplus::FontFamily fontFamily(L"Consolas");
+    Gdiplus::Font font(&fontFamily, size, Gdiplus::FontStyleRegular, Gdiplus::UnitPixel);
+
+    //  create a wide string for windows annoyingness
+    std::wstring wideString(text.begin(), text.end());
+
+    //  create a temporary graphics context using a 1px bitmap
+    Gdiplus::Bitmap tempBitmap(1, 1, PixelFormat32bppARGB);
+    Gdiplus::Graphics tempGraphics(&tempBitmap);
+
+    //  measure string and assign to rect
+    Gdiplus::RectF textSize(0.0f, 0.0f, 0.0f, 0.0f);
+    tempGraphics.MeasureString(wideString.c_str(), -1, &font, boundingRect, &textSize);
+    printf("text size width %f, height %f\n", textSize.Width, textSize.Height);
+
+    //  calculate layout offsets
+    float dy = textSize.Height - renderFrame.height;
+    float dx = textSize.Width - renderFrame.width;
+    float xOffset = -dx/2;
+    float yOffset = -dy/2;
+    
+    //  create final bitmap with new dimensions
+    Gdiplus::Rect bitmapRect(0, 0, (int)textSize.Width, (int)textSize.Height);
+    Gdiplus::Bitmap bitmap(bitmapRect.Width, bitmapRect.Height, PixelFormat32bppARGB);
+    Gdiplus::Graphics graphics(&bitmap);
+    //graphics.TranslateTransform(0, (int)textSize.Height);
+    //graphics.ScaleTransform(1, -1);
+    
+    //  create brush and draw text
+    Gdiplus::SolidBrush solidBrush(Gdiplus::Color(255, 255, 255, 255));
+    graphics.DrawString(wideString.c_str(), -1, &font, Gdiplus::PointF(0.0f, 0.0f), &solidBrush);
+
+    //  get location of raw bitmap data
+    Gdiplus::BitmapData bitmapData;
+    bitmap.LockBits(&bitmapRect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
+    printf("data width %d, stride %d\n", bitmapData.Width, bitmapData.Stride);
+
+    /*
     Gdiplus::Rect bitmapRect(0, 0, 60, 25);
     int bmpWidth = 60;
     int bmpHeight = 25;
@@ -259,25 +299,26 @@ void WinRenderer::RenderText(std::string text, float size) {
 
     Gdiplus::BitmapData bitmapData;
     gdiBitmap.LockBits(&bitmapRect, Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
-    printf("data width %d, stride %d\n", bitmapData.Width, bitmapData.Stride);
+    printf("data width %d, stride %d\n", bitmapData.Width, bitmapData.Stride);*/
     
     aPixelBuffer* output = new aPixelBuffer;
-    output->size = {60.0f, 25.0f};
-    output->frame = {renderFrame.x, renderFrame.y, renderFrame.width, renderFrame.height};
+    output->size = {textSize.Width, textSize.Height};
+    output->frame = {renderFrame.x + xOffset, renderFrame.y + yOffset, textSize.Width, textSize.Height};
     printf("2\n");
     glGenTextures(1, &output->id);
     glBindTexture(GL_TEXTURE_2D, output->id);
     printf("3\n");
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, (int)60, (int)25, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmapData.Scan0);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmapRect.Width, bitmapRect.Height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, bitmapData.Scan0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     printf("4\n");
 
     // Delete the GDI objects
-    gdiBitmap.UnlockBits(&bitmapData);
+    bitmap.UnlockBits(&bitmapData);
 
     RenderBuffer(output);
+    
 
     /*glUseProgram(BufferShader);
 

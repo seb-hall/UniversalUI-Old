@@ -18,7 +18,7 @@ class uButton: public uView {
             AngeloColour({0.125, 0.125, 0.125, 1.0}),
             AngeloRoundedRectangle({5.0f, 5.0f}, {frame.width - 5.0f, frame.height - 5.0f}, 5.0f)
         });
-        renderer->RenderText(title, 15.0f);
+        renderer->RenderText(title, 15.0f, aTextLayout::centre);
     }
 };
 
