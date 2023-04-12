@@ -100,7 +100,7 @@ class App: public uDesktopApplication {
         window1->background = CORE_RED;
 
         ShowWindow(window1);
-        ShowWindow(window2);
+        //ShowWindow(window2);
         
     }
 
