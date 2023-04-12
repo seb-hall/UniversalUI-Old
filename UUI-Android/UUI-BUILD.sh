@@ -1,7 +1,12 @@
-#!/bin/bash
-# this is a script to build UniversalUI on Linux using bash and GCC
+#!/usr/bin/env bash
 
-echo -e "\nUniversalUI Build Utility (v1 for Linux-GTK)\n";
+if [ "$(uname)" == "Darwin" ]; then
+    PLATFORM = "mac";
+    CC = "/Users/seb/Library/Android/sdk/ndk/23.1.7779620/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++";
+    echo -e "\nUniversalUI Build Utility (v1 for Android, macOS Host)\n";
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    PLATFORM = "linux";
+fi
 
 declare -a XP_SRC=( 
     uApplication.cpp
@@ -21,9 +26,7 @@ XP_SRC_ARGS="${XP_SRC[@]/#/$XP_SRC_PATH}";
 
 declare -a DP_SRC=(
     UniversalUI.cpp
-    LinuxGTKHost.cpp
-    LinuxGTKAngelo.cpp
-    LinuxGTKRenderer.cpp
+
 );
 
 DP_PATH="./Source/";
@@ -35,6 +38,7 @@ declare -a APP_SRC=(
 
 APP_PATH="./App/";
 APP_ARGS="${APP_SRC[@]/#/$APP_PATH}";
+
 
 declare -a LINK=(
     -lepoxy
@@ -56,18 +60,18 @@ declare -a H_PATH=(
 H_PREFIX="-I";
 H_ARGS="${H_PATH[@]/#/$H_PREFIX}";
 
-C_FLAGS="$(pkg-config --cflags gtk+-3.0 --libs)"
+C_FLAGS=""
 
 echo "${LIBS[@]}";
 
 if [ "$1" == "-STATIC" ]; then
     echo "Building UniversalUI static test...";
     #g++ main.cpp CoreHost.cpp AngeloText.cpp Angelo.cpp -o main $(pkg-config --cflags gtk+-3.0 --libs) -lepoxy -lfreetype -I./include
-    g++ -frtti $XP_SRC_ARGS $DP_ARGS $APP_ARGS -o $EXE_ARGS $C_FLAGS $LINK_ARGS $H_ARGS
+    $CC -frtti $XP_SRC_ARGS $DP_ARGS $APP_ARGS -o $EXE_ARGS $C_FLAGS $LINK_ARGS $H_ARGS
     echo "DONE!";
 elif [ "$1" == "-LIB" ]; then
     echo "Building UniversalUI library...";
-
+    $CC $XP_SRC_ARGS $DP_ARGS -o $LIB_ARGS $C_FLAGS $LINK_ARGS $H_ARGS
     echo "DONE!";
 elif [ "$1" == "-DEBUG" ]; then
     echo "Building DEBUG UniversalUI application...";
