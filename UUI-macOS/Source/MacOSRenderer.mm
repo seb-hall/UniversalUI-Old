@@ -20,38 +20,30 @@
 
 
 //  compiler shaders and prepare for rendering
-bool MacOSRenderer::InitialiseRenderer() {
+bool MacOSRenderer::Init() {
 
 	
 	return true;
 }
 
-//  render a view, override by platform for OpenGL/Metal functionality
-void MacOSRenderer::RenderView(uView* view) {
+//  render specified operations
+void MacOSRenderer::RenderOperations(std::vector<aRenderOperation> operations) {
 
 
 }
 
-//  render a window, override by platform for OpenGL/Metal functionality
-void MacOSRenderer::RenderWindow(uWindow* window) {
+//  render specified text
+void MacOSRenderer::RenderText(std::string text, float size, aTextLayout layout) {
 
 }
 
-//  generate a new pixel buffer in GPU memory with a given size
-aPixelBuffer MacOSRenderer::NewPixelBuffer(uSize size) {
-	aPixelBuffer newBuffer;
-	newBuffer.size = size;
-
-	return newBuffer;
+//  render specified image
+void MacOSRenderer::RenderImage(std::string path, uSize size) {
+	
 }
 
-//  resize an existing pixel buffer
-void MacOSRenderer::ResizePixelBuffer(aPixelBuffer buffer, uSize size) {
+//  render specified buffer
+void MacOSRenderer::RenderBuffer(aPixelBuffer* buffer) {
 
-}
 
-//  fill a buffer with a given colour - use mainly for testing purposes
-void MacOSRenderer::ClearBuffer(aPixelBuffer buffer, uColour colour) {
-
-	printf("cleared buffer\n");
 }

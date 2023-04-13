@@ -32,6 +32,7 @@ MacOSHost* host;
 //  method on your uApplication instance.
 int UniversalUI(uApplication* userApp) {
 
+	//	initialise host on stack
 	host = new MacOSHost;
 
 	//  check format of userApp - simple, desktop or (wrongly) base uApplication
@@ -47,13 +48,12 @@ int UniversalUI(uApplication* userApp) {
         return false;
     }
 
+	//  assign app and host references
+	host->app = userApp;
+	userApp->host = host;
+
+	//  everything started successfully so display welcome message
 	printf("\n\t*** Welcome to UniversalUI D3! ***\n\n");
-    
-    host->app = userApp;
-    
-    userApp->host = host; 
-	
-	host->app->FinishedLaunching();
 	
 	return host->main();
 }

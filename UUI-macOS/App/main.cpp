@@ -15,7 +15,7 @@ class App: public uDesktopApplication {
 
     }
 
-    void FinishedLaunching(int argc, char* argv[]) override {
+    void FinishedLaunching() override {
         printf("MyApp finished launching!\n");
         
         window1 = new uWindow({1000, 750}, "App - Main");
@@ -50,12 +50,8 @@ class App: public uDesktopApplication {
 
 };
 
-int main(int argc, char* argv[]) {
+int main() {
 
     App* myApp = new App();
-    if (!UniversalUI(myApp)) {
-        return -1;
-    }
-
-    return uuiMain(argc, argv);
+    return UniversalUI(myApp);
 }

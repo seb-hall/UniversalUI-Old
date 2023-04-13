@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		968DE44929E7E4A4005D55BE /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 968DE44829E7E4A4005D55BE /* MetalKit.framework */; };
+		968DE44C29E7E754005D55BE /* MacOSAngelo.mm in Sources */ = {isa = PBXBuildFile; fileRef = 968DE44B29E7E754005D55BE /* MacOSAngelo.mm */; };
 		96C4D21229CE456E006E4CC7 /* MacOSRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 96C4D21129CE456E006E4CC7 /* MacOSRenderer.mm */; };
 		96F4AB8A29CC69FE00EB30B3 /* UniversalUI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */; };
 		96F4ABE629CC7D6F00EB30B3 /* uDesktopApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 96F4ABDD29CC7D6F00EB30B3 /* uDesktopApplication.cpp */; };
@@ -23,6 +25,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		968DE44829E7E4A4005D55BE /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		968DE44A29E7E607005D55BE /* MacOSAngelo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacOSAngelo.h; sourceTree = "<group>"; };
+		968DE44B29E7E754005D55BE /* MacOSAngelo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSAngelo.mm; sourceTree = "<group>"; };
 		96C4D21029CE451A006E4CC7 /* MacOSRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacOSRenderer.h; sourceTree = "<group>"; };
 		96C4D21129CE456E006E4CC7 /* MacOSRenderer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSRenderer.mm; sourceTree = "<group>"; };
 		96C4D21329CE461E006E4CC7 /* Metal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Metal.h; sourceTree = "<group>"; };
@@ -49,6 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				96F4ABFC29CC838900EB30B3 /* Cocoa.framework in Frameworks */,
+				968DE44929E7E4A4005D55BE /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				96F4ABEE29CC7D9000EB30B3 /* MacOSHost.mm */,
+				968DE44B29E7E754005D55BE /* MacOSAngelo.mm */,
 				96C4D21129CE456E006E4CC7 /* MacOSRenderer.mm */,
 				96F4AB8929CC69FE00EB30B3 /* UniversalUI.cpp */,
 			);
@@ -90,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				96F4ABF029CC7D9D00EB30B3 /* MacOSHost.h */,
+				968DE44A29E7E607005D55BE /* MacOSAngelo.h */,
 				96C4D21029CE451A006E4CC7 /* MacOSRenderer.h */,
 				96C4D21329CE461E006E4CC7 /* Metal.h */,
 			);
@@ -116,6 +124,7 @@
 		96F4ABFA29CC838900EB30B3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				968DE44829E7E4A4005D55BE /* MetalKit.framework */,
 				96F4ABFB29CC838900EB30B3 /* Cocoa.framework */,
 			);
 			name = Frameworks;
@@ -198,6 +207,7 @@
 				96F4ABE929CC7D6F00EB30B3 /* CoreRenderer.cpp in Sources */,
 				96F4AB8A29CC69FE00EB30B3 /* UniversalUI.cpp in Sources */,
 				96F4ABED29CC7D6F00EB30B3 /* AngeloOperations.cpp in Sources */,
+				968DE44C29E7E754005D55BE /* MacOSAngelo.mm in Sources */,
 				96F4ABE629CC7D6F00EB30B3 /* uDesktopApplication.cpp in Sources */,
 				96F4ABEB29CC7D6F00EB30B3 /* CoreHost.cpp in Sources */,
 			);
