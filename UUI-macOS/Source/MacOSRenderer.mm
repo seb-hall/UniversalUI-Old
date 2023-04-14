@@ -22,6 +22,7 @@
 bool MacOSRenderer::Init() {
 
 	metalCommandQueue = [metalDevice newCommandQueue];
+	pipelineDescriptor = [[MTLRenderPipelineDescriptor alloc] init];
 	return true;
 }
 

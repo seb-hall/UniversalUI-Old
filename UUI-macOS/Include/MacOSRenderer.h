@@ -22,6 +22,7 @@ class MacOSRenderer: public CoreRenderer {
 	
 	//	metal renderpass descriptor descritor
 	MTLRenderPassDescriptor * renderPassDescriptor;
+	MTLRenderPipelineDescriptor * pipelineDescriptor;
 	
 	//  compile shaders etc
 	bool Init() override;

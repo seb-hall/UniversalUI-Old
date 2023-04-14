@@ -63,16 +63,16 @@ void MacOSHost::ShowWindow(uWindow* window) {
 	
 	NSRect frame = NSMakeRect(0, 0, window->size.width, window->size.height);
 	NSUInteger styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;
-	NSWindow * nsWindow = [[NSWindow alloc] initWithContentRect:frame styleMask:styleMask backing:NSBackingStoreBuffered defer:false];
-	[nsWindow setDelegate:windowDelegate];
-	[nsWindow setTitle:[NSString stringWithUTF8String:window->title.c_str()]];
-	[nsWindow makeKeyAndOrderFront:nil];
+	NSWindow * nsWindow = [[NSWindow alloc] initWithContentRect: frame styleMask: styleMask backing: NSBackingStoreBuffered defer: false];
+	[nsWindow setDelegate: windowDelegate];
+	[nsWindow setTitle: [NSString stringWithUTF8String: window->title.c_str()]];
+	[nsWindow makeKeyAndOrderFront: nil];
 	
-	MTKView * metalView = [[MTKView alloc] initWithFrame:frame];
-	[metalView setDelegate:windowDelegate];
-	[metalView setWantsLayer:true];
-	[metalView.layer setBackgroundColor:[[NSColor redColor] CGColor]];
-	[nsWindow setContentView:metalView];
+	MTKView * metalView = [[MTKView alloc] initWithFrame: frame];
+	[metalView setDelegate: windowDelegate];
+	[metalView setWantsLayer: true];
+	[metalView setClearColor: MTLClearColorMake(0.0, 0.0, 0.0, 1.0)];
+	[nsWindow setContentView: metalView];
 	
 	pack->window = window;
 	pack->nsWindow = nsWindow;
