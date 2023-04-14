@@ -9,17 +9,15 @@
 #define UUI
 
 #include <UniversalUI/Angelo/CoreAngelo.h>
-#include <Metal.h>
+#include <Metal/Metal.h>
 #include <MetalKit/MetalKit.h>
 
 class UUI MacOSAngelo: public CoreAngelo {
-	
-
-	
 public:
 	
-	MTL::Device* metalDevice;
-	MTL::CommandQueue* metalCommandQueue;
+	//	metal device and texture descriptor
+	id<MTLDevice> metalDevice;
+	MTLTextureDescriptor * textureDescriptor;
 
 	//  initialise renderer
 	bool Init() override;

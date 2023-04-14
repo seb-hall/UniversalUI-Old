@@ -9,7 +9,6 @@
 
 
 //  include platform-specific libraries
-#include <Metal.h>
 #include <Metal/Metal.h>
 #include <MetalKit/MetalKit.h>
 
@@ -22,7 +21,7 @@
 //  compiler shaders and prepare for rendering
 bool MacOSRenderer::Init() {
 
-	
+	metalCommandQueue = [metalDevice newCommandQueue];
 	return true;
 }
 

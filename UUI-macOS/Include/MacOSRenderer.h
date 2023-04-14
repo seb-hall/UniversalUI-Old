@@ -9,10 +9,19 @@
 #define UUI
 
 #include <UniversalUI/Angelo/CoreRenderer.h>
+#include <Metal/Metal.h>
 
 class MacOSRenderer: public CoreRenderer {
 
 	public:
+	
+	//	metal device and command queue & buffer
+	id<MTLDevice> metalDevice;
+	id<MTLCommandQueue> metalCommandQueue;
+	id<MTLCommandBuffer> metalCommandBuffer;
+	
+	//	metal renderpass descriptor descritor
+	MTLRenderPassDescriptor * renderPassDescriptor;
 	
 	//  compile shaders etc
 	bool Init() override;
