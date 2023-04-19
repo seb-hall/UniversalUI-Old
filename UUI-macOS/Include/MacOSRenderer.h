@@ -10,19 +10,33 @@
 
 #include <UniversalUI/Angelo/CoreRenderer.h>
 #include <Metal/Metal.h>
+#include <simd/simd.h>
+
+typedef struct {
+	simd::float2 pos;
+	simd::float2 normalPos;
+} ShaderVertex;
 
 class MacOSRenderer: public CoreRenderer {
 
 	public:
-	
+
 	//	metal device and command queue & buffer
 	id<MTLDevice> metalDevice;
-	id<MTLCommandQueue> metalCommandQueue;
-	id<MTLCommandBuffer> metalCommandBuffer;
 	
 	//	metal renderpass descriptor descritor
-	MTLRenderPassDescriptor * renderPassDescriptor;
-	MTLRenderPipelineDescriptor * pipelineDescriptor;
+	MTLRenderPassDescriptor * renderpassDescriptor;
+	
+	id<MTLLibrary> metalLibrary;
+	id<MTLCommandQueue> metalCommandQueue;
+	
+	
+	
+	id<MTLRenderPipelineState> commandPipelineState;
+	MTLRenderPipelineDescriptor * commandPipelineDescriptor;
+	
+	id<MTLRenderPipelineState> bufferPipelineState;
+	MTLRenderPipelineDescriptor * bufferPipelineDescriptor;
 	
 	//  compile shaders etc
 	bool Init() override;

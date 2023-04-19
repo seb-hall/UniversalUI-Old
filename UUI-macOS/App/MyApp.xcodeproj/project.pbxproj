@@ -46,10 +46,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		96F4AB9C29CC6E5F00EB30B3 /* MyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MyApp.app; path = "/Users/seb/Documents/UniversalUI/UniversalUI/UUI-macOS/App/build/Debug/MyApp.app"; sourceTree = "<absolute>"; };
+		96950E4D29EF03F500A8B757 /* MyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		96950E4E29EF03F500A8B757 /* MyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96950E4F29EF03F500A8B757 /* MyAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		96950E5029EF049500A8B757 /* default.metallib */ = {isa = PBXFileReference; lastKnownFileType = "archive.metal-library"; name = default.metallib; path = Lib/default.metallib; sourceTree = "<group>"; };
 		96F4ABA529CC6E6000EB30B3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		96F4ABB129CC6E6000EB30B3 /* MyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = MyAppTests.xctest; path = "/Users/seb/Documents/UniversalUI/UniversalUI/UUI-macOS/App/build/Debug/MyAppTests.xctest"; sourceTree = "<absolute>"; };
-		96F4ABBB29CC6E6000EB30B3 /* MyAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = MyAppUITests.xctest; path = "/Users/seb/Documents/UniversalUI/UniversalUI/UUI-macOS/App/build/Debug/MyAppUITests.xctest"; sourceTree = "<absolute>"; };
 		96F4ABD029CC6F0100EB30B3 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		96F4ABD229CC6F4A00EB30B3 /* UniversalUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = UniversalUI; path = ../../UniversalUI; sourceTree = "<group>"; };
 		96F4ABD429CC6FD900EB30B3 /* MyApp.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = MyApp.entitlements; path = MyApp/MyApp.entitlements; sourceTree = "<group>"; };
@@ -89,7 +90,11 @@
 				96F4ABD029CC6F0100EB30B3 /* main.cpp */,
 				96F4ABD229CC6F4A00EB30B3 /* UniversalUI */,
 				96F4ABA529CC6E6000EB30B3 /* Assets.xcassets */,
+				96950E5029EF049500A8B757 /* default.metallib */,
 				96F4ABD529CC703500EB30B3 /* Frameworks */,
+				96950E4D29EF03F500A8B757 /* MyApp.app */,
+				96950E4E29EF03F500A8B757 /* MyAppTests.xctest */,
+				96950E4F29EF03F500A8B757 /* MyAppUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -119,7 +124,7 @@
 			);
 			name = MyApp;
 			productName = MyApp;
-			productReference = 96F4AB9C29CC6E5F00EB30B3 /* MyApp.app */;
+			productReference = 96950E4D29EF03F500A8B757 /* MyApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		96F4ABB029CC6E6000EB30B3 /* MyAppTests */ = {
@@ -137,7 +142,7 @@
 			);
 			name = MyAppTests;
 			productName = MyAppTests;
-			productReference = 96F4ABB129CC6E6000EB30B3 /* MyAppTests.xctest */;
+			productReference = 96950E4E29EF03F500A8B757 /* MyAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		96F4ABBA29CC6E6000EB30B3 /* MyAppUITests */ = {
@@ -155,7 +160,7 @@
 			);
 			name = MyAppUITests;
 			productName = MyAppUITests;
-			productReference = 96F4ABBB29CC6E6000EB30B3 /* MyAppUITests.xctest */;
+			productReference = 96950E4F29EF03F500A8B757 /* MyAppUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */

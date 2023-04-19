@@ -27,9 +27,16 @@ bool MacOSAngelo::Init() {
 	[textureDescriptor setStorageMode: MTLStorageModePrivate];
 	[textureDescriptor setUsage: MTLTextureUsageShaderRead | MTLTextureUsageShaderWrite];
 	
+	//	setup renderpass descriptor
+	renderpassDescriptor = [[MTLRenderPassDescriptor alloc] init];
+	renderpassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+	renderpassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(1.0, 0.0, 0.0, 1.0);
+	renderpassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+	
 	//	assign renderer metaldevice to the same one
 	MacOSRenderer* macRenderer = static_cast<MacOSRenderer*>(renderer);
 	macRenderer->metalDevice = metalDevice;
+	macRenderer->renderpassDescriptor = renderpassDescriptor;
 	
 	//	init renderer
 	if (!renderer->Init()) {
@@ -66,7 +73,8 @@ void MacOSAngelo::DestroyPixelBuffer(aPixelBuffer* buffer) {
 
 //  bind pixelbuffer to render target
 void MacOSAngelo::BindRenderTarget(aPixelBuffer* buffer) {
-	
+	id<MTLTexture> texture = (__bridge id<MTLTexture>)buffer->id;
+	renderpassDescriptor.colorAttachments[0].texture = texture;
 }
 
 //  unbind current render target

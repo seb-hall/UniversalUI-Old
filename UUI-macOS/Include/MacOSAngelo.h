@@ -18,6 +18,7 @@ public:
 	//	metal device and texture descriptor
 	id<MTLDevice> metalDevice;
 	MTLTextureDescriptor * textureDescriptor;
+	MTLRenderPassDescriptor * renderpassDescriptor;
 
 	//  initialise renderer
 	bool Init() override;

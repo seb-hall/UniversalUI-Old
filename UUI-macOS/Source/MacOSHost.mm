@@ -34,6 +34,7 @@ struct SystemWindowPack {
 	MTKView * metalView;
 };
 
+
 std::map<NSWindow *, SystemWindowPack*> packMap = { };
 std::map<uWindow*, SystemWindowPack*> windowMap = { };
 std::map<MTKView *, SystemWindowPack*> viewMap = { };
@@ -71,16 +72,18 @@ void MacOSHost::ShowWindow(uWindow* window) {
 	MTKView * metalView = [[MTKView alloc] initWithFrame: frame];
 	[metalView setDelegate: windowDelegate];
 	[metalView setWantsLayer: true];
-	[metalView setClearColor: MTLClearColorMake(0.0, 0.0, 0.0, 1.0)];
+	//[metalView setClearColor: MTLClearColorMake(0.0, 0.0, 0.0, 1.0)];
 	[nsWindow setContentView: metalView];
 	
 	pack->window = window;
 	pack->nsWindow = nsWindow;
 	pack->metalView = metalView;
+
+	MacOSRenderer* renderer = new MacOSRenderer;
 	
 	pack->window->angelo = new MacOSAngelo;
 	pack->window->angelo->compositor = new CoreCompositor;
-	pack->window->angelo->renderer = new MacOSRenderer;
+	pack->window->angelo->renderer = renderer;
 	
 	pack->window->angelo->compositor->parent = pack->window;
 	pack->window->angelo->renderer->parent = pack->window;
@@ -89,6 +92,9 @@ void MacOSHost::ShowWindow(uWindow* window) {
 		printf("ANGELO INIT ERROR\n");
 		return;
 	}
+	
+	[metalView setDevice: renderer->metalDevice];
+	[metalView setColorPixelFormat: MTLPixelFormatRGBA8Unorm];
 	
 	packMap[nsWindow] = pack;
 	windowMap[window] = pack;
@@ -133,33 +139,48 @@ void MacOSHost::SetTitle(uWindow* window, std::string title) {
 - (void)drawInMTKView:(MTKView * )view {
 	SystemWindowPack* pack = viewMap[view];
 	
+	id<MTLCommandQueue> queue = [view.device newCommandQueue];
+	
+	
+	
 	// The render pass descriptor references the texture into which Metal should draw
 	MTLRenderPassDescriptor * renderPassDescriptor = view.currentRenderPassDescriptor;
 	if (renderPassDescriptor == nil) {
 		return;
 	}
 	
+	renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
+	
 	MacOSAngelo* angelo = static_cast<MacOSAngelo*>(pack->window->angelo);
 	MacOSRenderer* renderer = static_cast<MacOSRenderer*>(pack->window->angelo->renderer);
 	
-	//	reassign command buffer to current command queue buffer - IS THIS REALLY NECESSARY??
-	renderer->metalCommandBuffer = [renderer->metalCommandQueue commandBuffer];
+	printf("RENDER\n");
 	
 	// 	encode here
 	
 	// 	Create a render pass and immediately end encoding, causing the drawable to be cleared
-	id<MTLRenderCommandEncoder> commandEncoder = [renderer->metalCommandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+	//id<MTLRenderCommandEncoder> commandEncoder = [renderer->metalCommandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
 	
-	[commandEncoder endEncoding];
+	//[commandEncoder endEncoding];
 	
 	// 	Get the drawable that will be presented at the end of the frame
 
-	id<MTLDrawable> drawable = view.currentDrawable;
-
-	// 	Request that the drawable texture be presented by the windowing system once drawing is done
-	[renderer->metalCommandBuffer presentDrawable:drawable];
+	id<MTLTexture> outputTexture = view.currentDrawable.texture;
+	printf("%u\n", outputTexture.width);
 	
-	[renderer->metalCommandBuffer commit];
+	aPixelBuffer* buffer = new aPixelBuffer;
+	buffer->id = (__bridge void*) outputTexture;
+	angelo->BindRenderTarget(buffer);
+	renderer->RenderBuffer(nil);
+	
+	delete buffer;
+	
+	id<MTLCommandBuffer> commandBuffer = [queue commandBuffer];
+	id<MTLRenderCommandEncoder> metalCommandEncoder = [commandBuffer renderCommandEncoderWithDescriptor: renderPassDescriptor];
+	[metalCommandEncoder endEncoding];
+	[commandBuffer presentDrawable: view.currentDrawable];
+	[commandBuffer commit];
+
 	
 }
 
