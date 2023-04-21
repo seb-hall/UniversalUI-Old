@@ -23,7 +23,7 @@
 struct UUI aPixelBuffer {
     uSize size;                 //  size of allocation (float but should never be fractional)
     uFrame frame;               //  compositing frame
-    void* id;       //  buffer instance
+    unsigned int id;       //  buffer instance
 };
 
 #endif

@@ -271,6 +271,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
                 if (systemWindowMap[hwnd]->window->size.width != newSize.width || systemWindowMap[hwnd]->window->size.height != newSize.height) {
                     systemWindowMap[hwnd]->window->size = newSize;
+                    InvalidateRect(hwnd, NULL, true);
+
                     if (host->appType == desktop) {
                         uDesktopApplication* app = static_cast<uDesktopApplication*>(host->app);
                         app->WindowResized(systemWindowMap[hwnd]->window, newSize);
@@ -281,7 +283,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
                 }
 
         //Call DefWindowProc to let it send WM_SIZE and WM_MOVE messages
-        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+        //return DefWindowProc(hwnd, uMsg, wParam, lParam);
       }
       break;
         case WM_PAINT:

@@ -28,7 +28,7 @@ void CoreCompositor::CompositeView(uView* view, aPixelBuffer* ontoBuffer) {
             angelo->BindRenderTarget(viewBuffer);
             angelo->renderer->renderFrame = {0.0f, 0.0f, view->frame.width, view->frame.height};
             view->Draw(angelo->renderer);
-            //angelo->UnBindRenderTarget();
+            angelo->UnBindRenderTarget();
             angelo->BindRenderTarget(ontoBuffer);
 
         } else if (view->needsRedraw) {
@@ -40,7 +40,7 @@ void CoreCompositor::CompositeView(uView* view, aPixelBuffer* ontoBuffer) {
             angelo->BindRenderTarget(viewBuffer);
             angelo->renderer->renderFrame = {0.0f, 0.0f, view->frame.width, view->frame.height};
             view->Draw(angelo->renderer);
-            //angelo->UnBindRenderTarget();
+            angelo->UnBindRenderTarget();
             angelo->BindRenderTarget(ontoBuffer);
            
             view->needsRedraw = false;
@@ -72,7 +72,7 @@ aPixelBuffer* CoreCompositor::CompositeRootView(uView* view) {
     aPixelBuffer* outputBuffer = parent->angelo->GeneratePixelBuffer(view);
     parent->angelo->BindRenderTarget(outputBuffer);
     CompositeView(view, outputBuffer);
-    //parent->angelo->UnBindRenderTarget();
+    parent->angelo->UnBindRenderTarget();
     return outputBuffer;
     
 }
