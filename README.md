@@ -8,20 +8,19 @@ the ultimate application framework
 
 to produce applications that:
 
-- are perfectly cross-platform
 - are extremely efficient
-- are highly customisable
-- are beautifully designed
+- are perfectly cross-platforms
+- are easy to design
 
 <br>
 
 <h2>Target Platforms</h2>
 
-- Linux (using GTK)
-- Windows (min. 10)
+- Linux (X11 or Wayland, requires Vulkan or OpenGL)
+- Windows (min. 7)
 - MacOS (min. 10.12)
 - iOS & iPadOS (min. 13.0)
-- Android (min. 8.0 Oreo)
+- Android (min. 10)
 - Web (using WebAssembly & WebGL)
 
 <br>
@@ -32,24 +31,18 @@ Many, including:
 
 - 3D applications
 - Creative and production software
-- Cross-platform tools
+- Cross-platform tools & applets
 - Embedded systems and portable devices
 - Enterprise and industrial software
-- Porting existing C++ frameworks to other platforms
 
 <br>
 
-<h2>Why use UniversalUI?</h2>
+<h2>Supported Languages</h2>
 
-UniversalUI won't be perfect for every project but here are some reasons to consider it for yours:
-
-- all the aspects of the brief mentioned above
-- quick design for rapid prototyping
-- easy to use framework
-- native support for all major platforms
-- develop for one and support all the others with ease!
-
-<br>
+- C++
+- Rust
+- Python
+- Swift
 
 <h2>Licence - MIT License</h2>
 
