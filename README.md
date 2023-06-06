@@ -6,11 +6,12 @@ the ultimate application framework
 
 <h2>Brief</h2>
 
-to produce applications that:
+to produce software that:
 
-- are extremely efficient
-- are perfectly cross-platforms
-- are easy to design
+- is extremely efficient
+- is perfectly cross-platforms
+- is easy to design
+- is very reliable
 
 <br>
 
@@ -21,7 +22,7 @@ to produce applications that:
 - MacOS (min. 10.12)
 - iOS & iPadOS (min. 13.0)
 - Android (min. 10)
-- Web (using WebAssembly & WebGL)
+- Web (using WebAssembly & WebGL/WebGPU)
 
 <br>
 
